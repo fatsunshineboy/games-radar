@@ -1,0 +1,22 @@
+{
+  "name": "see-something",
+  "version": "2.0.0",
+  "type": "module",
+  "description": "看点啥 - 海外游戏资讯每日简报 | See Something - Daily Overseas Gaming News Digest",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "collect": "tsx src/rss.ts",
+    "publish-issue": "tsx src/publish.ts"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "luxon": "^3.4.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/luxon": "^3.7.0",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

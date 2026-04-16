@@ -1,0 +1,67 @@
+# 看点啥 (See Something) - 配置文件
+
+# LLM 设置
+llm:
+  api_key: "${OPENAI_API_KEY}"
+  base_url: "${OPENAI_BASE_URL}"
+  model: "deepseek-v3"
+  temperature: 0.3
+  max_tokens: 4096
+  daily_budget: 200
+
+# 收集设置
+collection:
+  rate_limit_ms: 500
+  max_per_source: 20
+  fetch_content: true
+  content_max_length: 2000
+
+# 交叉验证去重
+deduplication:
+  similarity_threshold: 0.7
+  boost_per_source: 12
+
+# 评分系统
+scoring:
+  # 基础分由 Editor 智能体评估 (0-100)
+  # = 行业影响力(0-30) + 受众广度(0-20) + 稀缺性(0-20) + 后续跟踪性(0-15) + 可操作性(0-15)
+
+  # 来源权威加成
+  source_tier_bonus:
+    tier1: 20  # 官方第一手: PlayStation Blog, Xbox Wire, Nintendo
+    tier2: 15  # 权威媒体: IGN, Polygon, GamesIndustry.biz, Gematsu
+    tier3: 10  # 专业媒体: Eurogamer, PC Gamer, GameSpot, Game Developer
+    tier4: 5   # 综合媒体: Kotaku, GameRant, Siliconera
+    tier5: 0   # 社区: Reddit
+
+  # 多源交叉加成: (source_count - 1) × cross_source_bonus, 封顶 max_cross_bonus
+  cross_source_bonus: 12
+  max_cross_bonus: 36
+
+  # 时效性加成
+  freshness:
+    within_6h: 10
+    within_12h: 5
+    within_24h: 0
+    over_24h: -5
+
+  # 重复惩罚 (与前3天报道相似度)
+  history_penalty:
+    similarity_medium: -20   # 相似度 0.6-0.7
+    similarity_high: -50     # 相似度 > 0.7
+    lookback_days: 3
+
+# 输出设置
+output:
+  max_items: 12              # 每日最多展示条数
+  max_per_category: 4        # 同一领域最多条数
+  top_count: 4               # "今日要闻"条数
+  normal_count: 8            # "值得关注"条数
+
+# 站点信息
+site:
+  name_zh: "看点啥"
+  name_en: "See Something"
+  description_zh: "海外游戏资讯每日简报"
+  description_en: "Daily Overseas Gaming News Digest"
+  base_url: ""               # GitHub Pages base URL, 留空则为根路径

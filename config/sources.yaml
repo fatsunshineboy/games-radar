@@ -1,0 +1,108 @@
+# RSS 源配置 - 按权威性分层
+# Tier 决定初始分数加成
+
+# Tier 1: 平台官方 (+20)
+tier1:
+  - id: playstation
+    name: PlayStation Blog
+    url: https://blog.playstation.com/feed/
+    type: announcement
+    category: console
+
+  - id: xbox
+    name: Xbox Wire
+    url: https://news.xbox.com/en-us/feed/
+    type: announcement
+    category: console
+
+  - id: nintendo
+    name: Nintendo News
+    url: https://www.nintendo.com/feed/
+    type: announcement
+    category: console
+
+# Tier 2: 权威媒体 (+15)
+tier2:
+  - id: ign
+    name: IGN
+    url: https://feeds.feedburner.com/ign/all
+    type: news
+    category: industry
+
+  - id: polygon
+    name: Polygon
+    url: https://polygon.com/rss/index.xml
+    type: news
+    category: industry
+
+  - id: gamesindustry
+    name: GamesIndustry.biz
+    url: https://gamesindustry.biz/rss/news
+    type: industry
+    category: industry
+
+  - id: gematsu
+    name: Gematsu
+    url: https://gematsu.com/feed
+    type: news
+    category: japanese
+
+# Tier 3: 专业媒体 (+10)
+tier3:
+  - id: eurogamer
+    name: Eurogamer
+    url: https://www.eurogamer.net/feed
+    type: news
+    category: industry
+
+  - id: pcgamer
+    name: PC Gamer
+    url: https://www.pcgamer.com/rss
+    type: news
+    category: pc
+
+  - id: gamespot
+    name: GameSpot
+    url: https://gamespot.com/rss/games
+    type: news
+    category: industry
+
+  - id: gamedeveloper
+    name: Game Developer
+    url: https://gamedeveloper.com/rss
+    type: industry
+    category: development
+
+# Tier 4: 综合媒体 (+5)
+tier4:
+  - id: kotaku
+    name: Kotaku
+    url: https://kotaku.com/rss
+    type: news
+    category: culture
+
+  - id: gamerant
+    name: Game Rant
+    url: https://gamerant.com/feed
+    type: news
+    category: industry
+
+  - id: siliconera
+    name: Siliconera
+    url: https://siliconera.com/feed
+    type: news
+    category: japanese
+
+# Tier 5: 社区 (+0)
+tier5:
+  - id: reddit-games
+    name: Reddit r/Games
+    url: https://www.reddit.com/r/Games/.rss?limit=15
+    type: community
+    category: community
+
+  - id: reddit-pcgaming
+    name: Reddit r/pcgaming
+    url: https://www.reddit.com/r/pcgaming/.rss?limit=15
+    type: community
+    category: pc
