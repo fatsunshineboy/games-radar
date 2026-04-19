@@ -77,6 +77,7 @@ function generateMarkdownDigest(
         source: item.sourceName,
         chineseTitle: item.chineseTitle,
         originalTitle: item.title,
+        article: item.article
       };
       md += `<!-- item: ${JSON.stringify(itemMeta)} -->\n`;
 
@@ -112,6 +113,7 @@ function generateMarkdownDigest(
         link: item.link,
         source: item.sourceName,
         chineseTitle: item.chineseTitle,
+        article: item.article
       };
       md += `<!-- item: ${JSON.stringify(itemMeta)} -->\n`;
 

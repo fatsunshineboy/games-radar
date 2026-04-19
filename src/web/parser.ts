@@ -104,37 +104,38 @@ export function parseDigestFile(mdPath: string): {
 
   // 2. 提取所有条目级元数据
   const items: DetailItem[] = [];
-  const itemRegex = /<!-- item: (\{.+?\}) -->\n(\d+)\.\s*([\u{1F300}-\u{1F9FF}]?)\s*\*{0,2}(.+?)\*{0,2}\n\n(.+?)(?=<!-- item:|## |---\n\n\*|$)/gsu;
+  // 仅匹配注释内的 JSON，不再依赖 Markdown 的 `###` 或 `1.` 排版
+  const itemRegex = //g; 
   const itemMatches = content.matchAll(itemRegex);
-
+  
+  let index = 1;
   for (const match of itemMatches) {
     try {
       const itemJson = JSON.parse(match[1]);
-      const num = match[2];
-      const emoji = match[3] || "";
-      const title = match[4].trim();
-      const article = match[5].trim();
-
+      // 兼容两种格式：带包裹的嵌套格式(demo)和扁平格式(generate)
+      const metaObj = itemJson.meta || itemJson; 
+      
       items.push({
-        number: num,
+        number: String(itemJson.number || index).padStart(2, "0"),
         meta: {
-          id: `${date}-${num}`,
-          score: itemJson.meta?.score ?? 80,
-          sourceCount: itemJson.meta?.sourceCount ?? 1,
-          emoji: emoji || itemJson.meta?.emoji || "📰",
-          category: itemJson.meta?.category || "default",
-          priority: itemJson.priority || "normal",
-          tags: itemJson.meta?.tags || [],
-          link: itemJson.meta?.link || "",
-          source: itemJson.meta?.source || "",
-          chineseTitle: itemJson.title || title,
+          id: metaObj.id || `${date}-${index}`,
+          score: metaObj.score ?? 80,
+          sourceCount: metaObj.sourceCount ?? 1,
+          emoji: metaObj.emoji || "📰",
+          category: metaObj.category || "default",
+          priority: metaObj.priority || itemJson.priority || "normal",
+          tags: metaObj.tags || [],
+          link: metaObj.link || "",
+          source: metaObj.source || "",
+          chineseTitle: metaObj.chineseTitle || itemJson.title || "",
         },
-        title: itemJson.title || title,
-        article: itemJson.article || article,
-        priority: itemJson.priority || "normal",
+        title: metaObj.chineseTitle || itemJson.title || "",
+        article: itemJson.article || metaObj.article || "", // 优先直接从 JSON 获取完整长文
+        priority: metaObj.priority || itemJson.priority || "normal",
       });
+      index++;
     } catch {
-      // 解析失败，跳过
+      // 解析失败，跳过该条
     }
   }
 
