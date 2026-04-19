@@ -2,8 +2,9 @@
  * 写手智能体 - 翻译标题、撰写摘要、提取标签
  */
 
-import { callLlm, parseJson, loadPrompts } from "../llm.ts";
-import type { CandidateItem, DraftedItem } from "../types.ts";
+import { callLlm, parseJson } from "../utils/util_llm.ts";
+import { loadPrompts } from "../utils/util_config.ts";
+import type { CandidateItem, DraftedItem } from "../type/types.ts";
 
 interface WriterOutput {
   chineseTitle: string;
@@ -26,7 +27,8 @@ export async function runWriter(items: CandidateItem[]): Promise<DraftedItem[]> 
       .replace("{{title}}", item.title)
       .replace("{{source}}", item.sourceName)
       .replace("{{link}}", item.link)
-      .replace("{{content}}", item.content.slice(0, 1500))
+      .replace("{{description}}", item.description)
+      .replace("{{content}}", item.content.slice(0, 5000))
       .replace("{{score}}", String(item.finalScore))
       .replace("{{reason}}", item.reason);
 
