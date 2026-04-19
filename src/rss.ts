@@ -2,10 +2,13 @@
  * RSS 收集器 - 抓取多源RSS，交叉验证去重
  */
 
-import fs from "node:fs";
-import { loadConfig, loadSources, saveJson } from "./llm.ts";
-import { getBeijingDate, toBeijingTime } from "./timezone.ts";
-import type { NewsItem, RawData, Source } from "./types.ts";
+
+import { loadConfig, loadSources } from "./utils/util_config.ts";
+import { saveJson } from "./utils/util_file.ts";
+import { getBeijingDate, toBeijingTime } from "./utils/util_timezone.ts";
+import type { NewsItem, RawData, Source } from "./type/types.ts";
+import { Parser } from "htmlparser2";
+import { Writable } from "stream";
 
 // ============ RSS 解析 ============
 
@@ -67,37 +70,83 @@ function extractAtomFields(content: string) {
 
 // ============ 文章内容抓取 ============
 
+/**
+ * 使用 htmlparser2 修复版：
+ * 1. 流式处理：边下载边解析，内存极其稳定。
+ * 2. 结构化过滤：精准跳过 script, style, nav 等标签。
+ * 3. 严格长度控制：一旦达到 maxLength 立即停止解析，节省性能。
+ */
 async function fetchContent(url: string, maxLength: number): Promise<string> {
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  let resultText = "";
 
+
+  try {
     const res = await fetch(url, {
       headers: { "User-Agent": "Mozilla/5.0 (compatible; SeeSomething/2.0)" },
       signal: controller.signal,
     });
-    clearTimeout(timeout);
 
-    if (!res.ok) return "";
-    const html = await res.text();
+    if (!res.ok || !res.body) return "";
 
-    // 提取正文
-    const bodyMatch = html.match(/<body[^>]*>(.*?)<\/body>/is);
-    if (!bodyMatch) return "";
+    let isSkipping = 0; // 记录嵌套层级，用于跳过不需要的标签块
+    const skipTags = new Set(["script", "style", "nav", "header", "footer"]);
 
-    const text = bodyMatch[1]
-      .replace(/<script[^>]*>.*?<\/script>/gis, "")
-      .replace(/<style[^>]*>.*?<\/style>/gis, "")
-      .replace(/<nav[^>]*>.*?<\/nav>/gis, "")
-      .replace(/<header[^>]*>.*?<\/header>/gis, "")
-      .replace(/<footer[^>]*>.*?<\/footer>/gis, "")
-      .replace(/<[^>]+>/g, " ")
+    // 初始化解码器，用于将 Uint8Array 转换为 string
+    const decoder = new TextDecoder();
+
+    const parser = new Parser({
+      onopentag(name) {
+        if (skipTags.has(name.toLowerCase())) {
+          isSkipping++;
+        }
+      },
+      ontext(data) {
+        // 只有不在跳过标签内，且未超过长度限制时才累加
+        if (isSkipping === 0 && resultText.length < maxLength) {
+          const cleaned = data.replace(/\s+/g, " ");
+          resultText += cleaned;
+          
+          // 如果长度已够，直接关闭解析器并中止请求
+          if (resultText.length >= maxLength) {
+            parser.end();
+            controller.abort(); 
+          }
+        }
+      },
+      onclosetag(name) {
+        if (skipTags.has(name.toLowerCase())) {
+          isSkipping = Math.max(0, isSkipping - 1);
+        }
+      }
+    }, { decodeEntities: true });
+
+    // 将 Fetch 的 Web Stream 转换为 Node 可用的处理方式
+    // @ts-ignore (Node 的 fetch body 是 ReadableStream)
+    for await (const chunk of res.body) {
+      // 将 Uint8Array 转换为字符串，stream: true 表示后续还有数据，处理截断字符
+      const textChunk = decoder.decode(chunk as Uint8Array, { stream: true });
+      parser.write(textChunk);
+      if (resultText.length >= maxLength) break;
+    }
+    parser.end();
+
+    return resultText
       .replace(/\s+/g, " ")
-      .trim();
+      .trim()
+      .slice(0, maxLength);
 
-    return text.slice(0, maxLength);
-  } catch {
-    return "";
+  } catch (err: any) {
+    // 忽略主动中止请求产生的错误
+    if (err.name === 'AbortError') {
+      // 如果是因为长度足够而中止，此时 resultText 已有内容
+      // 如果是因为超时中止，resultText 可能是部分内容
+    }
+    // 即使出错，只要 resultText 有内容也返回，否则返回空
+    return (resultText || "").slice(0, maxLength);
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
@@ -125,7 +174,7 @@ function crossValidate(items: NewsItem[], threshold: number): NewsItem[] {
     for (const existing of result) {
       if (titleSimilarity(item.title, existing.title) >= threshold) {
         existing.sourceCount++;
-        existing.allSources.push(item.source);
+        existing.allSources = [...new Set(existing.allSources.concat(item.source))];
         // 保留更高 tier 的信息
         if (item.tier < existing.tier) {
           existing.source = item.source;
@@ -167,9 +216,14 @@ export async function collect(): Promise<RawData> {
     try {
       await new Promise(r => setTimeout(r, cfg.collection.rate_limit_ms));
 
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000); // 15 秒超时
+
       const res = await fetch(source.url, {
         headers: { "User-Agent": "SeeSomething/2.0 (Gaming News Aggregator)" },
+        signal: controller.signal,
       });
+      clearTimeout(timeout);
 
       if (!res.ok) {
         console.log(`  ❌ [${source.id}] HTTP ${res.status}`);
@@ -182,9 +236,10 @@ export async function collect(): Promise<RawData> {
 
       let count = 0;
       for (const raw of items) {
-        const id = Buffer.from(raw.link).toString("base64url").slice(0, 12);
+        const id = Buffer.from(raw.link).toString("base64url");
 
-        let content = raw.description;
+        let description = raw.description;
+        let content = "";
         if (cfg.collection.fetch_content && !content) {
           content = await fetchContent(raw.link, cfg.collection.content_max_length);
         }
@@ -197,6 +252,7 @@ export async function collect(): Promise<RawData> {
           sourceName: source.name,
           tier: source.tier,
           category: source.category,
+          description,
           content,
           sourceCount: 0,
           allSources: [],
