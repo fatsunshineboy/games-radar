@@ -1,0 +1,121 @@
+name: Daily Digest
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'digests/**'  # digests 变化不触发（避免循环）
+  schedule:
+    # UTC 时间，北京时间中午12点 = UTC 04:00
+    - cron: '0 4 * * *'
+  workflow_dispatch:  # 手动触发
+
+# 【新增】必须增加权限声明，用于无分支部署和提交代码
+permissions:
+  contents: write # 允许机器人提交 digests 文件夹
+  pages: write    # 允许机器人部署 GitHub Pages
+  id-token: write # GitHub Pages 部署的安全验证必需
+
+jobs:
+  collect-and-publish:
+    runs-on: ubuntu-latest
+    # 【新增】配置 GitHub Pages 的部署环境
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run daily digest pipeline
+        id: digest
+        run: |
+          npm run start
+
+          # 获取日期
+          DATE=$(date +%Y-%m-%d)
+          echo "date=$DATE" >> $GITHUB_OUTPUT
+
+          # 检查是否有新生成的文件
+          if [ -f "digests/${DATE}.md" ]; then
+            echo "has_digest=true" >> $GITHUB_OUTPUT
+            echo "digest_path=digests/${DATE}.md" >> $GITHUB_OUTPUT
+          else
+            echo "has_digest=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit digests only
+        if: steps.digest.outputs.has_digest == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 只提交 digests 文件夹，忽略 dist
+          git add digests/
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "daily: ${DATE} digest"
+            git push
+          fi
+
+      # ---------------------------------------------
+      # 以下为方案二核心：无分支部署 GitHub Pages
+      # ---------------------------------------------
+      - name: Upload Pages artifact
+        # 无论是否有新的 digest，只要重新运行了，就更新一下网页
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist  # 将构建好的 dist 目录作为临时文件上传
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      # ---------------------------------------------
+
+      - name: Create GitHub Issue
+        if: steps.digest.outputs.has_digest == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const date = '${{ steps.digest.outputs.date }}';
+            const digestPath = '${{ steps.digest.outputs.digest_path }}';
+
+            // 读取 MD 内容
+            let content = fs.readFileSync(digestPath, 'utf-8');
+
+            // 限制 Issue 内容长度
+            const maxLength = 60000;
+            if (content.length > maxLength) {
+              content = content.substring(0, maxLength) + '\n\n... (内容过长，请查看完整文件)';
+            }
+
+            // 创建 Issue
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `📰 游戏资讯精选 ${date}`,
+              body: content,
+              labels: ['digest', 'daily']
+            });
+
+            console.log(`Created issue #${issue.data.number}: ${issue.data.html_url}`);
