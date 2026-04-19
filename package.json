@@ -2,7 +2,7 @@
   "name": "see-something",
   "version": "2.0.0",
   "type": "module",
-  "description": "看点啥 - 海外游戏资讯每日简报 | See Something - Daily Overseas Gaming News Digest",
+  "description": "看点啥 - 游戏资讯每日简报 | See Something - Daily Gaming News Digest",
   "scripts": {
     "start": "tsx src/index.ts",
     "collect": "tsx src/rss.ts",

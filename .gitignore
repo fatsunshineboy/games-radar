@@ -36,3 +36,5 @@ data/
 *.local
 *.cache
 *.bak
+.omc
+.claude

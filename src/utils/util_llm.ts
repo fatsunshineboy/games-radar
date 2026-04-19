@@ -48,20 +48,18 @@ export async function callLlm(systemPrompt: string, userPrompt: string): Promise
 
 /** 从 LLM 响应中解析 JSON */
 export function parseJson<T>(text: string): T {
-  // 1. 尝试提取最后一个标记为 json 的代码块
-  const jsonBlockMatch = text.match(/```json?\s*([\s\S]*?)```/gi);
-  if (jsonBlockMatch) {
-    const lastBlock = jsonBlockMatch[jsonBlockMatch.length - 1];
-    const content = lastBlock.replace(/```json?\s*|```/gi, "").trim();
+  // 1. 尝试提取代码块中的内容（支持 ```json 或 ``` 两种格式）
+  const codeBlockMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (codeBlockMatch) {
+    const content = codeBlockMatch[1].trim();
     try {
       return JSON.parse(content) as T;
     } catch (e) {
-      // 如果块内解析失败，回退到全局搜索
+      // 块内解析失败，继续尝试其他方法
     }
   }
 
   // 2. 启发式：寻找第一个 '{' 或 '[' 到最后一个 '}' 或 ']' 之间的内容
-  // 这能有效过滤掉代码块外的解释性文字
   const rangeMatch = text.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
   if (rangeMatch) {
     try {
@@ -71,9 +69,11 @@ export function parseJson<T>(text: string): T {
     }
   }
 
-  // 3. 最后手段：直接尝试解析处理后的原始文本
+  // 3. 最后手段：直接尝试解析（先清理可能的 markdown 标记）
   const cleaned = text.trim();
-  return JSON.parse(cleaned) as T;
+  // 移除可能残留的代码块标记
+  const finalText = cleaned.replace(/^```(?:json)?\s*/, "").replace(/```$/, "").trim();
+  return JSON.parse(finalText) as T;
 }
 
 /** 获取 LLM 调用计数 */

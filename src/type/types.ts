@@ -43,6 +43,7 @@ export interface ScoreBreakdown {
 export interface CandidateItem extends NewsItem {
   baseScore: number;        // Editor打的基础分
   scoreBreakdown: ScoreBreakdown;
+  breakdownTotal: number;   // breakdown 各项求和
   tierBonus: number;        // 来源权威加成
   crossBonus: number;       // 多源交叉加成
   freshnessBonus: number;   // 时效性加成
@@ -57,6 +58,15 @@ export interface DraftedItem extends CandidateItem {
   chineseTitle: string;
   article: string;
   tags: string[];
+  revisionCount: number;        // 当前修订次数
+  reviewSuggestions?: string;   // 审核建议（修订时使用）
+}
+
+/** 审核结果 */
+export interface ReviewResult {
+  passed: FinalItem[];      // 通过
+  toRevise: DraftedItem[];  // 需重写（含 suggestions）
+  rejected: FinalItem[];    // 拒绝
 }
 
 /** 审核后的最终条目 */
@@ -91,6 +101,7 @@ export interface AppConfig {
     temperature: number;
     max_tokens: number;
     daily_budget: number;
+    editor_batch_size:number;
   };
   collection: {
     rate_limit_ms: number;
@@ -118,6 +129,7 @@ export interface AppConfig {
     max_per_category: number;
     top_count: number;
     normal_count: number;
+    max_revisions: number;
   };
   site: {
     name_zh: string;

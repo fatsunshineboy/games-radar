@@ -1,12 +1,14 @@
 /**
- * 编辑智能体 - 筛选、评分、分类
+ * 编辑智能体 - 筛选、评分、分类（分批处理）
  */
 
 import { callLlm, parseJson } from "../utils/util_llm.ts";
-import { loadConfig,loadPrompts } from "../utils/util_config.ts";
+import { loadConfig, loadPrompts } from "../utils/util_config.ts";
 import { calcFinalScore, enforceDiversity } from "../scoring.ts";
 import { formatHistoryForPrompt } from "../utils/util_history.ts";
 import type { NewsItem, CandidateItem, ScoreBreakdown, HistorySummary } from "../type/types.ts";
+
+const BATCH_SIZE = loadConfig().llm.editor_batch_size; // 每批处理数量
 
 interface EditorOutput {
   candidates: Array<{
@@ -26,29 +28,28 @@ interface EditorOutput {
   }>;
 }
 
-/** 运行编辑智能体 */
-export async function runEditor(
-  items: NewsItem[],
-  history: HistorySummary[]
+/** 处理单批次资讯 */
+async function runEditorBatch(
+  batch: NewsItem[],
+  prompts: { system: string; user: string },
+  history: HistorySummary[],
+  batchIndex: number
 ): Promise<CandidateItem[]> {
-  const prompts = loadPrompts();
-  const cfg = loadConfig();
-
-  // 构建输入数据（精简版，减少 token）
-  const itemsJson = items.map(i => ({
+  // 构建输入数据（精简版）
+  const itemsJson = batch.map(i => ({
     id: i.id,
     title: i.title,
     source: i.sourceName,
     source_count: i.sourceCount,
     tier: i.tier,
     category: i.category,
+    description: i.description,
     content_preview: i.content.slice(0, 300),
     timestamp: i.timestamp,
   }));
 
-  // 构建 user prompt
-  let userPrompt = prompts.editor.user
-    .replace("{{item_count}}", String(items.length))
+  let userPrompt = prompts.user
+    .replace("{{item_count}}", String(batch.length))
     .replace("{{items}}", JSON.stringify(itemsJson, null, 2));
 
   // 添加历史摘要
@@ -57,25 +58,23 @@ export async function runEditor(
     userPrompt = userPrompt.replace("{{#if history}}", "").replace("{{/if}}", "")
       .replace("{{history}}", historyText);
   } else {
-    // 移除历史部分
     userPrompt = userPrompt.replace(/\{\{#if history\}\}[\s\S]*?\{\{\/if\}\}/g, "");
   }
 
-  console.log("  🤖 [editor] 调用 LLM 进行筛选评分...");
-  const response = await callLlm(prompts.editor.system, userPrompt);
+  console.log(`  🤖 [editor] 批次 ${batchIndex + 1}: ${batch.length} 条资讯...`);
+  const response = await callLlm(prompts.system, userPrompt);
   const output = parseJson<EditorOutput>(response);
 
   // 合并回原数据，计算最终分数
   const candidates: CandidateItem[] = [];
 
   for (const c of output.candidates) {
-    // 跳过标记为重复的
     if (c.duplicate_of) {
       console.log(`  ⏭️  [editor] ${c.id}: 重复 → ${c.duplicate_of}`);
       continue;
     }
 
-    const original = items.find(i => i.id === c.id);
+    const original = batch.find(i => i.id === c.id);
     if (!original) continue;
 
     const breakdown: ScoreBreakdown = {
@@ -92,6 +91,7 @@ export async function runEditor(
       ...original,
       baseScore: c.base_score,
       scoreBreakdown: breakdown,
+      breakdownTotal: scores.breakdownTotal,
       tierBonus: scores.tierBonus,
       crossBonus: scores.crossBonus,
       freshnessBonus: scores.freshnessBonus,
@@ -103,8 +103,45 @@ export async function runEditor(
     });
   }
 
+  return candidates;
+}
+
+/** 运行编辑智能体（分批处理） */
+export async function runEditor(
+  items: NewsItem[],
+  history: HistorySummary[]
+): Promise<CandidateItem[]> {
+  const prompts = loadPrompts();
+  const cfg = loadConfig();
+
+  console.log(`  📊 [editor] 总计 ${items.length} 条资讯，分批处理...`);
+
+  // 分批处理
+  const allCandidates: CandidateItem[] = [];
+  const batchCount = Math.ceil(items.length / BATCH_SIZE);
+
+  for (let i = 0; i < items.length; i += BATCH_SIZE) {
+    const batchIndex = Math.floor(i / BATCH_SIZE);
+    const batch = items.slice(i, i + BATCH_SIZE);
+    const batchCandidates = await runEditorBatch(batch, prompts.editor, history, batchIndex);
+    allCandidates.push(...batchCandidates);
+  }
+
+  console.log(`  📊 [editor] 所有批次完成，共筛选出 ${allCandidates.length} 条候选`);
+
+  // 合并去重：按 ID 去重（如果同一条目在多批出现）
+  const uniqueCandidates = new Map<string, CandidateItem>();
+  for (const c of allCandidates) {
+    if (!uniqueCandidates.has(c.id)) {
+      uniqueCandidates.set(c.id, c);
+    }
+  }
+
   // 确保领域多样性
-  const diverse = enforceDiversity(candidates, cfg.output.max_per_category);
+  const diverse = enforceDiversity(
+    Array.from(uniqueCandidates.values()),
+    cfg.output.max_per_category
+  );
 
   // 按优先级和分数排序
   diverse.sort((a, b) => {
@@ -118,7 +155,8 @@ export async function runEditor(
 
   const result = [...topItems, ...normalItems];
 
-  console.log(`  📋 [editor] 筛选出 ${result.length} 条 (${topItems.length} top + ${normalItems.length} normal)`);
+  console.log(`  📋 [editor] 最终筛选出 ${result.length} 条 (${topItems.length} top + ${normalItems.length} normal)`);
+  console.log(`  💰 [editor] LLM 调用 ${batchCount} 次（分批）`);
 
   return result;
 }

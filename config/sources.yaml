@@ -69,7 +69,7 @@ tier3:
 
   - id: gamedeveloper
     name: Game Developer
-    url: https://gamedeveloper.com/rss
+    url: https://gamedeveloper.com/rss.xml
     type: industry
     category: development
 

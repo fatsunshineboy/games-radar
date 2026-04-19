@@ -4,7 +4,7 @@
 
 import { collect, saveRawData } from "./rss.ts";
 import { runPipeline } from "./editorial/pipeline.ts";
-import { generateSite, generateDigest } from "./generate.ts";
+import { generate } from "./generate.ts";
 import type { RawData } from "./type/types.ts";
 import type { FinalItem } from "./type/types.ts";
 
@@ -56,26 +56,25 @@ async function main(): Promise<void> {
     console.log();
 
     // Phase 3: 生成页面
-    // console.log("🎨 [Phase 3] 生成页面...");
-    // generateSite(finalItems, rawData.date);
-    // generateDigest(finalItems, rawData.date);
+    console.log("🎨 [Phase 3] 生成页面...");
+    generate(rawData.date, finalItems);
 
-    // console.log();
-    // console.log("=".repeat(60));
-    // console.log("✨ 生成完成！");
-    // console.log();
-    // console.log(`📊 数据统计:`);
-    // console.log(`   - 收集：${rawData.items.length} 条`);
-    // console.log(`   - 精选：${finalItems.length} 条`);
-    // console.log(`   - 入选率：${((finalItems.length / rawData.items.length) * 100).toFixed(1)}%`);
-    // console.log();
-    // console.log(`📁 输出文件:`);
-    // console.log(`   - HTML: dist/${rawData.date}/index.html`);
-    // console.log(`   - MD:   digests/${rawData.date}.md`);
-    // console.log(`   - 存档：dist/archive.html`);
-    // console.log(`   - 方法论：dist/methodology.html`);
-    // console.log(`   - RSS:  dist/feed.xml`);
-    // console.log("=".repeat(60));
+    console.log();
+    console.log("=".repeat(60));
+    console.log("✨ 生成完成！");
+    console.log();
+    console.log(`📊 数据统计:`);
+    console.log(`   - 收集：${rawData.items.length} 条`);
+    console.log(`   - 精选：${finalItems.length} 条`);
+    console.log(`   - 入选率：${((finalItems.length / rawData.items.length) * 100).toFixed(1)}%`);
+    console.log();
+    console.log(`📁 输出文件:`);
+    console.log(`   - HTML: dist/${rawData.date}/index.html`);
+    console.log(`   - MD:   digests/${rawData.date}.md`);
+    console.log(`   - 存档：dist/archive.html`);
+    console.log(`   - 方法论：dist/methodology.html`);
+    console.log(`   - RSS:  dist/feed.xml`);
+    console.log("=".repeat(60));
   } catch (error) {
     console.error();
     console.error("❌ 发生错误:");

@@ -5,12 +5,12 @@
 import { callLlm, parseJson } from "../utils/util_llm.ts";
 import { loadPrompts } from "../utils/util_config.ts";
 import { formatHistoryForPrompt } from "../utils/util_history.ts";
-import type { DraftedItem, FinalItem, HistorySummary } from "../type/types.ts";
+import type { DraftedItem, FinalItem, HistorySummary, ReviewResult } from "../type/types.ts";
 
 interface ReviewerOutput {
   decision: "pass" | "revise" | "reject";
   reason: string;
-  suggestions:string;
+  suggestions: string;
   flags: string[];
 }
 
@@ -24,44 +24,43 @@ const CLICKBAIT_WORDS = [
 export async function runReviewer(
   items: DraftedItem[],
   history: HistorySummary[]
-): Promise<FinalItem[]> {
+): Promise<ReviewResult> {
   const prompts = loadPrompts();
-  const results: FinalItem[] = [];
+  const passed: FinalItem[] = [];
+  const toRevise: DraftedItem[] = [];
+  const rejected: FinalItem[] = [];
 
-  // 第一轮：程序级检查
-  const passedProgramCheck: DraftedItem[] = [];
+  // 第一轮：程序级检查（标题党关键词）
+  const toLlmReview: DraftedItem[] = [];
   for (const item of items) {
     const hasClickbait = CLICKBAIT_WORDS.some(w => item.chineseTitle.includes(w));
     if (hasClickbait) {
-      console.log(`  🚫 [reviewer] ${item.id}: 程序拒绝 (标题党关键词)`);
-      results.push({
+      rejected.push({
         ...item,
         reviewDecision: "reject",
         reviewReason: "标题党关键词",
-        reviewSuggestions:"请修改标题，避免使用夸张的词语",
+        reviewSuggestions: "请修改标题，避免使用夸张的词语",
       });
+      console.log(`  🚫 [reviewer] ${item.id}: 程序拒绝 (标题党关键词)`);
     } else {
-      passedProgramCheck.push(item);
+      toLlmReview.push(item);
     }
   }
 
-  if (passedProgramCheck.length === 0) return results.filter(r => r.reviewDecision === "pass");
+  if (toLlmReview.length === 0) {
+    return { passed, toRevise, rejected };
+  }
 
-  // 第二轮：LLM 审核（审核 top 优先级条目 + 采样 normal 条目）
-  const topItems = passedProgramCheck.filter(i => i.priority === "top");
-  const normalSample = passedProgramCheck.filter(i => i.priority === "normal");
-
-  const toReview = [...topItems, ...normalSample];
-
-  // LLM 审核
+  // 第二轮：LLM 审核
   const historyText = formatHistoryForPrompt(history);
 
-  for (const item of toReview) {
+  for (const item of toLlmReview) {
     let userPrompt = prompts.reviewer.user
       .replace("{{chineseTitle}}", item.chineseTitle)
       .replace("{{originalTitle}}", item.title)
       .replace("{{source}}", item.sourceName)
       .replace("{{article}}", item.article)
+      .replace("{{originalContent}}", item.content)
       .replace("{{link}}", item.link);
 
     // 添加历史
@@ -77,35 +76,39 @@ export async function runReviewer(
       const output = parseJson<ReviewerOutput>(response);
 
       if (output.decision === "pass") {
-        results.push({
+        passed.push({
           ...item,
           reviewDecision: "pass",
           reviewReason: output.reason || "审核通过",
-          reviewSuggestions:output.suggestions,
+          reviewSuggestions: output.suggestions || "",
         });
         console.log(`  ✅ [reviewer] ${item.id}: 通过`);
-      } else if (output.decision === "revise" && output.suggestions) {
-        // 应用修改建议
-        // const revised: FinalItem = {
-        //   ...item,
-        //   chineseTitle: output.suggestions.title || item.chineseTitle,
-        //   article: {item.article},
-        //   reviewDecision: "pass", // 修改后视为通过
-        //   reviewReason: `已修改: ${output.reason}`,
-        // };
-        // results.push(revised);
-        // console.log(`  ✏️  [reviewer] ${item.id}: 修改后通过 - ${output.reason}`);
-        // todo:根据建议写手重新修改
+      } else if (output.decision === "revise") {
+        toRevise.push({
+          ...item,
+          reviewSuggestions: output.suggestions,
+        });
+        console.log(`  📝 [reviewer] ${item.id}: 需修订 - ${output.reason}`);
       } else {
-        // reject
+        rejected.push({
+          ...item,
+          reviewDecision: "reject",
+          reviewReason: output.reason,
+          reviewSuggestions: output.suggestions || "",
+        });
         console.log(`  🚫 [reviewer] ${item.id}: 拒绝 - ${output.reason}`);
       }
     } catch (err) {
-      // LLM 错误时默认通过
-      console.error(`  ⚠️  [reviewer] ${item.id}: LLM错误，默认拒绝 - ${err}`);
+      // LLM 错误时默认拒绝
+      rejected.push({
+        ...item,
+        reviewDecision: "reject",
+        reviewReason: `LLM错误: ${err}`,
+        reviewSuggestions: "",
+      });
+      console.error(`  ⚠️  [reviewer] ${item.id}: LLM错误，拒绝 - ${err}`);
     }
   }
 
-  // 只返回通过的
-  return results.filter(r => r.reviewDecision === "pass");
+  return { passed, toRevise, rejected };
 }

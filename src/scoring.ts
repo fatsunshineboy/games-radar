@@ -29,10 +29,10 @@ export function calcFreshnessBonus(timestamp: string): number {
   const cfg = loadConfig();
   const hours = hoursAgo(timestamp);
 
-  if (hours < 6) return cfg.scoring.freshness.within_6h;
-  if (hours < 12) return cfg.scoring.freshness.within_12h;
   if (hours < 24) return cfg.scoring.freshness.within_24h;
-  return cfg.scoring.freshness.over_24h;
+  if (hours < 48) return cfg.scoring.freshness.within_48h;
+  if (hours < 72) return cfg.scoring.freshness.within_72h;
+  return cfg.scoring.freshness.over_72h;
 }
 
 /** 计算历史重复惩罚 */
@@ -61,6 +61,7 @@ export function calcFinalScore(
   crossBonus: number;
   freshnessBonus: number;
   historyPenalty: number;
+  breakdownTotal: number;
   finalScore: number;
 } {
   const tierBonus = calcTierBonus(item.tier);
@@ -68,9 +69,19 @@ export function calcFinalScore(
   const freshnessBonus = calcFreshnessBonus(item.timestamp);
   const historyPenalty = calcHistoryPenalty(item.title, history);
 
-  const finalScore = Math.max(0, baseScore + tierBonus + crossBonus + freshnessBonus + historyPenalty);
+  // breakdown 各项求和参与最终分数
+  const breakdownTotal =
+    scoreBreakdown.influence +
+    scoreBreakdown.audience +
+    scoreBreakdown.scarcity +
+    scoreBreakdown.followup +
+    scoreBreakdown.actionable;
 
-  return { tierBonus, crossBonus, freshnessBonus, historyPenalty, finalScore };
+  const finalScore = Math.max(0,
+    baseScore + breakdownTotal + tierBonus + crossBonus + freshnessBonus + historyPenalty
+  );
+
+  return { tierBonus, crossBonus, freshnessBonus, historyPenalty, breakdownTotal, finalScore };
 }
 
 /** 确保领域多样性：每个 category 最多 maxPerCategory 条 */

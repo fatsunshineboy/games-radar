@@ -4,10 +4,11 @@
 llm:
   api_key: "${OPENAI_API_KEY}"
   base_url: "${OPENAI_BASE_URL}"
-  model: "coding-glm-5.1-free"
+  model: "${OPENAI_MODEL}"
   temperature: 0.3
   max_tokens: 4096
   daily_budget: 200
+  editor_batch_size: 50
 
 # 收集设置
 collection:
@@ -42,10 +43,10 @@ scoring:
 
   # 时效性加成
   freshness:
-    within_6h: 10
-    within_12h: 5
-    within_24h: 0
-    over_24h: -5
+    within_24h: 10
+    within_48h: 5
+    within_72h: 0
+    over_72h: -5
 
   # 重复惩罚 (与前3天报道相似度)
   history_penalty:
@@ -58,7 +59,8 @@ output:
   max_items: 16              # 每日最多展示条数
   max_per_category: 4        # 同一领域最多条数
   top_count: 6               # "今日要闻"条数
-  normal_count: 10            # "值得关注"条数
+  normal_count: 10           # "值得关注"条数
+  max_revisions: 5           # Writer-Reviewer 最大修订循环次数
 
 # 站点信息
 site:
