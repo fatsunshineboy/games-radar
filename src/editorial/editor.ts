@@ -2,10 +2,11 @@
  * 编辑智能体 - 筛选、评分、分类
  */
 
-import { callLlm, parseJson, loadPrompts, loadConfig } from "../llm.ts";
+import { callLlm, parseJson } from "../utils/util_llm.ts";
+import { loadConfig,loadPrompts } from "../utils/util_config.ts";
 import { calcFinalScore, enforceDiversity } from "../scoring.ts";
-import { formatHistoryForPrompt } from "../history.ts";
-import type { NewsItem, CandidateItem, ScoreBreakdown, HistorySummary } from "../types.ts";
+import { formatHistoryForPrompt } from "../utils/util_history.ts";
+import type { NewsItem, CandidateItem, ScoreBreakdown, HistorySummary } from "../type/types.ts";
 
 interface EditorOutput {
   candidates: Array<{
