@@ -15,6 +15,7 @@ permissions:
   contents: write # 允许机器人提交 digests 文件夹
   pages: write    # 允许机器人部署 GitHub Pages
   id-token: write # GitHub Pages 部署的安全验证必需
+  issues: write   # <--- 【新增这一行】允许机器人创建和修改 Issue
 
 jobs:
   collect-and-publish:
