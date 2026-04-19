@@ -105,7 +105,7 @@ export function parseDigestFile(mdPath: string): {
   // 2. 提取所有条目级元数据
   const items: DetailItem[] = [];
   // 仅匹配注释内的 JSON，不再依赖 Markdown 的 `###` 或 `1.` 排版
-  const itemRegex = //g; 
+  const itemRegex = /<!-- item: (\{.+?\}) -->/gs;
   const itemMatches = content.matchAll(itemRegex);
   
   let index = 1;
@@ -138,6 +138,7 @@ export function parseDigestFile(mdPath: string): {
       // 解析失败，跳过该条
     }
   }
+  
 
   // 如果没有从注释提取到条目，尝试从内容解析（兼容旧格式）
   if (items.length === 0) {
