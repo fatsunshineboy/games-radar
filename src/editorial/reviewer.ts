@@ -2,17 +2,15 @@
  * 审核智能体 - 质量审核、标题党检测、事实核查
  */
 
-import { callLlm, parseJson, loadPrompts } from "../llm.ts";
-import { formatHistoryForPrompt } from "../history.ts";
-import type { DraftedItem, FinalItem, HistorySummary } from "../types.ts";
+import { callLlm, parseJson } from "../utils/util_llm.ts";
+import { loadPrompts } from "../utils/util_config.ts";
+import { formatHistoryForPrompt } from "../utils/util_history.ts";
+import type { DraftedItem, FinalItem, HistorySummary } from "../type/types.ts";
 
 interface ReviewerOutput {
   decision: "pass" | "revise" | "reject";
   reason: string;
-  suggestions?: {
-    title?: string;
-    fact?: string;
-  };
+  suggestions:string;
   flags: string[];
 }
 
@@ -40,6 +38,7 @@ export async function runReviewer(
         ...item,
         reviewDecision: "reject",
         reviewReason: "标题党关键词",
+        reviewSuggestions:"请修改标题，避免使用夸张的词语",
       });
     } else {
       passedProgramCheck.push(item);
@@ -50,27 +49,9 @@ export async function runReviewer(
 
   // 第二轮：LLM 审核（审核 top 优先级条目 + 采样 normal 条目）
   const topItems = passedProgramCheck.filter(i => i.priority === "top");
-  const normalSample = passedProgramCheck
-    .filter(i => i.priority === "normal")
-    .slice(0, 3); // 采样3条 normal 审核
+  const normalSample = passedProgramCheck.filter(i => i.priority === "normal");
 
   const toReview = [...topItems, ...normalSample];
-  const autoPassIds = new Set(
-    passedProgramCheck
-      .filter(i => !toReview.includes(i))
-      .map(i => i.id)
-  );
-
-  // 自动通过未被 LLM 审核的条目
-  for (const item of passedProgramCheck) {
-    if (autoPassIds.has(item.id)) {
-      results.push({
-        ...item,
-        reviewDecision: "pass",
-        reviewReason: "自动通过",
-      });
-    }
-  }
 
   // LLM 审核
   const historyText = formatHistoryForPrompt(history);
@@ -80,9 +61,7 @@ export async function runReviewer(
       .replace("{{chineseTitle}}", item.chineseTitle)
       .replace("{{originalTitle}}", item.title)
       .replace("{{source}}", item.sourceName)
-      .replace("{{fact}}", item.analysis.fact)
-      .replace("{{importance}}", item.analysis.importance)
-      .replace("{{trend}}", item.analysis.trend)
+      .replace("{{article}}", item.article)
       .replace("{{link}}", item.link);
 
     // 添加历史
@@ -102,39 +81,28 @@ export async function runReviewer(
           ...item,
           reviewDecision: "pass",
           reviewReason: output.reason || "审核通过",
+          reviewSuggestions:output.suggestions,
         });
         console.log(`  ✅ [reviewer] ${item.id}: 通过`);
       } else if (output.decision === "revise" && output.suggestions) {
         // 应用修改建议
-        const revised: FinalItem = {
-          ...item,
-          chineseTitle: output.suggestions.title || item.chineseTitle,
-          analysis: {
-            ...item.analysis,
-            fact: output.suggestions.fact || item.analysis.fact,
-          },
-          reviewDecision: "pass", // 修改后视为通过
-          reviewReason: `已修改: ${output.reason}`,
-        };
-        results.push(revised);
-        console.log(`  ✏️  [reviewer] ${item.id}: 修改后通过 - ${output.reason}`);
+        // const revised: FinalItem = {
+        //   ...item,
+        //   chineseTitle: output.suggestions.title || item.chineseTitle,
+        //   article: {item.article},
+        //   reviewDecision: "pass", // 修改后视为通过
+        //   reviewReason: `已修改: ${output.reason}`,
+        // };
+        // results.push(revised);
+        // console.log(`  ✏️  [reviewer] ${item.id}: 修改后通过 - ${output.reason}`);
+        // todo:根据建议写手重新修改
       } else {
         // reject
-        results.push({
-          ...item,
-          reviewDecision: "reject",
-          reviewReason: output.reason || "审核拒绝",
-        });
         console.log(`  🚫 [reviewer] ${item.id}: 拒绝 - ${output.reason}`);
       }
     } catch (err) {
       // LLM 错误时默认通过
-      console.error(`  ⚠️  [reviewer] ${item.id}: LLM错误，默认通过 - ${err}`);
-      results.push({
-        ...item,
-        reviewDecision: "pass",
-        reviewReason: "LLM审核失败，默认通过",
-      });
+      console.error(`  ⚠️  [reviewer] ${item.id}: LLM错误，默认拒绝 - ${err}`);
     }
   }
 

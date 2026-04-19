@@ -4,9 +4,9 @@
  * 最终分数 = 基础分 + 来源权威加成 + 多源交叉加成 + 时效性加成 - 重复惩罚
  */
 
-import { loadConfig } from "./llm.ts";
-import { hoursAgo } from "./timezone.ts";
-import type { CandidateItem, NewsItem, ScoreBreakdown, HistorySummary } from "./types.ts";
+import { loadConfig } from "./utils/util_config.ts";
+import { hoursAgo } from "./utils/util_timezone.ts";
+import type { CandidateItem, NewsItem, ScoreBreakdown, HistorySummary } from "./type/types.ts";
 import { titleSimilarity } from "./rss.ts";
 
 /** 计算来源权威加成 */

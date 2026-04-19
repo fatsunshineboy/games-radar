@@ -8,11 +8,7 @@ import type { CandidateItem, DraftedItem } from "../type/types.ts";
 
 interface WriterOutput {
   chineseTitle: string;
-  analysis: {
-    fact: string;
-    importance: string;
-    trend: string;
-  };
+  article: string;
   tags: string[];
   category: string;
 }
@@ -39,7 +35,7 @@ export async function runWriter(items: CandidateItem[]): Promise<DraftedItem[]> 
       results.push({
         ...item,
         chineseTitle: output.chineseTitle,
-        analysis: output.analysis,
+        article: output.article,
         tags: output.tags,
         category: output.category || item.category,
       });
@@ -47,13 +43,6 @@ export async function runWriter(items: CandidateItem[]): Promise<DraftedItem[]> 
       console.log(`  ✍️  [writer] ${item.id}: "${output.chineseTitle}"`);
     } catch (err) {
       console.error(`  ❌ [writer] ${item.id}: 错误 - ${err}`);
-      // 失败时保留，使用原标题
-      results.push({
-        ...item,
-        chineseTitle: item.title,
-        analysis: { fact: "（生成失败）", importance: "", trend: "" },
-        tags: [],
-      });
     }
   }
 

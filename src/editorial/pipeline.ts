@@ -2,13 +2,15 @@
  * 编辑部流程管线 - Editor → Writer → Reviewer
  */
 
-import { loadConfig, getCallCount, saveJson } from "../llm.ts";
-import { loadHistory } from "../history.ts";
-import { getBeijingDate } from "../timezone.ts";
+import { getCallCount } from "../utils/util_llm.ts";
+import { saveJson } from "../utils/util_file.ts";
+import { loadConfig } from "../utils/util_config.ts";
+import { loadHistory } from "../utils/util_history.ts";
+import { getBeijingDate } from "../utils/util_timezone.ts";
 import { runEditor } from "./editor.ts";
 import { runWriter } from "./writer.ts";
 import { runReviewer } from "./reviewer.ts";
-import type { NewsItem, FinalItem } from "../types.ts";
+import type { NewsItem, FinalItem } from "../type/types.ts";
 
 /** 运行完整编辑部流程 */
 export async function runPipeline(items: NewsItem[]): Promise<FinalItem[]> {

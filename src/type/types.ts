@@ -55,11 +55,7 @@ export interface CandidateItem extends NewsItem {
 /** 写手撰写后的条目 */
 export interface DraftedItem extends CandidateItem {
   chineseTitle: string;
-  analysis: {
-    fact: string;
-    importance: string;
-    trend: string;
-  };
+  article: string;
   tags: string[];
 }
 
@@ -67,7 +63,7 @@ export interface DraftedItem extends CandidateItem {
 export interface FinalItem extends DraftedItem {
   reviewDecision: "pass" | "revise" | "reject";
   reviewReason: string;
-  article: string; // 最终文章内容
+  reviewSuggestions: string;
 }
 
 /** 原始数据包 */

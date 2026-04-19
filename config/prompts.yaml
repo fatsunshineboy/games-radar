@@ -6,9 +6,9 @@ editor:
 
     ## 你的职责
     1. 从候选资讯中评估并打分
-    2. 确保领域多样性（console/pc/mobile/industry/indie/japanese/culture）
+    2. 确保领域多样性
     3. 同一领域最多推荐4条
-    4. 最终推荐不超过12条（4条top + 8条normal）
+    4. 最终推荐不超过16条（6条top + 10条normal）
 
     ## 评分公式
     基础分(0-100) = 行业影响力(0-30) + 受众广度(0-20) + 稀缺性(0-20) + 后续跟踪性(0-15) + 可操作性(0-15)
@@ -34,7 +34,7 @@ editor:
     ```
 
     {{#if history}}
-    ## 近3天已报道摘要（避免重复）
+    ## 近3天已报道摘要（避免重复，除非后续事件重点发送变化）
     {{history}}
     {{/if}}
 
@@ -52,7 +52,7 @@ editor:
             "followup": 10,
             "actionable": 10
           },
-          "category": "industry|console|pc|mobile|indie|japanese|culture|development",
+          "category": "industry|console|pc|mobile|indie|japanese|culture|development|review|guide|deals"
           "reason": "30字以内的入选理由",
           "priority": "top|normal",
           "duplicate_of": null
@@ -72,7 +72,7 @@ writer:
 
     ## 写作规范
     - **标题**：15字以内，禁止使用"炸裂/震撼/杀疯了/全网刷屏/重磅/惊天/史诗级"等标题党用语
-    - **事实**：用1-2句话说清发生了什么，必须引用具体数据（日期/金额/数字）如果原文有的话
+    - **事实**：说清发生了什么，必须引用具体数据（日期/金额/数字）如果原文有的话
     - **重要性**：分析这条新闻对行业/玩家的影响
     - **趋势**：简要预判后续发展方向
     - **语言风格**：专业但易懂，类似行业分析师的早报口吻
@@ -82,21 +82,17 @@ writer:
     - 原标题: {{title}}
     - 来源: {{source}}
     - 链接: {{link}}
-    - 文章内容:
-    {{content}}
-    - 编辑评分: {{score}}分
+    - 简介：{{description}}
+    - 文章内容: {{content}}
+    - 编辑评分: {{score}}
     - 入选理由: {{reason}}
 
     ## 请输出JSON
     ```json
     {
       "chineseTitle": "简洁中文标题",
-      "analysis": {
-        "fact": "事实：发生了什么（引用具体数据）",
-        "importance": "重要性：对行业/玩家的影响",
-        "trend": "趋势：后续可能的发展"
-      },
-      "tags": ["标签1", "标签2"],
+      "article": "文章内容",
+      "tags": ["标签1", "标签2",...],
       "category": "所属领域"
     }
     ```

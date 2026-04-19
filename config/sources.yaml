@@ -15,11 +15,11 @@ tier1:
     type: announcement
     category: console
 
-  - id: nintendo
-    name: Nintendo News
-    url: https://www.nintendo.com/feed/
-    type: announcement
-    category: console
+  # - id: nintendo
+  #   name: Nintendo News
+  #   url: https://www.nintendo.com/feed/
+  #   type: announcement
+  #   category: console
 
 # Tier 2: 权威媒体 (+15)
 tier2:
@@ -35,11 +35,11 @@ tier2:
     type: news
     category: industry
 
-  - id: gamesindustry
-    name: GamesIndustry.biz
-    url: https://gamesindustry.biz/rss/news
-    type: industry
-    category: industry
+  # - id: gamesindustry
+  #   name: GamesIndustry.biz
+  #   url: https://gamesindustry.biz/rss/news
+  #   type: industry
+  #   category: industry
 
   - id: gematsu
     name: Gematsu
@@ -61,11 +61,11 @@ tier3:
     type: news
     category: pc
 
-  - id: gamespot
-    name: GameSpot
-    url: https://gamespot.com/rss/games
-    type: news
-    category: industry
+  # - id: gamespot
+  #   name: GameSpot
+  #   url: https://gamespot.com/rss/games
+  #   type: news
+  #   category: industry
 
   - id: gamedeveloper
     name: Game Developer

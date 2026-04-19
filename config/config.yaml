@@ -4,17 +4,19 @@
 llm:
   api_key: "${OPENAI_API_KEY}"
   base_url: "${OPENAI_BASE_URL}"
-  model: "deepseek-v3"
+  model: "coding-glm-5.1-free"
   temperature: 0.3
   max_tokens: 4096
   daily_budget: 200
 
 # 收集设置
 collection:
+  # 请求速率
   rate_limit_ms: 500
-  max_per_source: 20
+  # 每个来源的最大条数，避免单一来源过多占比
+  max_per_source: 200
   fetch_content: true
-  content_max_length: 2000
+  content_max_length: 20000
 
 # 交叉验证去重
 deduplication:
@@ -53,15 +55,15 @@ scoring:
 
 # 输出设置
 output:
-  max_items: 12              # 每日最多展示条数
+  max_items: 16              # 每日最多展示条数
   max_per_category: 4        # 同一领域最多条数
-  top_count: 4               # "今日要闻"条数
-  normal_count: 8            # "值得关注"条数
+  top_count: 6               # "今日要闻"条数
+  normal_count: 10            # "值得关注"条数
 
 # 站点信息
 site:
   name_zh: "看点啥"
   name_en: "See Something"
-  description_zh: "海外游戏资讯每日简报"
-  description_en: "Daily Overseas Gaming News Digest"
+  description_zh: "游戏资讯每日简报"
+  description_en: "Daily Gaming News Digest"
   base_url: ""               # GitHub Pages base URL, 留空则为根路径
