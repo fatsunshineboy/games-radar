@@ -6,8 +6,7 @@ on:
     paths-ignore:
       - 'digests/**'  # digests 变化不触发（避免循环）
   schedule:
-    # UTC 时间，北京时间中午12点 = UTC 04:00
-    - cron: '0 4 * * *'
+    - cron: '0 0 * * *'
   workflow_dispatch:  # 手动触发
 
 # 【新增】必须增加权限声明，用于无分支部署和提交代码
