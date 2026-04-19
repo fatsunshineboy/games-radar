@@ -15,7 +15,7 @@ collection:
   # 请求速率
   rate_limit_ms: 500
   # 每个来源的最大条数，避免单一来源过多占比
-  max_per_source: 200
+  max_per_source: 2
   fetch_content: true
   content_max_length: 20000
 
@@ -56,11 +56,11 @@ scoring:
 
 # 输出设置
 output:
-  max_items: 16              # 每日最多展示条数
-  max_per_category: 4        # 同一领域最多条数
-  top_count: 6               # "今日要闻"条数
-  normal_count: 10           # "值得关注"条数
-  max_revisions: 5           # Writer-Reviewer 最大修订循环次数
+  max_items: 2              # 每日最多展示条数
+  max_per_category: 1        # 同一领域最多条数
+  top_count: 1               # "今日要闻"条数
+  normal_count: 1           # "值得关注"条数
+  max_revisions: 1           # Writer-Reviewer 最大修订循环次数
 
 # 站点信息
 site:
