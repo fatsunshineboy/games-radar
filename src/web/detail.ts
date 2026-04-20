@@ -13,9 +13,10 @@ export function generateDetailPage(
   cfg: AppConfig,
   distDir: string
 ): void {
-  // 分离头条和普通
-  const topItems = items.filter(i => i.priority === "top");
-  const normalItems = items.filter(i => i.priority !== "top");
+  // 分离头条和普通（前 top_count 为头条）
+  const topCount = cfg.output.top_count;
+  const topItems = items.slice(0, topCount);
+  const normalItems = items.slice(topCount);
 
   // 生成头条 HTML
   const topHtml = topItems.map(item => `

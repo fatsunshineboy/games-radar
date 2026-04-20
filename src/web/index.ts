@@ -71,10 +71,11 @@ export function generateWeb(): void {
   // 4. 生成方法论页面（静态，首次或更新时）
   generateMethodologyPage(cfg, DIST_DIR);
 
-  // 5. 生成 RSS Feed（最新 20 条）
+  // 5. 生成 RSS Feed（最新 20 条头条）
+  const topCount = cfg.output.top_count;
   const latestItems = Array.from(allDigests.values())
     .flat()
-    .filter(i => i.priority === "top")
+    .slice(0, topCount * 10)
     .slice(0, 20);
   generateRssFeed(latestItems, cfg, DIST_DIR);
 

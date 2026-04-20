@@ -80,12 +80,9 @@ export async function runPipeline(items: NewsItem[]): Promise<FinalItem[]> {
     saveJson(`data/${date}/drafted_round${round}.json`, drafted);
   }
 
-  // 整合结果：按优先级和分数排序
+  // 整合结果：按分数排序，取前 max_items
   const final = [...passedItems]
-    .sort((a, b) => {
-      if (a.priority !== b.priority) return a.priority === "top" ? -1 : 1;
-      return b.finalScore - a.finalScore;
-    })
+    .sort((a, b) => b.finalScore - a.finalScore)
     .slice(0, cfg.output.max_items);
 
   console.log(`\n📊 [editorial] 完成：通过 ${final.length} 条，拒绝 ${rejectedItems.length} 条，LLM 调用 ${getCallCount()} 次`);

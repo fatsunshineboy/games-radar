@@ -50,7 +50,6 @@ export interface CandidateItem extends NewsItem {
   historyPenalty: number;   // 重复惩罚
   finalScore: number;       // 最终分数
   reason: string;           // 入选理由
-  priority: "top" | "normal";
 }
 
 /** 写手撰写后的条目 */

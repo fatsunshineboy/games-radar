@@ -23,7 +23,6 @@ interface EditorOutput {
     };
     category: string;
     reason: string;
-    priority: "top" | "normal";
     duplicate_of: string | null;
   }>;
 }
@@ -98,7 +97,6 @@ async function runEditorBatch(
       historyPenalty: scores.historyPenalty,
       finalScore: scores.finalScore,
       reason: c.reason,
-      priority: c.priority,
       category: c.category || original.category,
     });
   }
@@ -143,19 +141,16 @@ export async function runEditor(
     cfg.output.max_per_category
   );
 
-  // 按优先级和分数排序
-  diverse.sort((a, b) => {
-    if (a.priority !== b.priority) return a.priority === "top" ? -1 : 1;
-    return b.finalScore - a.finalScore;
-  });
+  // 按分数排序，前 top_count 为头条，后 normal_count 为要闻
+  diverse.sort((a, b) => b.finalScore - a.finalScore);
 
   // 限制数量
-  const topItems = diverse.filter(i => i.priority === "top").slice(0, cfg.output.top_count);
-  const normalItems = diverse.filter(i => i.priority === "normal").slice(0, cfg.output.normal_count);
+  const topItems = diverse.slice(0, cfg.output.top_count);
+  const normalItems = diverse.slice(cfg.output.top_count, cfg.output.top_count + cfg.output.normal_count);
 
   const result = [...topItems, ...normalItems];
 
-  console.log(`  📋 [editor] 最终筛选出 ${result.length} 条 (${topItems.length} top + ${normalItems.length} normal)`);
+  console.log(`  📋 [editor] 最终筛选出 ${result.length} 条 (前${topItems.length}条头条 + 后${normalItems.length}条要闻)`);
   console.log(`  💰 [editor] LLM 调用 ${batchCount} 次（分批）`);
 
   return result;

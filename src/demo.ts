@@ -25,7 +25,6 @@ interface DemoItem {
   category: string;
   sourceCount: number;
   finalScore: number;
-  priority: string;
   chineseTitle: string;
   article: string;
   tags: string[];
@@ -53,12 +52,13 @@ function generateDemo(date: string, items: DemoItem[]): void {
 
   const mdPath = path.join(DIGESTS_DIR, `${date}.md`);
 
-  // 分离头条和普通
-  const topItems = items.filter(i => i.priority === "top");
-  const normalItems = items.filter(i => i.priority !== "top");
+  // 按分数排序，前 6 条为头条
+  const topCount = 6;
+  const topItems = items.slice(0, topCount);
+  const normalItems = items.slice(topCount);
 
   // 元数据注释
-  const metaComment = `<!-- meta: {"date": "${date}", "totalCount": ${items.length}, "topCount": ${topItems.length}} -->`;
+  const metaComment = `<!-- meta: {"date": "${date}", "totalCount": ${items.length}, "topCount": ${topCount}} -->`;
 
   // 头条部分
   let topSection = "";
@@ -68,7 +68,6 @@ function generateDemo(date: string, items: DemoItem[]): void {
       const emoji = getEmoji(item.category);
       const metaJson = JSON.stringify({
         number: idx + 1,
-        priority: "top",
         title: item.chineseTitle,
         article: item.article,
         meta: {
@@ -100,11 +99,10 @@ function generateDemo(date: string, items: DemoItem[]): void {
   if (normalItems.length > 0) {
     normalSection = "\n## 📋 更多资讯\n\n";
     normalItems.forEach((item, idx) => {
-      const num = topItems.length + idx + 1;
+      const num = topCount + idx + 1;
       const emoji = getEmoji(item.category);
       const metaJson = JSON.stringify({
         number: num,
-        priority: "normal",
         title: item.chineseTitle,
         article: item.article,
         meta: {

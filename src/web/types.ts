@@ -33,5 +33,4 @@ export interface DetailItem {
   category: string;
   article: string;
   tags: string[];
-  priority: "top" | "normal";
 }

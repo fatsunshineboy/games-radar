@@ -44,7 +44,6 @@ export interface ItemMeta {
   sourceCount: number;
   emoji: string;
   category: string;
-  priority: "top" | "normal";
   tags: string[];
   link: string;
   source: string;
@@ -71,7 +70,6 @@ export interface DetailItem {
   meta: ItemMeta;
   title: string;
   article: string;
-  priority: "top" | "normal";
 }
 
 /**
@@ -123,15 +121,13 @@ export function parseDigestFile(mdPath: string): {
           sourceCount: metaObj.sourceCount ?? 1,
           emoji: metaObj.emoji || "📰",
           category: metaObj.category || "default",
-          priority: metaObj.priority || itemJson.priority || "normal",
           tags: metaObj.tags || [],
           link: metaObj.link || "",
           source: metaObj.source || "",
           chineseTitle: metaObj.chineseTitle || itemJson.title || "",
         },
         title: metaObj.chineseTitle || itemJson.title || "",
-        article: itemJson.article || metaObj.article || "", // 优先直接从 JSON 获取完整长文
-        priority: metaObj.priority || itemJson.priority || "normal",
+        article: itemJson.article || metaObj.article || "",
       });
       index++;
     } catch {
@@ -169,7 +165,6 @@ function parseLegacyFormat(content: string, date: string): DetailItem[] {
         sourceCount: 1,
         emoji: match[1],
         category: "default",
-        priority: "top",
         tags: [],
         link: "",
         source: "",
@@ -177,7 +172,6 @@ function parseLegacyFormat(content: string, date: string): DetailItem[] {
       },
       title: match[2].trim(),
       article: match[3].trim(),
-      priority: "top",
     });
     index++;
   }
@@ -193,7 +187,6 @@ function parseLegacyFormat(content: string, date: string): DetailItem[] {
         sourceCount: 1,
         emoji: match[1],
         category: "default",
-        priority: "normal",
         tags: [],
         link: "",
         source: "",
@@ -201,7 +194,6 @@ function parseLegacyFormat(content: string, date: string): DetailItem[] {
       },
       title: match[2].trim(),
       article: "",
-      priority: "normal",
     });
     index++;
   }
@@ -236,7 +228,7 @@ export function scanDigestSummaries(digestsDir: string): DigestSummary[] {
     summaries.push({
       date: parsed.meta.date,
       totalCount: parsed.meta.totalCount || parsed.items.length,
-      topCount: parsed.meta.topCount || parsed.items.filter(i => i.priority === "top").length,
+      topCount: parsed.meta.topCount || Math.min(parsed.items.length, 6),
       topThree,
     });
   }

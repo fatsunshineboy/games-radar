@@ -8,7 +8,7 @@ llm:
   temperature: 0.3
   max_tokens: 4096
   daily_budget: 200
-  editor_batch_size: 50
+  editor_batch_size: 30
 
 # 收集设置
 collection:
@@ -21,7 +21,7 @@ collection:
 
 # 交叉验证去重
 deduplication:
-  similarity_threshold: 0.7
+  similarity_threshold: 0.5
   boost_per_source: 12
 
 # 评分系统

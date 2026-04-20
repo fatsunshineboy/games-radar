@@ -5,8 +5,7 @@
   "description": "看点啥 - 游戏资讯每日简报 | See Something - Daily Gaming News Digest",
   "scripts": {
     "start": "tsx src/index.ts",
-    "collect": "tsx src/rss.ts",
-    "publish-issue": "tsx src/publish.ts"
+    "collect": "tsx src/rss.ts"
   },
   "dependencies": {
     "htmlparser2": "^12.0.0",

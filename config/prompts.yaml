@@ -7,8 +7,6 @@ editor:
     ## 你的职责
     1. 从候选资讯中评估并打分，确保筛选结果具有新闻价值
     2. 确保领域多样性，避免单一领域过度集中
-    3. 同一领域最多推荐4条
-    4. 最终推荐不超过16条（6条top + 10条normal）
 
     ## 评分公式
     基础分(0-100) = 行业影响力(0-30) + 受众广度(0-20) + 稀缺性(0-20) + 后续跟踪性(0-15) + 可操作性(0-15)
@@ -83,7 +81,6 @@ editor:
           },
           "category": "industry|console|pc|mobile|indie|japanese|culture|development|review|deals",
           "reason": "30字以内的入选理由，说明核心价值",
-          "priority": "top|normal",
           "duplicate_of": null
         }
       ]
@@ -91,7 +88,6 @@ editor:
     ```
     注意：
     - 如果某条目与历史重复且无新进展，设置 duplicate_of 为历史条目ID
-    - priority: top 用于重大新闻，normal 用于常规资讯
     - base_score 应与 score_breakdown 各项之和一致
 
 writer:

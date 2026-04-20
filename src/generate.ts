@@ -45,8 +45,9 @@ function generateMarkdownDigest(
 ): void {
   const cfg = loadConfig();
   const { year, month, day } = getDateParts(date);
-  const topItems = items.filter(i => i.priority === "top");
-  const normalItems = items.filter(i => i.priority !== "top");
+  // 按分数排序：前 top_count 为头条，其余为要闻
+  const topItems = items.slice(0, cfg.output.top_count);
+  const normalItems = items.slice(cfg.output.top_count, cfg.output.top_count + cfg.output.normal_count);
 
   // 文件级元数据
   const fileMeta = {
@@ -71,7 +72,6 @@ function generateMarkdownDigest(
         sourceCount: item.sourceCount,
         emoji: getEmoji(item.category),
         category: item.category,
-        priority: item.priority,
         tags: item.tags,
         link: item.link,
         source: item.sourceName,
@@ -108,7 +108,6 @@ function generateMarkdownDigest(
         sourceCount: item.sourceCount,
         emoji: getEmoji(item.category),
         category: item.category,
-        priority: item.priority,
         tags: item.tags,
         link: item.link,
         source: item.sourceName,
