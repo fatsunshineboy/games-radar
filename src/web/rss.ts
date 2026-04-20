@@ -17,7 +17,7 @@ export function generateRssFeed(
       <title>${escapeXml(item.title)}</title>
       <link>${escapeXml(item.meta.link)}</link>
       <guid>${escapeXml(item.meta.link)}</guid>
-      <description>${escapeXml(item.article.slice(0, 200))}</description>
+      <description>${escapeXml(item.article)}</description>
       <source>${escapeXml(item.meta.source)}</source>
       <category>${escapeXml(item.meta.category)}</category>
       <pubDate>${new Date().toUTCString()}</pubDate>

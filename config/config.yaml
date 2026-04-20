@@ -21,7 +21,7 @@ collection:
 
 # 交叉验证去重
 deduplication:
-  similarity_threshold: 0.5
+  similarity_threshold: 0.4
   boost_per_source: 12
 
 # 评分系统

@@ -116,9 +116,7 @@ function generateMarkdownDigest(
       };
       md += `<!-- item: ${JSON.stringify(itemMeta)} -->\n`;
 
-      const preview = item.article.length > 100
-        ? item.article.slice(0, 100) + "..."
-        : item.article;
+      const preview = item.article;
       md += `- ${getEmoji(item.category)} **${item.chineseTitle}** - ${preview} [原文](${item.link}) ⭐${item.finalScore.toFixed(1)}\n`;
     }
     md += `\n`;

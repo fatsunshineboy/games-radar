@@ -77,9 +77,7 @@ export function calcFinalScore(
     scoreBreakdown.followup +
     scoreBreakdown.actionable;
 
-  const finalScore = Math.max(0,
-    baseScore + breakdownTotal + tierBonus + crossBonus + freshnessBonus + historyPenalty
-  );
+  const finalScore = Math.max(0,breakdownTotal + tierBonus + crossBonus + freshnessBonus + historyPenalty);
 
   return { tierBonus, crossBonus, freshnessBonus, historyPenalty, breakdownTotal, finalScore };
 }

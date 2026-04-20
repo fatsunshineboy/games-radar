@@ -165,13 +165,21 @@ function titleSimilarity(a: string, b: string): number {
   return union > 0 ? intersection / union : 0;
 }
 
-/** 交叉验证去重：相似标题合并，记录多源 */
+/** 交叉验证去重：先按ID（link）去重，再按标题相似度合并 */
 function crossValidate(items: NewsItem[], threshold: number): NewsItem[] {
   const result: NewsItem[] = [];
 
   for (const item of items) {
     let merged = false;
     for (const existing of result) {
+      // 先检查ID是否相同（同一link）
+      if (item.id === existing.id) {
+        existing.sourceCount++;
+        existing.allSources = [...new Set(existing.allSources.concat(item.source))];
+        merged = true;
+        break;
+      }
+      // 再检查标题相似度
       if (titleSimilarity(item.title, existing.title) >= threshold) {
         existing.sourceCount++;
         existing.allSources = [...new Set(existing.allSources.concat(item.source))];

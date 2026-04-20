@@ -127,19 +127,8 @@ export async function runEditor(
 
   console.log(`  📊 [editor] 所有批次完成，共筛选出 ${allCandidates.length} 条候选`);
 
-  // 合并去重：按 ID 去重（如果同一条目在多批出现）
-  const uniqueCandidates = new Map<string, CandidateItem>();
-  for (const c of allCandidates) {
-    if (!uniqueCandidates.has(c.id)) {
-      uniqueCandidates.set(c.id, c);
-    }
-  }
-
   // 确保领域多样性
-  const diverse = enforceDiversity(
-    Array.from(uniqueCandidates.values()),
-    cfg.output.max_per_category
-  );
+  const diverse = enforceDiversity(allCandidates, cfg.output.max_per_category);
 
   // 按分数排序，前 top_count 为头条，后 normal_count 为要闻
   diverse.sort((a, b) => b.finalScore - a.finalScore);
