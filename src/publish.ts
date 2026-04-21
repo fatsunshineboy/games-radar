@@ -1,6 +1,6 @@
 /**
  * 发布稿生成器 - 生成适合游戏网站发布的简略版MD
- * 保存到 news/news-{date}.md（commit到仓库）
+ * 输出到根目录 news.md（部署到 Pages，不 commit）
  */
 
 import { readFile } from "./utils/util_file.ts";
@@ -16,11 +16,6 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PROJECT_ROOT = path.resolve(__dirname, "..");
-
-/** 获取 GitHub raw URL */
-export function getPublishUrl(date: string): string {
-  return `https://raw.githubusercontent.com/fatsunshineboy/games-radar/main/news/news-${date}.md`;
-}
 
 /** 生成发布稿 */
 export async function generatePublishMd(): Promise<string | null> {
@@ -89,17 +84,11 @@ ${JSON.stringify(itemsInput, null, 2)}
 
   const publishMd = await callLlm(systemPrompt, userPrompt);
 
-  // 创建 news 目录
-  const newsDir = path.join(PROJECT_ROOT, "news");
-  if (!fs.existsSync(newsDir)) {
-    fs.mkdirSync(newsDir, { recursive: true });
-  }
-
-  // 按日期命名保存
-  const publishPath = path.join(newsDir, `news-${date}.md`);
+  // 保存到根目录 news.md（部署时带上，不 commit）
+  const publishPath = path.join(PROJECT_ROOT, "news.md");
   fs.writeFileSync(publishPath, publishMd, "utf-8");
 
-  console.log(`✅ [publish] 发布稿已保存：news/news-${date}.md`);
+  console.log(`✅ [publish] 发布稿已保存：news.md`);
   return publishPath;
 }
 

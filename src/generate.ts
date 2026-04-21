@@ -5,7 +5,7 @@
  * 1. generateMarkdownDigest() → digests/${date}.md（带元数据注释）
  * 2. generateManifest() → manifest.json（前端动态渲染索引）
  * 3. generateBanner() → images/banner-${date}.png（commit到仓库）
- * 4. generatePublishMd() → news/news-${date}.md（commit到仓库）
+ * 4. generatePublishMd() → news.md（部署到Pages，不commit）
  */
 
 import fs from "node:fs";
@@ -42,7 +42,8 @@ export function generate(
 
 /**
  * 生成辅助内容（banner图片 + 发布稿）
- * 这些内容保存到 images/ 和 news/ 目录，commit到仓库
+ * - banner: 保存到 images/ 目录，commit到仓库
+ * - news.md: 保存到根目录，部署到Pages但不commit
  */
 export async function generateExtras(): Promise<void> {
   // 4. 生成 Banner 图片

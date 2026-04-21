@@ -104,7 +104,7 @@ async function generateImage(prompt: string, outputPath: string): Promise<boolea
       body: JSON.stringify({
         input: {
           prompt,
-          size: "1200x630", // 横版比例
+          size: "1536x1024", // 横版比例 (3:2)
           n: 1,
           quality: "high",
           moderation: "low",

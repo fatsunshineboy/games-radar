@@ -78,10 +78,15 @@ jobs:
 
       - name: Prepare Pages deployment
         run: |
-          # Create deployment directory (minimal - only index.html and manifest)
+          # Create deployment directory (minimal - index.html, manifest, news.md)
           mkdir -p _site
           cp index.html _site/
           cp manifest.json _site/
+
+          # Copy news.md if exists (for easy copy-paste, not committed)
+          if [ -f "news.md" ]; then
+            cp news.md _site/
+          fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5.0.0
