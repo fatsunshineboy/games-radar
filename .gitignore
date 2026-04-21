@@ -25,17 +25,19 @@ build/
 # Generated site (local preview)
 dist/
 
-# Runtime data (intermediate files)
+# Runtime data (intermediate files, NOT for commit)
 data/
 
-# News drafts (generated daily, not for commit)
-news/
+# Generated content to commit (daily outputs)
+# - digests/*.md (日报)
+# - images/*.png (Banner图片)
+# - manifest.json (前端索引)
 
 # Temporary files
 *.tmp
 *.bak
 
-# Root level generated files (not for commit)
+# Legacy temp files (old approach, NOT for commit)
 banner.png
 news.md
 
@@ -46,7 +48,6 @@ news.md
 # Misc
 *.local
 *.cache
-*.bak
 .omc
 .claude
 CLAUDE.md

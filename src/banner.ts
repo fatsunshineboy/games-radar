@@ -193,30 +193,27 @@ export async function generateBanner(): Promise<string | null> {
   ).join("\n");
 
   const prompt = `
-Create a gaming news summary banner image with the following layout:
+Create a horizontal infographic (16:9 ratio) with hand-drawn illustration style.
 
-TOP SECTION (Header):
-- Large title: "${imageText.title}"
-- Date: "${imageText.date}"
-- Brand name: "${imageText.brand}"
-
-MIDDLE SECTION (News Highlights - arranged in 3 blocks):
+CONTENT TO DISPLAY:
+- Header: "${imageText.title}" with date "${imageText.date}"
+- Brand: "${imageText.brand}"
+- News highlights (3 blocks):
 ${newsText}
-
-BOTTOM SECTION:
-- Small watermark in right corner: "${imageText.watermark}"
+- Watermark: "${imageText.watermark}" in bottom right
 
 STYLE REQUIREMENTS:
-- Hand-drawn sketch aesthetic with pencil strokes
-- Soft watercolor coloring with warm palette
-- Clean modern Japanese minimalist design
-- Gaming icons and decorations (controller, trophy, etc.)
-- Light cream/white background
-- Text must be CLEARLY READABLE in Chinese
-- Professional newsletter/magazine layout
-- Horizontal banner format (1200x630)
+- Hand-drawn infographic, sketch style, notebook aesthetic (Notion-style handbook)
+- Warm cream/beige background with low saturation colors (soft orange, green, blue accents)
+- Black hand-drawn outlines with slight roughness
+- Modular card layout with rounded corners, cloud-like borders, sticky note style
+- Each news item with simple illustration icon
+- Cute but professional, clear and readable
+- Chinese text must be CLEARLY LEGIBLE
+- Horizontal banner format (1200x630, 16:9 ratio)
+- Suitable for PPT presentation and social media sharing
 
-Make it visually appealing for sharing on social media and gaming forums.
+KEYWORDS: hand-drawn infographic, sketch style, soft pastel color, educational illustration, notebook style, warm, clean layout, cute but professional
 `;
 
   // 3. 创建 images 目录

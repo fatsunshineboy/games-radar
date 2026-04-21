@@ -3,6 +3,7 @@
 # LLM 设置
 llm:
   api_key: "${OPENAI_API_KEY}"
+  AIHUBMIX_API_KEY: "${AIHUBMIX_API_KEY}"
   base_url: "${OPENAI_BASE_URL}"
   model: "${OPENAI_MODEL}"
   temperature: 0.3
@@ -68,7 +69,7 @@ output:
   max_items: 10              # 每日最多展示条数
   max_per_category: 4        # 同一领域最多条数
   top_count: 5               # "今日要闻"条数
-  normal_count: 10           # "值得关注"条数，增加冗余条数保证输出文章的数量
+  normal_count: 20           # "值得关注"条数，增加冗余条数保证输出文章的数量
   max_revisions: 5           # Writer-Reviewer 最大修订循环次数
 
 # 站点信息
