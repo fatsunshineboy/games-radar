@@ -2,9 +2,42 @@
  * 历史回顾 - 读取前N天的报道，用于去重和重复检测
  */
 
-import { readJson } from "./util_file.ts";
+import { readFile } from "./util_file.ts";
 import { getPastDates } from "./util_timezone.ts";
-import type { FinalItem, HistorySummary } from "../type/types.ts";
+import type { HistorySummary } from "../type/types.ts";
+
+/** 从 digest markdown 中解析 item JSON 数据 */
+function parseDigestItems(content: string): { title: string; chineseTitle: string; article: string }[] {
+  const items: { title: string; chineseTitle: string; article: string }[] = [];
+  const startMarker = "<!-- item: ";
+  const endMarker = " -->";
+
+  let pos = 0;
+  while (pos < content.length) {
+    const startIdx = content.indexOf(startMarker, pos);
+    if (startIdx === -1) break;
+
+    const jsonStart = startIdx + startMarker.length;
+    const endIdx = content.indexOf(endMarker, jsonStart);
+    if (endIdx === -1) break;
+
+    const jsonStr = content.slice(jsonStart, endIdx);
+    try {
+      const itemData = JSON.parse(jsonStr);
+      items.push({
+        title: itemData.originalTitle || "",
+        chineseTitle: itemData.chineseTitle || "",
+        article: itemData.article || ""
+      });
+    } catch {
+      // JSON 解析失败时跳过
+    }
+
+    pos = endIdx + endMarker.length;
+  }
+
+  return items;
+}
 
 /** 加载前N天的历史摘要 */
 export function loadHistory(lookbackDays: number): HistorySummary[] {
@@ -12,14 +45,17 @@ export function loadHistory(lookbackDays: number): HistorySummary[] {
   const history: HistorySummary[] = [];
 
   for (const date of dates) {
-    const data = readJson<FinalItem[]>(`data/${date}/final.json`);
-    if (data && Array.isArray(data)) {
-      history.push({
-        date,
-        titles: data.map(item => item.title),
-        chineseTitles: data.map(item => item.chineseTitle || ""),
-        articles: data.map(item => item.article || "")
-      });
+    const content = readFile(`digests/${date}.md`);
+    if (content) {
+      const items = parseDigestItems(content);
+      if (items.length > 0) {
+        history.push({
+          date,
+          titles: items.map(item => item.title),
+          chineseTitles: items.map(item => item.chineseTitle),
+          articles: items.map(item => item.article)
+        });
+      }
     }
   }
 

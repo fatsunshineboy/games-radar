@@ -4,7 +4,7 @@
 
 import { callLlm, parseJson } from "../utils/util_llm.ts";
 import { loadConfig, loadPrompts } from "../utils/util_config.ts";
-import { calcFinalScore, enforceDiversity } from "../scoring.ts";
+import { calcFinalScore, enforceDiversity } from "../utils/util_scoring.ts";
 import { formatHistoryForPrompt } from "../utils/util_history.ts";
 import type { NewsItem, CandidateItem, ScoreBreakdown, HistorySummary } from "../type/types.ts";
 

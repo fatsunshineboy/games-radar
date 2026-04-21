@@ -27,7 +27,7 @@ export async function runWriter(
       .replace("{{source}}", item.sourceName)
       .replace("{{link}}", item.link)
       .replace("{{description}}", item.description)
-      .replace("{{content}}", item.content.slice(0, 5000))
+      .replace("{{content}}", item.content.slice(0, 10000))
       .replace("{{score}}", String(item.finalScore))
       .replace("{{reason}}", item.reason);
 

@@ -22,3 +22,13 @@ export function readJson<T>(filepath: string): T | null {
     return null;
   }
 }
+
+/** 读取文本文件（路径相对于项目根目录，不存在返回 null） */
+export function readFile(filepath: string): string | null {
+  const fullPath = path.resolve(PROJECT_ROOT, filepath);
+  try {
+    return fs.readFileSync(fullPath, "utf-8");
+  } catch {
+    return null;
+  }
+}

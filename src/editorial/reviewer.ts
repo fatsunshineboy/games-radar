@@ -35,13 +35,13 @@ export async function runReviewer(
   for (const item of items) {
     const hasClickbait = CLICKBAIT_WORDS.some(w => item.chineseTitle.includes(w));
     if (hasClickbait) {
-      rejected.push({
+      toRevise.push({
         ...item,
-        reviewDecision: "reject",
-        reviewReason: "标题党关键词",
-        reviewSuggestions: "请修改标题，避免使用夸张的词语",
+        reviewSuggestions: `$修订原因:${"标题党关键词"}\n
+                            $修订建议:${"请修改标题，避免使用夸张的词语"}\n
+                            $上一轮文章:${item.article}\n`,
       });
-      console.log(`  🚫 [reviewer] ${item.id}: 程序拒绝 (标题党关键词)`);
+      console.log(`  🚫 [revise] ${item.id}: 需要修订 (标题党关键词)`);
     } else {
       toLlmReview.push(item);
     }
@@ -86,9 +86,11 @@ export async function runReviewer(
       } else if (output.decision === "revise") {
         toRevise.push({
           ...item,
-          reviewSuggestions: output.suggestions,
+          reviewSuggestions: `$修订原因:${output.reason}\n
+                              $修订建议:${output.suggestions}\n
+                              $上一轮文章:${item.article}\n`,
         });
-        console.log(`  📝 [reviewer] ${item.id}: 需修订 - ${output.reason}`);
+        console.log(`  📝 [reviewer] ${item.id}: 需修订 - ${output.reason}\n 建议: ${output.suggestions}\n 上一轮文章: ${item.article}`);
       } else {
         rejected.push({
           ...item,

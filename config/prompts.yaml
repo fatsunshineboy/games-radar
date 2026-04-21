@@ -65,7 +65,7 @@ editor:
     {{/if}}
 
     ## 请输出JSON
-    仔细评估每条资讯，输出筛选结果：
+    仔细评估每条资讯，输入多少条资讯，就输出多少条存放到candidates数组中，输出筛选结果：
     ```json
     {
       "candidates": [
@@ -142,7 +142,7 @@ writer:
     ## 请输出JSON
     ```json
     {
-      "chineseTitle": "简洁中文标题（15字以内）",
+      "chineseTitle": "简洁中文标题（20字以内）",
       "article": "三段式分析文章，每段2-4句，包含事实、重要性分析、趋势预判",
       "tags": ["标签1", "标签2", "标签3"],
       "category": "industry|console|pc|mobile|indie|japanese|culture|development|review|deals"
@@ -165,7 +165,7 @@ reviewer:
     - 是否使用标题党用语（炸裂/震撼/杀疯了/重磅/惊天等）
     - 是否准确反映文章内容
     - 是否包含关键信息（主体+事件）
-    - 字数是否控制在15字以内
+    - 字数是否控制在20字以内
 
     ### 2. 事实核查（权重：高）
     - 标题和文章内容是否与原文一致
@@ -236,13 +236,13 @@ reviewer:
     {
       "decision": "pass|revise|reject",
       "reason": "审核意见（简明扼要）",
-      "suggestions": "具体修改建议（仅revise时需要，说明问题点和修改方向）",
+      "suggestions": "具体修改建议（仅revise时需要，说明问题点和修改方向，具体到文章段落）",
       "flags": ["问题标签列表，可选：clickbait|factual_error|duplicate|incomplete|shallow_analysis|sensitive"]
     }
     ```
 
     ## 审核要点提醒
     - 对比原文内容与分析文章，确保事实准确、无捏造
-    - 如果标题有标题党用语，decision 必须为 revise 或 reject
+    - 如果标题有标题党用语，decision 必须为 revise
     - revise 必须提供 suggestions，写手会根据建议重新撰写
     - reject 需明确说明无法挽救的问题
