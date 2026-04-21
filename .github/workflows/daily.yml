@@ -56,13 +56,16 @@ jobs:
             echo "has_digest=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Commit digests only
+          # Generate manifest.json for frontend
+          npx tsx -e "import { generateManifest } from './src/web/manifest.ts'; generateManifest();"
+
+      - name: Commit digests and manifest
         if: steps.digest.outputs.has_digest == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          git add digests/
+
+          git add digests/ manifest.json
 
           if git diff --staged --quiet; then
             echo "No changes to commit"
@@ -72,10 +75,18 @@ jobs:
             git push
           fi
 
+      - name: Prepare Pages deployment
+        run: |
+          # Create deployment directory with required files
+          mkdir -p _site
+          cp index.html _site/
+          cp manifest.json _site/
+          cp -r digests _site/
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5.0.0
         with:
-          path: ./dist
+          path: ./_site
 
       - name: Deploy to GitHub Pages
         id: deployment

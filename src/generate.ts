@@ -10,7 +10,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { loadConfig } from "./utils/util_config.ts";
 import { getBeijingDate, getDateParts } from "./utils/util_timezone.ts";
-import { generateWeb } from "./web/index.ts";
+import { generateManifest } from "./web/manifest.ts";
 import { getEmoji } from "./web/parser.ts";
 import { saveJson } from "./utils/util_file.ts";
 import type { FinalItem } from "./type/types.ts";
@@ -32,8 +32,8 @@ export function generate(
   const dataDir = path.join(PROJECT_ROOT, "data", date);
   saveJson(path.join(dataDir, "final.json"), items);
 
-  // 3. 生成静态 Web 页面（扫描所有历史 md）
-  generateWeb();
+  // 3. 生成 manifest.json（前端动态渲染索引）
+  generateManifest();
 }
 
 /**

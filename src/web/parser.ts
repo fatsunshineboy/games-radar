@@ -61,6 +61,7 @@ export interface DigestSummary {
     emoji: string;
     title: string;
     score: number;
+    article: string;
   }>;
 }
 
@@ -217,12 +218,13 @@ export function scanDigestSummaries(digestsDir: string): DigestSummary[] {
     const parsed = parseDigestFile(path.join(digestsDir, file));
     if (!parsed) continue;
 
-    // 取前 3 条作为摘要
+    // 取前 3 条作为摘要（包含文章预览）
     const topThree = parsed.items.slice(0, 3).map((item, i) => ({
       number: String(i + 1).padStart(2, "0"),
       emoji: item.meta.emoji || getEmoji(item.meta.category),
       title: item.title,
       score: item.meta.score,
+      article: item.article || "",
     }));
 
     summaries.push({

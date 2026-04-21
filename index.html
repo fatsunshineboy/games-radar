@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎮 游戏速报 - 游戏资讯每日简报</title>
+  <meta name="description" content="游戏资讯每日简报 - 精选全球游戏行业动态">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       CYBERPUNK ARCADE NEWS TERMINAL
+       Aesthetic: Neon glows on deep dark, geometric precision, gaming energy
+    ═══════════════════════════════════════════════════════════ */
+
+    :root {
+      /* Core palette - Electric cyan + Warm gold */
+      --bg-deep:      #0a0e14;
+      --bg-main:      #0d1117;
+      --bg-surface:   #161b22;
+      --bg-elevated:  #1c2128;
+      --bg-hover:     #21262d;
+
+      --neon-cyan:    #00d9ff;
+      --neon-cyan-glow: rgba(0, 217, 255, 0.4);
+      --neon-gold:    #ffd700;
+      --neon-gold-glow: rgba(255, 215, 0, 0.35);
+      --neon-purple:  #bf5af2;
+
+      --text-primary:   #e6edf3;
+      --text-secondary: #8b949e;
+      --text-muted:     #6e7681;
+
+      --border-subtle:  #30363d;
+      --border-active:  #00d9ff;
+
+      --danger:       #f85149;
+      --success:      #3fb950;
+
+      /* Typography scale */
+      --font-display: 'Orbitron', sans-serif;
+      --font-mono:    'JetBrains Mono', 'Noto Sans SC', monospace;
+      --font-body:    'Noto Sans SC', sans-serif;
+
+      /* Spacing */
+      --gap-xs: 4px;
+      --gap-sm: 8px;
+      --gap-md: 16px;
+      --gap-lg: 24px;
+      --gap-xl: 32px;
+
+      /* Animation */
+      --transition-fast: 0.15s ease;
+      --transition-medium: 0.3s ease;
+      --transition-slow: 0.5s ease;
+    }
+
+    /* Light theme override */
+    [data-theme="light"] {
+      --bg-deep:      #f6f8fa;
+      --bg-main:      #ffffff;
+      --bg-surface:   #f6f8fa;
+      --bg-elevated:  #ffffff;
+      --bg-hover:     #f3f4f6;
+
+      --neon-cyan:    #0969da;
+      --neon-cyan-glow: rgba(9, 105, 218, 0.15);
+      --neon-gold:    #bf5700;
+      --neon-gold-glow: rgba(191, 87, 0, 0.12);
+
+      --text-primary:   #1f2328;
+      --text-secondary: #656d76;
+      --text-muted:     #8c959f;
+
+      --border-subtle:  #d0d7de;
+      --border-active:  #0969da;
+    }
+
+    /* ═════ Base Reset ═════ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ═════ Scanline Background Effect ═════ */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 217, 255, 0.015) 2px,
+        rgba(0, 217, 255, 0.015) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+      animation: scanlines 8s linear infinite;
+    }
+
+    [data-theme="light"] body::before {
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(9, 105, 218, 0.03) 2px,
+        rgba(9, 105, 218, 0.03) 4px
+      );
+    }
+
+    @keyframes scanlines {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(4px); }
+    }
+
+    /* ═════ Layout Structure ═════ */
+    #app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* ═════ Header - Neon Brand ═════ */
+    #hdr {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--gap-lg);
+      height: 64px;
+      background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-main) 100%);
+      border-bottom: 1px solid var(--border-subtle);
+      box-shadow: 0 1px 0 var(--neon-cyan-glow);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--gap-md);
+    }
+
+    .brand-icon {
+      font-size: 32px;
+      filter: drop-shadow(0 0 8px var(--neon-gold-glow));
+      animation: iconPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes iconPulse {
+      0%, 100% { filter: drop-shadow(0 0 6px var(--neon-gold-glow)); }
+      50% { filter: drop-shadow(0 0 12px var(--neon-gold-glow)); }
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--neon-gold);
+      letter-spacing: 0.05em;
+      text-shadow: 0 0 10px var(--neon-gold-glow);
+    }
+
+    .brand-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .hdr-right {
+      display: flex;
+      align-items: center;
+      gap: var(--gap-md);
+    }
+
+    /* Theme Toggle Button */
+    #themeBtn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: var(--gap-sm);
+      padding: var(--gap-sm) var(--gap-md);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      overflow: hidden;
+    }
+
+    #themeBtn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--neon-cyan-glow), transparent);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+
+    #themeBtn:hover {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+    }
+
+    #themeBtn:hover::before {
+      opacity: 1;
+    }
+
+    .theme-icon {
+      font-size: 14px;
+    }
+
+    /* ═════ Body Layout ═════ */
+    #body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ═════ Sidebar - Date Navigator ═════ */
+    #sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-subtle);
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      padding: var(--gap-md) var(--gap-lg);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .sidebar-label {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--neon-cyan);
+      text-transform: uppercase;
+    }
+
+    .sidebar-scroll {
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-subtle) transparent;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+      background: var(--border-subtle);
+      border-radius: 3px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+      background: var(--neon-cyan);
+    }
+
+    /* Date Buttons */
+    .date-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--gap-md) var(--gap-lg);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      border-left: 2px solid transparent;
+    }
+
+    .date-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--neon-cyan-glow), transparent);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+
+    .date-btn:hover {
+      color: var(--text-primary);
+      background: var(--bg-hover);
+    }
+
+    .date-btn:hover::before {
+      opacity: 0.3;
+    }
+
+    .date-btn.active {
+      color: var(--neon-cyan);
+      background: var(--bg-elevated);
+      border-left-color: var(--neon-cyan);
+      box-shadow: inset 0 0 20px var(--neon-cyan-glow);
+    }
+
+    .date-btn.active::before {
+      opacity: 1;
+    }
+
+    .date-text {
+      display: flex;
+      align-items: center;
+      gap: var(--gap-sm);
+    }
+
+    .date-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border-subtle);
+      transition: all var(--transition-fast);
+    }
+
+    .date-btn.active .date-indicator {
+      background: var(--neon-cyan);
+      box-shadow: 0 0 6px var(--neon-cyan);
+      animation: indicatorPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes indicatorPulse {
+      0%, 100% { box-shadow: 0 0 4px var(--neon-cyan); }
+      50% { box-shadow: 0 0 8px var(--neon-cyan), 0 0 12px var(--neon-cyan-glow); }
+    }
+
+    .date-count {
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 2px 8px;
+      background: var(--bg-elevated);
+      border-radius: 4px;
+    }
+
+    .date-btn.active .date-count {
+      color: var(--neon-cyan);
+      background: rgba(0, 217, 255, 0.1);
+    }
+
+    /* ═════ Hierarchical Navigation ═════ */
+    .nav-year, .nav-month {
+      margin-bottom: 4px;
+    }
+
+    .nav-group-header {
+      display: flex;
+      align-items: center;
+      gap: var(--gap-sm);
+      padding: var(--gap-md) var(--gap-lg);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      border-radius: 6px;
+    }
+
+    .nav-group-header:hover {
+      background: var(--bg-hover);
+    }
+
+    .nav-arrow {
+      font-size: 12px;
+      color: var(--text-muted);
+      transition: transform var(--transition-fast);
+    }
+
+    .nav-label {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .nav-count {
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 2px 8px;
+      background: var(--bg-elevated);
+      border-radius: 4px;
+    }
+
+    .nav-months, .nav-days {
+      display: none;
+    }
+
+    .nav-months.open, .nav-days.open {
+      display: block;
+    }
+
+    .nav-month .nav-group-header {
+      padding: var(--gap-sm) var(--gap-lg);
+    }
+
+    .nav-month .nav-label {
+      font-size: 13px;
+    }
+
+    .date-btn {
+      padding: var(--gap-sm) var(--gap-lg);
+    }
+
+    /* ═════ Content Area ═════ */
+    #cwrap {
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-subtle) transparent;
+      background: var(--bg-main);
+    }
+
+    #cwrap::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #cwrap::-webkit-scrollbar-track {
+      background: var(--bg-deep);
+    }
+
+    #cwrap::-webkit-scrollbar-thumb {
+      background: var(--border-subtle);
+      border-radius: 4px;
+    }
+
+    #cwrap::-webkit-scrollbar-thumb:hover {
+      background: var(--neon-cyan);
+    }
+
+    #content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--gap-xl) var(--gap-xl) 80px;
+    }
+
+    /* ═════ Loading & Message States ═════ */
+    .state-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 320px;
+      text-align: center;
+    }
+
+    .state-icon {
+      font-size: 64px;
+      margin-bottom: var(--gap-lg);
+      opacity: 0.8;
+    }
+
+    .state-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--gap-sm);
+      letter-spacing: 0.02em;
+    }
+
+    .state-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 400px;
+    }
+
+    /* 404 Error State */
+    .error-state .state-icon {
+      filter: grayscale(0.3);
+      animation: errorShake 0.5s ease;
+    }
+
+    .error-state .state-title {
+      color: var(--danger);
+    }
+
+    @keyframes errorShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    /* Return Button */
+    .return-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--gap-sm);
+      margin-top: var(--gap-lg);
+      padding: var(--gap-md) var(--gap-lg);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .return-btn:hover {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      background: rgba(0, 217, 255, 0.08);
+      box-shadow: 0 0 20px var(--neon-cyan-glow);
+    }
+
+    /* Loading Animation */
+    .loading-state .state-icon {
+      animation: loadingSpin 1.5s linear infinite;
+    }
+
+    @keyframes loadingSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ═════ Page Entrance Animation ═════ */
+    .fade-enter {
+      animation: fadeSlideIn 0.4s ease-out;
+    }
+
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Staggered item reveal */
+    .stagger-item {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: staggerReveal 0.35s ease-out forwards;
+    }
+
+    @keyframes staggerReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ═════ Home Page Cards ═════ */
+    .home-hero {
+      margin-bottom: var(--gap-xl);
+      padding: var(--gap-xl);
+      background: linear-gradient(135deg, var(--bg-surface), var(--bg-elevated));
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .home-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-gold), var(--neon-cyan));
+      animation: heroGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes heroGlow {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    .home-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--neon-gold);
+      letter-spacing: 0.04em;
+      margin-bottom: var(--gap-sm);
+      text-shadow: 0 0 20px var(--neon-gold-glow);
+    }
+
+    .home-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    .home-stats {
+      display: flex;
+      gap: var(--gap-lg);
+      margin-top: var(--gap-lg);
+      padding-top: var(--gap-lg);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .stat-box {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--neon-cyan);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* Date Cards Grid */
+    .date-cards-grid {
+      display: grid;
+      gap: var(--gap-lg);
+    }
+
+    .date-card {
+      position: relative;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: var(--gap-lg);
+      cursor: pointer;
+      transition: all var(--transition-medium);
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--gap-md);
+    }
+
+    .card-date {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .card-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: rgba(0, 217, 255, 0.1);
+      border: 1px solid var(--neon-cyan);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--neon-cyan);
+    }
+
+    .card-items {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-md);
+    }
+
+    .card-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--gap-md);
+      padding: var(--gap-sm) 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .card-item:last-child {
+      border-bottom: none;
+    }
+
+    .item-rank {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--neon-gold);
+      min-width: 28px;
+      text-align: center;
+      padding: 2px 6px;
+      background: rgba(255, 215, 0, 0.1);
+      border-radius: 4px;
+    }
+
+    .item-emoji {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .item-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-headline {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .item-preview {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 4px;
+      white-space: pre-wrap;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: var(--gap-md);
+      padding-top: var(--gap-md);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .card-action {
+      display: flex;
+      align-items: center;
+      gap: var(--gap-sm);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--neon-cyan);
+    }
+
+    .card-action::after {
+      content: '→';
+      transition: transform var(--transition-fast);
+    }
+
+    .date-card:hover .card-action::after {
+      transform: translateX(4px);
+    }
+
+    /* ═════ Digest Content Styles ═════ */
+    .digest-header {
+      margin-bottom: var(--gap-xl);
+      padding-bottom: var(--gap-lg);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .digest-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--text-primary);
+      letter-spacing: 0.02em;
+      margin-bottom: var(--gap-sm);
+    }
+
+    .digest-date {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--neon-cyan);
+      padding: 4px 12px;
+      background: rgba(0, 217, 255, 0.1);
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: var(--gap-md);
+      margin: var(--gap-xl) 0 var(--gap-lg);
+      padding: var(--gap-md);
+      background: linear-gradient(90deg, var(--bg-surface), transparent);
+      border-left: 3px solid var(--neon-gold);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .section-header.headlines {
+      border-left-color: var(--neon-gold);
+    }
+
+    .section-header.more {
+      border-left-color: var(--neon-cyan);
+    }
+
+    .section-emoji {
+      font-size: 24px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 0.04em;
+    }
+
+    /* ═════ News Item Cards ═════ */
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-lg);
+    }
+
+    .news-card {
+      position: relative;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: var(--gap-lg);
+      transition: all var(--transition-medium);
+      overflow: hidden;
+    }
+
+    /* Headline card - Gold accent */
+    .news-card.headline {
+      background: linear-gradient(135deg, var(--bg-surface), rgba(255, 215, 0, 0.05));
+      border-color: rgba(255, 215, 0, 0.3);
+    }
+
+    .news-card:hover {
+      border-color: var(--neon-cyan);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 30px var(--neon-cyan-glow);
+    }
+
+    .news-card.headline:hover {
+      border-color: var(--neon-gold);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 40px var(--neon-gold-glow);
+    }
+
+    /* Card Header */
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--gap-md);
+      margin-bottom: var(--gap-md);
+    }
+
+    .news-rank {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--text-muted);
+      min-width: 32px;
+      padding: 6px 8px;
+      background: var(--bg-elevated);
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .news-card.headline .news-rank {
+      color: var(--neon-gold);
+      background: rgba(255, 215, 0, 0.15);
+      box-shadow: 0 0 8px var(--neon-gold-glow);
+    }
+
+    .news-emoji {
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .news-title-wrap {
+      flex: 1;
+    }
+
+    .news-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+      margin-bottom: var(--gap-sm);
+    }
+
+    .news-title a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+
+    .news-title a:hover {
+      color: var(--neon-cyan);
+    }
+
+    .news-card.headline .news-title a:hover {
+      color: var(--neon-gold);
+    }
+
+    /* Badge for headlines */
+    .headline-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      background: var(--neon-gold);
+      color: var(--bg-deep);
+      font-family: var(--font-display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      border-radius: 4px;
+      margin-bottom: var(--gap-sm);
+    }
+
+    /* Article Content */
+    .news-article {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: var(--gap-md);
+      white-space: pre-wrap;
+    }
+
+    /* Meta Bar */
+    .news-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--gap-md);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--bg-elevated);
+      border-radius: 6px;
+    }
+
+    .meta-source {
+      color: var(--text-secondary);
+    }
+
+    .meta-score {
+      color: var(--neon-gold);
+      font-weight: 600;
+    }
+
+    .meta-category {
+      color: var(--neon-cyan);
+    }
+
+    .meta-multi {
+      color: var(--success);
+    }
+
+    /* Tags */
+    .news-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--gap-sm);
+      margin-top: var(--gap-md);
+    }
+
+    .tag-pill {
+      padding: 4px 12px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      transition: all var(--transition-fast);
+    }
+
+    .tag-pill:hover {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      background: rgba(0, 217, 255, 0.08);
+    }
+
+    /* Link */
+    .news-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(0, 217, 255, 0.08);
+      border: 1px solid var(--neon-cyan);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--neon-cyan);
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+
+    .news-link:hover {
+      background: rgba(0, 217, 255, 0.15);
+      box-shadow: 0 0 12px var(--neon-cyan-glow);
+    }
+
+    /* ═════ Simple List Items (More News) ═════ */
+    .simple-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-sm);
+    }
+
+    .simple-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--gap-md);
+      padding: var(--gap-md);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      transition: all var(--transition-fast);
+    }
+
+    .simple-item:hover {
+      background: var(--bg-elevated);
+      border-color: rgba(0, 217, 255, 0.3);
+    }
+
+    .simple-rank {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-muted);
+      min-width: 28px;
+    }
+
+    .simple-emoji {
+      font-size: 16px;
+    }
+
+    .simple-content {
+      flex: 1;
+    }
+
+    .simple-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .simple-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--gap-sm);
+      margin-top: 4px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ═════ Mobile Responsive ═════ */
+    #mob-toggle {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      html, body {
+        overflow: auto;
+        height: auto;
+      }
+
+      #app {
+        height: auto;
+        min-height: 100vh;
+      }
+
+      #body {
+        flex-direction: column;
+        overflow: visible;
+      }
+
+      #sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-subtle);
+        max-height: 56px;
+        overflow: hidden;
+        transition: max-height var(--transition-medium);
+      }
+
+      #sidebar.open {
+        max-height: 45vh;
+        overflow-y: auto;
+      }
+
+      #mob-toggle {
+        display: flex;
+        align-items: center;
+        gap: var(--gap-md);
+        padding: var(--gap-md) var(--gap-lg);
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: 14px;
+        color: var(--text-secondary);
+        background: var(--bg-surface);
+        border-bottom: 1px solid transparent;
+        transition: all var(--transition-fast);
+      }
+
+      #sidebar.open #mob-toggle {
+        border-bottom-color: var(--border-subtle);
+        color: var(--neon-cyan);
+      }
+
+      .sidebar-header {
+        display: none;
+      }
+
+      .sidebar-scroll {
+        padding: var(--gap-sm) 0;
+      }
+
+      #cwrap {
+        overflow: visible;
+      }
+
+      #content {
+        padding: var(--gap-lg) var(--gap-md) 60px;
+      }
+
+      .home-title {
+        font-size: 24px;
+      }
+
+      .news-card {
+        padding: var(--gap-md);
+      }
+
+      .news-title {
+        font-size: 16px;
+      }
+
+      .news-meta {
+        font-size: 12px;
+      }
+
+      .date-card {
+        padding: var(--gap-md);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .brand-tag {
+        display: none;
+      }
+
+      .card-header {
+        flex-direction: column;
+        gap: var(--gap-sm);
+        align-items: flex-start;
+      }
+
+      .news-meta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <!-- Header -->
+  <header id="hdr">
+    <div class="brand" onclick="showHome()" style="cursor: pointer;">
+      <span class="brand-icon">🎮</span>
+      <div class="brand-text">
+        <span class="brand-name">游戏速报</span>
+        <span class="brand-tag">游戏资讯每日简报</span>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <button id="themeBtn" aria-label="切换主题">
+        <span class="theme-icon">◐</span>
+        <span class="theme-text">LIGHT</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Body -->
+  <div id="body">
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div id="mob-toggle" onclick="toggleSidebar()">
+        <span>☰</span>
+        <span>选择日期</span>
+      </div>
+      <div class="sidebar-header">
+        <span class="sidebar-label">DATES</span>
+      </div>
+      <div class="sidebar-scroll" id="nav"></div>
+    </aside>
+
+    <!-- Content -->
+    <main id="cwrap">
+      <article id="content">
+        <div class="state-screen loading-state">
+          <div class="state-icon">⏳</div>
+          <div class="state-title">正在加载</div>
+          <div class="state-desc">获取最新游戏资讯...</div>
+        </div>
+      </article>
+    </main>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   JavaScript - Dynamic Rendering Engine
+═══════════════════════════════════════════════════════════ */
+
+// Configure marked
+marked.use({
+  breaks: true,
+  gfm: true,
+  headerIds: false
+});
+
+// Sanitize HTML
+function sanitize(html) {
+  return DOMPurify.sanitize(html, {
+    ADD_TAGS: ['details', 'summary'],
+    ADD_ATTR: ['open'],
+  });
+}
+
+// ═════ Theme Management ═════
+const htmlEl = document.documentElement;
+const themeBtn = document.getElementById('themeBtn');
+const themeIcon = themeBtn.querySelector('.theme-icon');
+const themeText = themeBtn.querySelector('.theme-text');
+let theme = localStorage.getItem('gs-theme') || 'dark';
+
+function applyTheme(t) {
+  theme = t;
+  htmlEl.dataset.theme = t;
+  themeIcon.textContent = t === 'dark' ? '◐' : '●';
+  themeText.textContent = t === 'dark' ? 'LIGHT' : 'DARK';
+  localStorage.setItem('gs-theme', t);
+}
+
+applyTheme(theme);
+themeBtn.onclick = () => applyTheme(theme === 'dark' ? 'light' : 'dark');
+
+// ═════ Routing ═════
+function getHash() {
+  const hash = location.hash.slice(1);
+  return /^\d{4}-\d{2}-\d{2}$/.test(hash) ? hash : null;
+}
+
+// ═════ State ═════
+let currentDate = null;
+let manifestData = null;
+
+function setContent(html) {
+  document.getElementById('content').innerHTML = html;
+}
+
+// ═════ Sidebar ═════
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+function buildNav(dates) {
+  const nav = document.getElementById('nav');
+
+  // Group dates by year and month
+  const groups = {};
+  dates.forEach(({ date, totalCount }) => {
+    const [year, month, day] = date.split('-');
+    const yearKey = year;
+    const monthKey = `${year}-${month}`;
+    const dayKey = date;
+
+    if (!groups[yearKey]) groups[yearKey] = {};
+    if (!groups[yearKey][monthKey]) groups[yearKey][monthKey] = [];
+    groups[yearKey][monthKey].push({ date, day, totalCount });
+  });
+
+  // Build hierarchical navigation
+  const years = Object.keys(groups).sort().reverse();
+  const latestYear = years[0];
+  const latestMonth = Object.keys(groups[latestYear]).sort().reverse()[0];
+
+  years.forEach(year => {
+    const yearBtn = document.createElement('div');
+    yearBtn.className = 'nav-year';
+    const isLatestYear = year === latestYear;
+    yearBtn.innerHTML = `
+      <div class="nav-group-header" onclick="toggleYear('${year}')">
+        <span class="nav-arrow">${isLatestYear ? '▾' : '▸'}</span>
+        <span class="nav-label">${year}年</span>
+        <span class="nav-count">${Object.keys(groups[year]).reduce((s, m) => s + groups[year][m].length, 0)}天</span>
+      </div>
+      <div class="nav-months ${isLatestYear ? 'open' : ''}" id="year-${year}"></div>
+    `;
+    nav.appendChild(yearBtn);
+
+    const monthsContainer = yearBtn.querySelector('.nav-months');
+    Object.keys(groups[year]).sort().reverse().forEach(month => {
+      const [_, monthNum] = month.split('-');
+      const monthBtn = document.createElement('div');
+      monthBtn.className = 'nav-month';
+      const isLatestMonth = isLatestYear && month === latestMonth;
+      monthBtn.innerHTML = `
+        <div class="nav-group-header" onclick="toggleMonth('${month}')">
+          <span class="nav-arrow">${isLatestMonth ? '▾' : '▸'}</span>
+          <span class="nav-label">${monthNum}月</span>
+          <span class="nav-count">${groups[year][month].length}天</span>
+        </div>
+        <div class="nav-days ${isLatestMonth ? 'open' : ''}" id="month-${month}"></div>
+      `;
+      monthsContainer.appendChild(monthBtn);
+
+      const daysContainer = monthBtn.querySelector('.nav-days');
+      groups[year][month].forEach(({ date, day, totalCount }) => {
+        const dayBtn = document.createElement('div');
+        dayBtn.className = 'date-btn';
+        dayBtn.dataset.date = date;
+        dayBtn.innerHTML = `
+          <span class="date-text">
+            <span class="date-indicator"></span>${day}日
+          </span>
+          <span class="date-count">${totalCount}条</span>
+        `;
+        dayBtn.onclick = () => loadDigest(date);
+        daysContainer.appendChild(dayBtn);
+      });
+    });
+  });
+}
+
+function toggleYear(year) {
+  const container = document.getElementById(`year-${year}`);
+  const header = container.previousElementSibling;
+  const arrow = header.querySelector('.nav-arrow');
+  container.classList.toggle('open');
+  arrow.textContent = container.classList.contains('open') ? '▾' : '▸';
+}
+
+function toggleMonth(month) {
+  const container = document.getElementById(`month-${month}`);
+  const header = container.previousElementSibling;
+  const arrow = header.querySelector('.nav-arrow');
+  container.classList.toggle('open');
+  arrow.textContent = container.classList.contains('open') ? '▾' : '▸';
+}
+
+function updateActiveNav(date) {
+  document.querySelectorAll('.date-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.date === date);
+  });
+}
+
+// ═════ Loading States ═════
+function showLoading() {
+  setContent(`
+    <div class="state-screen loading-state fade-enter">
+      <div class="state-icon">⏳</div>
+      <div class="state-title">正在加载</div>
+      <div class="state-desc">获取日报内容...</div>
+    </div>
+  `);
+}
+
+function showError(message, is404 = false) {
+  const icon = is404 ? '🔍' : '⚠️';
+  const title = is404 ? '页面未找到' : '加载失败';
+  const desc = is404
+    ? '您访问的日期不存在或已被删除'
+    : message;
+
+  setContent(`
+    <div class="state-screen error-state fade-enter">
+      <div class="state-icon">${icon}</div>
+      <div class="state-title">${title}</div>
+      <div class="state-desc">${desc}</div>
+      <button class="return-btn" onclick="showHome()">
+        <span>←</span>
+        <span>返回首页</span>
+      </button>
+    </div>
+  `);
+}
+
+// ═════ Home Page ═════
+function showHome() {
+  if (!manifestData) return;
+
+  history.pushState(null, '', location.pathname);
+  currentDate = null;
+  updateActiveNav(null);
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('cwrap').scrollTop = 0;
+
+  const { site, dates } = manifestData;
+  const totalNews = dates.reduce((sum, d) => sum + d.totalCount, 0);
+
+  const cardsHtml = dates.map((d, i) => {
+    const parts = d.date.split('-');
+    const itemsHtml = d.topThree.map((item, j) => `
+      <div class="card-item">
+        <span class="item-rank">${String(j + 1).padStart(2, '0')}</span>
+        <span class="item-emoji">${item.emoji || '🎮'}</span>
+        <div class="item-content">
+          <div class="item-headline">${item.title}</div>
+          ${item.article ? `<div class="item-preview">${item.article}${item.article.length >= 150 ? '...' : ''}</div>` : ''}
+        </div>
+      </div>
+    `).join('');
+
+    return `
+      <div class="date-card stagger-item" onclick="loadDigest('${d.date}')" style="animation-delay: ${i * 0.08}s">
+        <div class="card-header">
+          <span class="card-date">${parts[0]}年${parts[1]}月${parts[2]}日</span>
+          <span class="card-badge">${d.totalCount} 条精选</span>
+        </div>
+        <div class="card-items">${itemsHtml}</div>
+        <div class="card-footer">
+          <span class="card-action">查看详情</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  setContent(`
+    <div class="fade-enter">
+      <div class="home-hero">
+        <h1 class="home-title">${site.name_zh}</h1>
+        <p class="home-desc">${site.description_zh}</p>
+        <div class="home-stats">
+          <div class="stat-box">
+            <span class="stat-value">${dates.length}</span>
+            <span class="stat-label">日报存档</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-value">${totalNews}</span>
+            <span class="stat-label">精选资讯</span>
+          </div>
+        </div>
+      </div>
+      <div class="date-cards-grid">${cardsHtml}</div>
+    </div>
+  `);
+}
+
+// ═════ Digest Page ═════
+async function loadDigest(date, push = true) {
+  if (date === currentDate) return;
+  currentDate = date;
+
+  // Check if date exists in manifest
+  if (!manifestData?.dates?.find(d => d.date === date)) {
+    showError('', true);
+    return;
+  }
+
+  if (push) history.pushState(null, '', `#${date}`);
+
+  updateActiveNav(date);
+  document.getElementById('sidebar').classList.remove('open');
+  showLoading();
+  document.getElementById('cwrap').scrollTop = 0;
+
+  try {
+    const res = await fetch(`./digests/${date}.md`);
+    if (!res.ok) {
+      if (res.status === 404) {
+        showError('', true);
+      } else {
+        showError(`HTTP ${res.status}`);
+      }
+      return;
+    }
+
+    const raw = await res.text();
+    const html = renderDigest(raw, date);
+    setContent(html);
+
+  } catch (e) {
+    showError(e.message);
+  }
+}
+
+// ═════ Digest Renderer ═════
+function renderDigest(raw, date) {
+  // Parse meta
+  const metaMatch = raw.match(/<!-- digest-meta: (\{.+?\}) -->/);
+  let meta = { date, totalCount: 0, topCount: 5 };
+  if (metaMatch) {
+    try { meta = { ...meta, ...JSON.parse(metaMatch[1]) }; } catch {}
+  }
+
+  const topCount = meta.topCount || 5;
+  const parts = date.split('-');
+
+  // Parse items from comments
+  const itemRegex = /<!-- item: (\{.+?\}) -->/gs;
+  const items = [];
+  let match;
+  while ((match = itemRegex.exec(raw)) !== null) {
+    try {
+      const data = JSON.parse(match[1]);
+      items.push({
+        id: data.id,
+        title: data.chineseTitle,
+        article: data.article || '',
+        emoji: data.emoji || '🎮',
+        score: data.score || 80,
+        source: data.source || '',
+        sourceCount: data.sourceCount || 1,
+        link: data.link || '',
+        category: data.category || 'default',
+        tags: data.tags || []
+      });
+    } catch {}
+  }
+
+  // Split into headlines and normal
+  const headlines = items.slice(0, topCount);
+  const normals = items.slice(topCount);
+
+  // Render headlines - simplified meta (no source count/score)
+  const headlinesHtml = headlines.map((item, i) => `
+    <div class="news-card headline stagger-item" style="animation-delay: ${i * 0.1}s">
+      <div class="card-top">
+        <span class="news-rank">${String(i + 1).padStart(2, '0')}</span>
+        <span class="news-emoji">${item.emoji}</span>
+        <div class="news-title-wrap">
+          ${i === 0 ? '<span class="headline-badge">★ TOP 1</span>' : ''}
+          <h3 class="news-title">
+            <a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>
+          </h3>
+        </div>
+      </div>
+      <div class="news-article">${item.article}</div>
+      <div class="news-meta">
+        <span class="meta-item meta-source">📡 ${item.source}</span>
+        <a href="${item.link}" target="_blank" rel="noopener" class="news-link">
+          <span>原文</span>
+          <span>↗</span>
+        </a>
+      </div>
+      ${item.tags.length > 0 ? `
+        <div class="news-tags">
+          ${item.tags.map(t => `<span class="tag-pill">${t}</span>`).join('')}
+        </div>
+      ` : ''}
+    </div>
+  `).join('');
+
+  // Render normal items with full article content
+  const normalsHtml = normals.length > 0 ? normals.map((item, i) => `
+    <div class="news-card stagger-item" style="animation-delay: ${(topCount + i) * 0.06}s">
+      <div class="card-top">
+        <span class="news-rank">${String(topCount + i + 1).padStart(2, '0')}</span>
+        <span class="news-emoji">${item.emoji}</span>
+        <div class="news-title-wrap">
+          <h3 class="news-title">
+            <a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>
+          </h3>
+        </div>
+      </div>
+      ${item.article ? `<div class="news-article">${item.article}</div>` : ''}
+      <div class="news-meta">
+        <span class="meta-item meta-source">📡 ${item.source}</span>
+        <a href="${item.link}" target="_blank" rel="noopener" class="news-link">
+          <span>原文</span>
+          <span>↗</span>
+        </a>
+      </div>
+    </div>
+  `).join('') : '';
+
+  return `
+    <div class="fade-enter">
+      <header class="digest-header">
+        <h1 class="digest-title">🎮 游戏速报</h1>
+        <span class="digest-date">${parts[0]}年${parts[1]}月${parts[2]}日 · ${meta.totalCount || items.length}条精选</span>
+      </header>
+
+      ${headlines.length > 0 ? `
+        <div class="section-header headlines">
+          <span class="section-emoji">🔥</span>
+          <h2 class="section-title">今日头条</h2>
+        </div>
+        <div class="news-list">${headlinesHtml}</div>
+      ` : ''}
+
+      ${normals.length > 0 ? `
+        <div class="section-header more">
+          <span class="section-emoji">📋</span>
+          <h2 class="section-title">更多资讯</h2>
+        </div>
+        <div class="news-list">${normalsHtml}</div>
+      ` : ''}
+    </div>
+  `;
+}
+
+// ═════ History State ═════
+window.addEventListener('popstate', () => {
+  const hash = getHash();
+  if (hash) {
+    loadDigest(hash, false);
+  } else {
+    showHome();
+  }
+});
+
+// ═════ Initialize ═════
+(async () => {
+  try {
+    const res = await fetch('./manifest.json');
+    if (!res.ok) throw new Error('manifest.json 加载失败');
+
+    manifestData = await res.json();
+    if (!manifestData.dates?.length) throw new Error('暂无日报存档');
+
+    buildNav(manifestData.dates);
+
+    const hash = getHash();
+    if (hash && manifestData.dates.find(d => d.date === hash)) {
+      loadDigest(hash, false);
+    } else {
+      showHome();
+    }
+
+  } catch (e) {
+    document.getElementById('nav').innerHTML = `
+      <div style="padding:16px;color:var(--danger);font-family:var(--font-mono);font-size:12px">
+        ⚠️ ${e.message}
+      </div>
+    `;
+    setContent(`
+      <div class="state-screen error-state fade-enter">
+        <div class="state-icon">🎮</div>
+        <div class="state-title">加载失败</div>
+        <div class="state-desc">${e.message}</div>
+      </div>
+    `);
+  }
+})();
+</script>
+</body>
+</html>
