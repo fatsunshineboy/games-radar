@@ -7,6 +7,7 @@ import { loadConfig, loadPrompts } from "../utils/util_config.ts";
 import { calcFinalScore, enforceDiversity } from "../utils/util_scoring.ts";
 import { formatHistoryForPrompt } from "../utils/util_history.ts";
 import { parallelWithRetry } from "../utils/util_concurrency.ts";
+import { titleSimilarity } from "../rss.ts";
 import type { NewsItem, CandidateItem, ScoreBreakdown, HistorySummary } from "../type/types.ts";
 
 interface EditorOutput {
@@ -33,8 +34,36 @@ async function runEditorBatch(
   history: HistorySummary[],
   batchIndex: number
 ): Promise<CandidateItem[]> {
+  const cfg = loadConfig();
+  const threshold = cfg.deduplication.similarity_threshold;
+
+  // 历史标题列表（英文原标题）
+  const historyTitles = history.flatMap(h => h.titles);
+
+  // 过滤与历史相似的条目（节省LLM token）
+  const filteredBatch: NewsItem[] = [];
+  for (const item of batch) {
+    let maxSim = 0;
+    for (const histTitle of historyTitles) {
+      if (histTitle) {
+        const sim = titleSimilarity(item.title, histTitle);
+        if (sim > maxSim) maxSim = sim;
+      }
+    }
+    if (maxSim >= threshold) {
+      console.log(`  ⏭️  [editor] ${item.id}: 历史相似度 ${maxSim.toFixed(2)} >= ${threshold}，跳过`);
+      continue;
+    }
+    filteredBatch.push(item);
+  }
+
+  if (filteredBatch.length === 0) {
+    console.log(`  🤖 [editor] 批次 ${batchIndex + 1}: 全部与历史重复，跳过LLM`);
+    return [];
+  }
+
   // 构建输入数据（精简版）
-  const itemsJson = batch.map(i => ({
+  const itemsJson = filteredBatch.map(i => ({
     id: i.id,
     title: i.title,
     source: i.sourceName,
@@ -47,7 +76,7 @@ async function runEditorBatch(
   }));
 
   let userPrompt = prompts.user
-    .replace("{{item_count}}", String(batch.length))
+    .replace("{{item_count}}", String(filteredBatch.length))
     .replace("{{items}}", JSON.stringify(itemsJson, null, 2));
 
   // 添加历史摘要
@@ -59,7 +88,7 @@ async function runEditorBatch(
     userPrompt = userPrompt.replace(/\{\{#if history\}\}[\s\S]*?\{\{\/if\}\}/g, "");
   }
 
-  console.log(`  🤖 [editor] 批次 ${batchIndex + 1}: ${batch.length} 条资讯...`);
+  console.log(`  🤖 [editor] 批次 ${batchIndex + 1}: ${filteredBatch.length}/${batch.length} 条资讯（已过滤 ${batch.length - filteredBatch.length} 条重复）...`);
   const response = await callLlm(prompts.system, userPrompt);
   const output = parseJson<EditorOutput>(response);
 
@@ -72,7 +101,7 @@ async function runEditorBatch(
       continue;
     }
 
-    const original = batch.find(i => i.id === c.id);
+    const original = filteredBatch.find(i => i.id === c.id);
     if (!original) continue;
 
     const breakdown: ScoreBreakdown = {

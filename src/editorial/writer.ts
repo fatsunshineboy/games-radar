@@ -5,6 +5,7 @@
 import { callLlm, parseJson } from "../utils/util_llm.ts";
 import { loadConfig, loadPrompts } from "../utils/util_config.ts";
 import { parallelWithRetry } from "../utils/util_concurrency.ts";
+import { titleSimilarity } from "../rss.ts";
 import type { CandidateItem, DraftedItem } from "../type/types.ts";
 
 interface WriterOutput {
@@ -12,6 +13,30 @@ interface WriterOutput {
   article: string;
   tags: string[];
   category: string;
+}
+
+/** 检查中文标题与当天已生成标题的相似度 */
+function checkTodayDuplicate(
+  chineseTitle: string,
+  existingTitles: string[],
+  threshold: number
+): { isDuplicate: boolean; maxSimilarity: number; matchedTitle: string | null } {
+  let maxSim = 0;
+  let matchedTitle: string | null = null;
+
+  for (const existing of existingTitles) {
+    const sim = titleSimilarity(chineseTitle, existing);
+    if (sim > maxSim) {
+      maxSim = sim;
+      matchedTitle = existing;
+    }
+  }
+
+  return {
+    isDuplicate: maxSim >= threshold,
+    maxSimilarity: maxSim,
+    matchedTitle,
+  };
 }
 
 /** 处理单条资讯 */
@@ -69,6 +94,7 @@ export async function runWriter(
   const prompts = loadPrompts();
   const cfg = loadConfig();
   const concurrency = cfg.concurrency.writer;
+  const threshold = cfg.deduplication.similarity_threshold;
 
   console.log(`  ✍️  [writer] 处理 ${items.length} 条（并行 ${concurrency}）...`);
 
@@ -80,7 +106,21 @@ export async function runWriter(
 
   // 过滤掉失败的
   const successful = results.filter((r): r is DraftedItem => r !== null);
-  console.log(`  ✍️  [writer] 完成 ${successful.length}/${items.length} 条`);
 
-  return successful;
+  // 检查当天已生成标题的相似度（顺序检查，保留先生成的）
+  const passed: DraftedItem[] = [];
+  const todayTitles: string[] = [];
+
+  for (const item of successful) {
+    const dupCheck = checkTodayDuplicate(item.chineseTitle, todayTitles, threshold);
+    if (dupCheck.isDuplicate) {
+      console.log(`  ⏭️  [writer] ${item.id}: "${item.chineseTitle}" 与当天"${dupCheck.matchedTitle}"相似度 ${dupCheck.maxSimilarity.toFixed(2)} >= ${threshold}，丢弃`);
+      continue;
+    }
+    passed.push(item);
+    todayTitles.push(item.chineseTitle);  // 添加到当天已生成列表
+  }
+
+  console.log(`  ✍️  [writer] 完成 ${passed.length}/${items.length} 条（已过滤 ${successful.length - passed.length} 条当天重复）`);
+  return passed;
 }
