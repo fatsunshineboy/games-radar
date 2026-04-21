@@ -28,6 +28,9 @@ dist/
 # Runtime data (intermediate files)
 data/
 
+# Publish draft (not for commit)
+news.md
+
 # Env
 .env
 .env.*
