@@ -788,6 +788,19 @@
       border-bottom: 1px solid var(--border-subtle);
     }
 
+    .digest-banner {
+      margin-bottom: var(--gap-xl);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .digest-banner img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
     .digest-title {
       font-family: var(--font-display);
       font-size: 28px;
@@ -1510,7 +1523,10 @@ async function loadDigest(date, push = true) {
   document.getElementById('cwrap').scrollTop = 0;
 
   try {
-    const res = await fetch(`./digests/${date}.md`);
+    // GitHub raw URL 基础路径
+  const RAW_BASE = "https://raw.githubusercontent.com/fatsunshineboy/games-radar/main";
+
+  const res = await fetch(`${RAW_BASE}/digests/${date}.md`);
     if (!res.ok) {
       if (res.status === 404) {
         showError('', true);
@@ -1625,6 +1641,11 @@ function renderDigest(raw, date) {
         <h1 class="digest-title">🎮 游戏速报</h1>
         <span class="digest-date">${parts[0]}年${parts[1]}月${parts[2]}日 · ${meta.totalCount || items.length}条精选</span>
       </header>
+
+      <!-- Banner Image -->
+      <div class="digest-banner fade-enter">
+        <img src="https://raw.githubusercontent.com/fatsunshineboy/games-radar/main/images/banner-${date}.png" alt="今日资讯总结" onerror="this.parentElement.style.display='none'">
+      </div>
 
       ${headlines.length > 0 ? `
         <div class="section-header headlines">

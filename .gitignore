@@ -28,7 +28,15 @@ dist/
 # Runtime data (intermediate files)
 data/
 
-# Publish draft (not for commit)
+# News drafts (generated daily, not for commit)
+news/
+
+# Temporary files
+*.tmp
+*.bak
+
+# Root level generated files (not for commit)
+banner.png
 news.md
 
 # Env

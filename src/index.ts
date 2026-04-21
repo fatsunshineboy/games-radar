@@ -4,7 +4,7 @@
 
 import { collect, saveRawData } from "./rss.ts";
 import { runPipeline } from "./editorial/pipeline.ts";
-import { generate } from "./generate.ts";
+import { generate, generateExtras } from "./generate.ts";
 import type { RawData } from "./type/types.ts";
 import type { FinalItem } from "./type/types.ts";
 
@@ -13,7 +13,7 @@ async function main(): Promise<void> {
   const timings: Record<string, number> = {};
 
   console.log("=".repeat(60));
-  console.log("🎮 看点啥 (See Something)");
+  console.log("🎮 游戏速报");
   console.log("📰 游戏资讯每日简报");
   console.log("=".repeat(60));
 
@@ -66,6 +66,9 @@ async function main(): Promise<void> {
     console.log("🎨 [Phase 3] 生成页面...");
     const phase3Start = Date.now();
     generate(rawData.date, finalItems);
+
+    // Phase 4: 生成辅助内容（banner + 发布稿）
+    await generateExtras();
     timings["生成页面"] = Date.now() - phase3Start;
 
     const totalTime = Date.now() - startTime;
@@ -86,11 +89,10 @@ async function main(): Promise<void> {
     console.log(`   - 总计: ${(totalTime / 1000).toFixed(1)}s`);
     console.log();
     console.log(`📁 输出文件:`);
-    console.log(`   - HTML: dist/${rawData.date}/index.html`);
-    console.log(`   - MD:   digests/${rawData.date}.md`);
-    console.log(`   - 存档：dist/archive.html`);
-    console.log(`   - 方法论：dist/methodology.html`);
-    console.log(`   - RSS:  dist/feed.xml`);
+    console.log(`   - 日报：digests/${rawData.date}.md`);
+    console.log(`   - 索引：manifest.json`);
+    console.log(`   - Banner：images/banner-${rawData.date}.png`);
+    console.log(`   - 发布稿：news/news-${rawData.date}.md`);
     console.log("=".repeat(60));
   } catch (error) {
     console.error();

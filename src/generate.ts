@@ -3,7 +3,9 @@
  *
  * 流程：
  * 1. generateMarkdownDigest() → digests/${date}.md（带元数据注释）
- * 2. generateWeb() → 扫描所有 md，生成所有 HTML 页面
+ * 2. generateManifest() → manifest.json（前端动态渲染索引）
+ * 3. generateBanner() → images/banner-${date}.png（commit到仓库）
+ * 4. generatePublishMd() → news/news-${date}.md（commit到仓库）
  */
 
 import fs from "node:fs";
@@ -13,6 +15,8 @@ import { getBeijingDate, getDateParts } from "./utils/util_timezone.ts";
 import { generateManifest } from "./web/manifest.ts";
 import { getEmoji } from "./web/parser.ts";
 import { saveJson } from "./utils/util_file.ts";
+import { generateBanner, getBannerUrl } from "./banner.ts";
+import { generatePublishMd, getPublishUrl } from "./publish.ts";
 import type { FinalItem } from "./type/types.ts";
 
 const PROJECT_ROOT = path.resolve(import.meta.dirname, "..");
@@ -34,6 +38,18 @@ export function generate(
 
   // 3. 生成 manifest.json（前端动态渲染索引）
   generateManifest();
+}
+
+/**
+ * 生成辅助内容（banner图片 + 发布稿）
+ * 这些内容保存到 images/ 和 news/ 目录，commit到仓库
+ */
+export async function generateExtras(): Promise<void> {
+  // 4. 生成 Banner 图片
+  await generateBanner();
+
+  // 5. 生成发布稿
+  await generatePublishMd();
 }
 
 /**

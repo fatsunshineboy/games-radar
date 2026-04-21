@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths-ignore:
       - 'digests/**'
+      - 'images/**'
+      - 'news/**'
   schedule:
     - cron: '0 0 * * *'
   workflow_dispatch:
@@ -26,6 +28,8 @@ jobs:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      AIHUBMIX_API_KEY: ${{ secrets.AIHUBMIX_API_KEY }}
+      AIHUBMIX_BASE_URL: ${{ secrets.AIHUBMIX_BASE_URL }}
 
     steps:
       - name: Checkout
@@ -56,21 +60,13 @@ jobs:
             echo "has_digest=false" >> $GITHUB_OUTPUT
           fi
 
-          # Generate manifest.json for frontend
-          npx tsx -e "import { generateManifest } from './src/web/manifest.ts'; generateManifest();"
-
-      - name: Generate publish draft
-        if: steps.digest.outputs.has_digest == 'true'
-        run: |
-          npx tsx src/publish.ts
-
-      - name: Commit digests and manifest
+      - name: Commit generated content
         if: steps.digest.outputs.has_digest == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add digests/ manifest.json
+          git add digests/ images/ manifest.json
 
           if git diff --staged --quiet; then
             echo "No changes to commit"
@@ -82,16 +78,10 @@ jobs:
 
       - name: Prepare Pages deployment
         run: |
-          # Create deployment directory with required files
+          # Create deployment directory (minimal - only index.html and manifest)
           mkdir -p _site
           cp index.html _site/
           cp manifest.json _site/
-          cp -r digests _site/
-
-          # Copy publish draft if exists
-          if [ -f "news.md" ]; then
-            cp news.md _site/
-          fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5.0.0

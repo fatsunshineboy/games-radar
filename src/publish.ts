@@ -1,6 +1,6 @@
 /**
  * 发布稿生成器 - 生成适合游戏网站发布的简略版MD
- * 输出到 news.md（不commit，仅用于复制发表）
+ * 保存到 news/news-{date}.md（commit到仓库）
  */
 
 import { readFile } from "./utils/util_file.ts";
@@ -17,16 +17,20 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PROJECT_ROOT = path.resolve(__dirname, "..");
 
+/** 获取 GitHub raw URL */
+export function getPublishUrl(date: string): string {
+  return `https://raw.githubusercontent.com/fatsunshineboy/games-radar/main/news/news-${date}.md`;
+}
+
 /** 生成发布稿 */
-export async function generatePublishMd(): Promise<void> {
+export async function generatePublishMd(): Promise<string | null> {
   const date = getBeijingDate();
   const finalPath = `data/${date}/final.json`;
 
-  // 读取今日最终稿
   const finalData = readFile(finalPath);
   if (!finalData) {
     console.log("⚠️  [publish] 未找到今日稿件，跳过");
-    return;
+    return null;
   }
 
   let items: FinalItem[];
@@ -34,17 +38,16 @@ export async function generatePublishMd(): Promise<void> {
     items = JSON.parse(finalData);
   } catch {
     console.log("⚠️  [publish] 解析稿件失败，跳过");
-    return;
+    return null;
   }
 
   if (items.length === 0) {
     console.log("⚠️  [publish] 今日稿件为空，跳过");
-    return;
+    return null;
   }
 
   console.log(`\n📝 [publish] 生成发布稿 (${items.length} 条)...`);
 
-  // 构建输入数据
   const itemsInput = items.map((item, i) => ({
     rank: i + 1,
     title: item.chineseTitle,
@@ -55,6 +58,10 @@ export async function generatePublishMd(): Promise<void> {
   }));
 
   const cfg = loadConfig();
+  const siteName = cfg.site.name_zh || "游戏速报";
+
+  const [y, m, d] = date.split("-");
+  const dateText = `${y}年${m}月${d}日`;
 
   const systemPrompt = `你是一位专业的游戏新闻编辑，擅长撰写简洁、吸引人的新闻稿件。
 你的任务是将今日游戏资讯整理成适合在游戏社区/网站发布的格式。
@@ -67,12 +74,12 @@ export async function generatePublishMd(): Promise<void> {
 5. 保留原文链接（每条新闻末尾加"详情：[链接]"）
 
 输出格式：
-## 📰 今日游戏速报 (${date})
+## 📰 今日游戏速报 (${dateText})
 
-[新闻内容，每条一行]
+[新闻内容]
 
 ---
-共X条资讯 | 来源：游戏速报`;
+共X条资讯 | 来源：${siteName}`;
 
   const userPrompt = `请整理以下${items.length}条今日游戏资讯，生成适合发布的简略版稿件：
 
@@ -80,18 +87,21 @@ ${JSON.stringify(itemsInput, null, 2)}
 
 请直接输出Markdown内容，不要有任何解释。`;
 
-  // 调用LLM生成发布稿
   const publishMd = await callLlm(systemPrompt, userPrompt);
 
-  // 写入根目录 news.md
-  const publishPath = path.join(PROJECT_ROOT, "news.md");
+  // 创建 news 目录
+  const newsDir = path.join(PROJECT_ROOT, "news");
+  if (!fs.existsSync(newsDir)) {
+    fs.mkdirSync(newsDir, { recursive: true });
+  }
+
+  // 按日期命名保存
+  const publishPath = path.join(newsDir, `news-${date}.md`);
   fs.writeFileSync(publishPath, publishMd, "utf-8");
 
-  console.log(`✅ [publish] 发布稿已生成：news.md`);
-  console.log(`   → 可直接复制发表到游戏网站/社区`);
+  console.log(`✅ [publish] 发布稿已保存：news/news-${date}.md`);
+  return publishPath;
 }
 
 // 直接运行
-if (import.meta.url === `file://${process.argv[1]}`) {
-  generatePublishMd().catch(console.error);
-}
+generatePublishMd().catch(console.error);
