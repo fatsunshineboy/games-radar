@@ -6,7 +6,7 @@ llm:
   base_url: "${OPENAI_BASE_URL}"
   model: "${OPENAI_MODEL}"
   temperature: 0.3
-  max_tokens: 4096
+  max_tokens: 32768
   daily_budget: 200
   editor_batch_size: 30
 

@@ -25,7 +25,7 @@ export async function callLlm(systemPrompt: string, userPrompt: string): Promise
     },
     body: JSON.stringify({
       model: cfg.llm.model,
-      // max_tokens: cfg.llm.max_tokens,
+      max_tokens: cfg.llm.max_tokens||4096,
       temperature: cfg.llm.temperature,
       messages: [
         { role: "system", content: systemPrompt },
