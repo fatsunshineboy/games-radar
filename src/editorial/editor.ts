@@ -6,9 +6,8 @@ import { callLlm, parseJson } from "../utils/util_llm.ts";
 import { loadConfig, loadPrompts } from "../utils/util_config.ts";
 import { calcFinalScore, enforceDiversity } from "../utils/util_scoring.ts";
 import { formatHistoryForPrompt } from "../utils/util_history.ts";
+import { parallelWithRetry } from "../utils/util_concurrency.ts";
 import type { NewsItem, CandidateItem, ScoreBreakdown, HistorySummary } from "../type/types.ts";
-
-const BATCH_SIZE = loadConfig().llm.editor_batch_size; // 每批处理数量
 
 interface EditorOutput {
   candidates: Array<{
@@ -104,27 +103,32 @@ async function runEditorBatch(
   return candidates;
 }
 
-/** 运行编辑智能体（分批处理） */
+/** 运行编辑智能体（分批并行处理） */
 export async function runEditor(
   items: NewsItem[],
   history: HistorySummary[]
 ): Promise<CandidateItem[]> {
   const prompts = loadPrompts();
   const cfg = loadConfig();
+  const batchSize = cfg.concurrency.editor_batch_size;
+  const concurrency = cfg.concurrency.editor_batch;
 
-  console.log(`  📊 [editor] 总计 ${items.length} 条资讯，分批处理...`);
+  console.log(`  📊 [editor] 总计 ${items.length} 条资讯，分批处理（并行 ${concurrency}）...`);
 
-  // 分批处理
-  const allCandidates: CandidateItem[] = [];
-  const batchCount = Math.ceil(items.length / BATCH_SIZE);
-
-  for (let i = 0; i < items.length; i += BATCH_SIZE) {
-    const batchIndex = Math.floor(i / BATCH_SIZE);
-    const batch = items.slice(i, i + BATCH_SIZE);
-    const batchCandidates = await runEditorBatch(batch, prompts.editor, history, batchIndex);
-    allCandidates.push(...batchCandidates);
+  // 分批
+  const batches: NewsItem[][] = [];
+  for (let i = 0; i < items.length; i += batchSize) {
+    batches.push(items.slice(i, i + batchSize));
   }
 
+  // 并行处理批次
+  const batchResults = await parallelWithRetry(
+    batches,
+    concurrency,
+    (batch, index) => runEditorBatch(batch, prompts.editor, history, index)
+  );
+
+  const allCandidates = batchResults.flat();
   console.log(`  📊 [editor] 所有批次完成，共筛选出 ${allCandidates.length} 条候选`);
 
   // 确保领域多样性
@@ -140,7 +144,7 @@ export async function runEditor(
   const result = [...topItems, ...normalItems];
 
   console.log(`  📋 [editor] 最终筛选出 ${result.length} 条 (前${topItems.length}条头条 + 后${normalItems.length}条要闻)`);
-  console.log(`  💰 [editor] LLM 调用 ${batchCount} 次（分批）`);
+  console.log(`  💰 [editor] LLM 调用 ${batches.length} 次（分批并行）`);
 
   return result;
 }

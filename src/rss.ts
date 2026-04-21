@@ -6,7 +6,8 @@
 import { loadConfig, loadSources } from "./utils/util_config.ts";
 import { saveJson } from "./utils/util_file.ts";
 import { getBeijingDate, toBeijingTime } from "./utils/util_timezone.ts";
-import type { NewsItem, RawData, Source } from "./type/types.ts";
+import { parallelWithRetry, parallel } from "./utils/util_concurrency.ts";
+import type { NewsItem, RawData, Source, AppConfig } from "./type/types.ts";
 import { Parser } from "htmlparser2";
 import { Writable } from "stream";
 
@@ -109,10 +110,10 @@ async function fetchContent(url: string, maxLength: number): Promise<string> {
           resultText += cleaned;
           
           // 如果长度已够，直接关闭解析器并中止请求
-          if (resultText.length >= maxLength) {
-            parser.end();
-            controller.abort(); 
-          }
+          // if (resultText.length >= maxLength) {
+          //   parser.end();
+          //   controller.abort(); 
+          // }
         }
       },
       onclosetag(name) {
@@ -208,6 +209,66 @@ function crossValidate(items: NewsItem[], threshold: number): NewsItem[] {
 
 // ============ 主收集函数 ============
 
+/** 单个RSS源的收集结果 */
+interface SourceResult {
+  source: Source;
+  items: NewsItem[];
+  error?: string;
+}
+
+/** 收集单个RSS源 */
+async function collectSource(source: Source, cfg: AppConfig): Promise<SourceResult> {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+
+    const res = await fetch(source.url, {
+      headers: { "User-Agent": "SeeSomething/2.0 (Gaming News Aggregator)" },
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    if (!res.ok) {
+      console.log(`  ❌ [${source.id}] HTTP ${res.status}`);
+      return { source, items: [], error: `HTTP ${res.status}` };
+    }
+
+    const xml = await res.text();
+    const rawItems = parseRss(xml).slice(0, cfg.collection.max_per_source);
+
+    // 并行获取文章内容
+    const contents = cfg.collection.fetch_content
+      ? await parallel(
+          rawItems,
+          cfg.collection.content_concurrency,
+          (raw) => fetchContent(raw.link, cfg.collection.content_max_length)
+        )
+      : rawItems.map(() => "");
+
+    const items: NewsItem[] = rawItems.map((raw, i) => ({
+      id: Buffer.from(raw.link).toString("base64url"),
+      title: raw.title,
+      link: raw.link,
+      source: source.id,
+      sourceName: source.name,
+      tier: source.tier,
+      category: source.category,
+      description: raw.description,
+      content: contents[i],
+      sourceCount: 0,
+      allSources: [],
+      timestamp: toBeijingTime(raw.pubDate),
+      pubDate: raw.pubDate,
+    }));
+
+    console.log(`  ✅ [${source.id}] ${items.length} 条`);
+    return { source, items };
+  } catch (err) {
+    console.error(`  ❌ [${source.id}] 错误: ${err}`);
+    return { source, items: [], error: String(err) };
+  }
+}
+
 /** 收集所有 RSS 源 */
 export async function collect(): Promise<RawData> {
   const cfg = loadConfig();
@@ -215,67 +276,22 @@ export async function collect(): Promise<RawData> {
   const date = getBeijingDate();
   const fetchedAt = toBeijingTime(new Date());
 
-  console.log(`📡 [rss] 开始收集 ${sources.length} 个源...`);
+  console.log(`📡 [rss] 开始收集 ${sources.length} 个源（并行 ${cfg.collection.rss_concurrency}）...`);
 
+  // 并行获取所有RSS源
+  const results = await parallelWithRetry(
+    sources,
+    cfg.collection.rss_concurrency,
+    (source) => collectSource(source, cfg)
+  );
+
+  // 合并所有条目
   const rawItems: NewsItem[] = [];
   const sourceStats: Record<string, number> = {};
 
-  for (const source of sources) {
-    try {
-      await new Promise(r => setTimeout(r, cfg.collection.rate_limit_ms));
-
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 15000); // 15 秒超时
-
-      const res = await fetch(source.url, {
-        headers: { "User-Agent": "SeeSomething/2.0 (Gaming News Aggregator)" },
-        signal: controller.signal,
-      });
-      clearTimeout(timeout);
-
-      if (!res.ok) {
-        console.log(`  ❌ [${source.id}] HTTP ${res.status}`);
-        sourceStats[source.id] = 0;
-        continue;
-      }
-
-      const xml = await res.text();
-      const items = parseRss(xml).slice(0, cfg.collection.max_per_source);
-
-      let count = 0;
-      for (const raw of items) {
-        const id = Buffer.from(raw.link).toString("base64url");
-
-        let description = raw.description;
-        let content = "";
-        if (cfg.collection.fetch_content && !content) {
-          content = await fetchContent(raw.link, cfg.collection.content_max_length);
-        }
-
-        rawItems.push({
-          id,
-          title: raw.title,
-          link: raw.link,
-          source: source.id,
-          sourceName: source.name,
-          tier: source.tier,
-          category: source.category,
-          description,
-          content,
-          sourceCount: 0,
-          allSources: [],
-          timestamp: toBeijingTime(raw.pubDate),
-          pubDate: raw.pubDate,
-        });
-        count++;
-      }
-
-      sourceStats[source.id] = count;
-      console.log(`  ✅ [${source.id}] ${count} 条`);
-    } catch (err) {
-      console.error(`  ❌ [${source.id}] 错误: ${err}`);
-      sourceStats[source.id] = 0;
-    }
+  for (const result of results) {
+    rawItems.push(...result.items);
+    sourceStats[result.source.id] = result.items.length;
   }
 
   // 交叉验证去重

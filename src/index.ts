@@ -9,6 +9,9 @@ import type { RawData } from "./type/types.ts";
 import type { FinalItem } from "./type/types.ts";
 
 async function main(): Promise<void> {
+  const startTime = Date.now();
+  const timings: Record<string, number> = {};
+
   console.log("=".repeat(60));
   console.log("🎮 看点啥 (See Something)");
   console.log("📰 游戏资讯每日简报");
@@ -17,8 +20,10 @@ async function main(): Promise<void> {
   try {
     // Phase 1: 收集
     console.log("📡 [Phase 1] 收集 RSS 数据...");
+    const phase1Start = Date.now();
     const rawData: RawData = await collect();
     saveRawData(rawData);
+    timings["收集"] = Date.now() - phase1Start;
 
     if (rawData.items.length === 0) {
       console.log("⚠️  没有收集到内容，退出");
@@ -39,8 +44,10 @@ async function main(): Promise<void> {
     console.log("   - Writer: 翻译撰写");
     console.log("   - Reviewer: 审核把关");
     console.log();
-    
+
+    const phase2Start = Date.now();
     const finalItems: FinalItem[] = await runPipeline(rawData.items);
+    timings["编辑部"] = Date.now() - phase2Start;
 
     if (finalItems.length === 0) {
       console.log("⚠️  没有内容通过审核，退出");
@@ -57,7 +64,11 @@ async function main(): Promise<void> {
 
     // Phase 3: 生成页面
     console.log("🎨 [Phase 3] 生成页面...");
+    const phase3Start = Date.now();
     generate(rawData.date, finalItems);
+    timings["生成页面"] = Date.now() - phase3Start;
+
+    const totalTime = Date.now() - startTime;
 
     console.log();
     console.log("=".repeat(60));
@@ -67,6 +78,12 @@ async function main(): Promise<void> {
     console.log(`   - 收集：${rawData.items.length} 条`);
     console.log(`   - 精选：${finalItems.length} 条`);
     console.log(`   - 入选率：${((finalItems.length / rawData.items.length) * 100).toFixed(1)}%`);
+    console.log();
+    console.log(`⏱️  耗时统计:`);
+    for (const [phase, ms] of Object.entries(timings)) {
+      console.log(`   - ${phase}: ${(ms / 1000).toFixed(1)}s`);
+    }
+    console.log(`   - 总计: ${(totalTime / 1000).toFixed(1)}s`);
     console.log();
     console.log(`📁 输出文件:`);
     console.log(`   - HTML: dist/${rawData.date}/index.html`);
@@ -79,7 +96,7 @@ async function main(): Promise<void> {
     console.error();
     console.error("❌ 发生错误:");
     console.error("=".repeat(60));
-    
+
     if (error instanceof Error) {
       console.error(`错误类型：${error.constructor.name}`);
       console.error(`错误信息：${error.message}`);
@@ -89,7 +106,7 @@ async function main(): Promise<void> {
     } else {
       console.error(error);
     }
-    
+
     console.error();
     console.error("💡 排查建议:");
     console.error("   1. 检查网络连接");
@@ -97,7 +114,7 @@ async function main(): Promise<void> {
     console.error("   3. 检查 YAML 配置文件格式");
     console.error("   4. 查看上述错误信息");
     console.error("=".repeat(60));
-    
+
     process.exit(1);
   }
 }

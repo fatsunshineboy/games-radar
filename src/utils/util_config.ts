@@ -31,6 +31,8 @@ export function loadConfig(): AppConfig {
     const configPath = path.resolve(PROJECT_ROOT, "config/config.yaml");
     const raw = yaml.load(fs.readFileSync(configPath, "utf-8")) as Record<string, unknown>;
     const llm = raw["llm"] as Record<string, unknown>;
+    const collection = raw["collection"] as Record<string, unknown>;
+    const concurrency = raw["concurrency"] as Record<string, unknown> | undefined;
 
     _config = {
       llm: {
@@ -40,9 +42,22 @@ export function loadConfig(): AppConfig {
         temperature: (llm["temperature"] as number) ?? 0.3,
         max_tokens: (llm["max_tokens"] as number) ?? 4096,
         daily_budget: (llm["daily_budget"] as number) ?? 200,
-        editor_batch_size: (llm["editor_batch_size"] as number) ?? 50,
       },
-      collection: raw["collection"] as AppConfig["collection"],
+      collection: {
+        rss_concurrency: (collection["rss_concurrency"] as number) ?? 10,
+        content_concurrency: (collection["content_concurrency"] as number) ?? 5,
+        max_per_source: (collection["max_per_source"] as number) ?? 200,
+        fetch_content: (collection["fetch_content"] as boolean) ?? true,
+        content_max_length: (collection["content_max_length"] as number) ?? 20000,
+      },
+      concurrency: {
+        editor_batch_size: (concurrency?.["editor_batch_size"] as number) ?? 20,
+        editor_batch: (concurrency?.["editor_batch"] as number) ?? 3,
+        writer: (concurrency?.["writer"] as number) ?? 5,
+        reviewer: (concurrency?.["reviewer"] as number) ?? 5,
+        retry_delay_ms: (concurrency?.["retry_delay_ms"] as number) ?? 1000,
+        max_retries: (concurrency?.["max_retries"] as number) ?? 3,
+      },
       deduplication: raw["deduplication"] as AppConfig["deduplication"],
       scoring: raw["scoring"] as AppConfig["scoring"],
       output: raw["output"] as AppConfig["output"],

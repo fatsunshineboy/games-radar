@@ -100,13 +100,21 @@ export interface AppConfig {
     temperature: number;
     max_tokens: number;
     daily_budget: number;
-    editor_batch_size:number;
   };
   collection: {
-    rate_limit_ms: number;
+    rss_concurrency: number;
+    content_concurrency: number;
     max_per_source: number;
     fetch_content: boolean;
     content_max_length: number;
+  };
+  concurrency: {
+    editor_batch_size: number;
+    editor_batch: number;
+    writer: number;
+    reviewer: number;
+    retry_delay_ms: number;
+    max_retries: number;
   };
   deduplication: {
     similarity_threshold: number;
