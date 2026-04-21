@@ -12,7 +12,7 @@ llm:
 
 # 编辑部并发设置
 concurrency:
-  editor_batch_size: 5
+  editor_batch_size: 15
   editor_batch: 10            # Editor批次并行数
   writer: 4                  # Writer并行数
   reviewer: 4                # Reviewer并行数

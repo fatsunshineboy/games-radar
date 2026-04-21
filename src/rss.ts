@@ -153,17 +153,41 @@ async function fetchContent(url: string, maxLength: number): Promise<string> {
 
 // ============ 标题相似度 ============
 
-/** Jaccard 相似系数（基于关键词） */
+/** 计算标题相似度（支持英文空格分词 + 中文字符分词） */
 function titleSimilarity(a: string, b: string): number {
-  const wordsA = new Set(a.toLowerCase().split(/\s+/).filter(w => w.length > 3));
-  const wordsB = new Set(b.toLowerCase().split(/\s+/).filter(w => w.length > 3));
+  const textA = a.toLowerCase();
+  const textB = b.toLowerCase();
 
-  if (wordsA.size === 0 || wordsB.size === 0) return 0;
+  // 提取关键词：英文按空格分词，中文按2-gram分词
+  const tokensA = tokenize(textA);
+  const tokensB = tokenize(textB);
 
-  const intersection = [...wordsA].filter(w => wordsB.has(w)).length;
-  const union = wordsA.size + wordsB.size - intersection;
+  if (tokensA.size === 0 || tokensB.size === 0) return 0;
+
+  const intersection = [...tokensA].filter(t => tokensB.has(t)).length;
+  const union = tokensA.size + tokensB.size - intersection;
 
   return union > 0 ? intersection / union : 0;
+}
+
+/** 分词：英文按空格，中文按字符n-gram */
+function tokenize(text: string): Set<string> {
+  const tokens = new Set<string>();
+
+  // 英文单词（按空格分割）
+  const words = text.split(/\s+/).filter(w => w.length > 2);
+  for (const w of words) {
+    tokens.add(w);
+  }
+
+  // 中文/混合文本：使用2-gram提取字符组合
+  // 例如："刺客信条" → ["刺客", "客信", "信条"]
+  const chars = text.replace(/[a-z0-9\s]/gi, ''); // 只保留非英文数字字符
+  for (let i = 0; i < chars.length - 1; i++) {
+    tokens.add(chars.slice(i, i + 2));
+  }
+
+  return tokens;
 }
 
 /** 交叉验证去重：先按ID（link）去重，再按标题相似度合并 */

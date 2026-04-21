@@ -16,7 +16,7 @@ import { generateManifest } from "./web/manifest.ts";
 import { getEmoji } from "./web/parser.ts";
 import { saveJson } from "./utils/util_file.ts";
 import { generateBanner, getBannerUrl } from "./banner.ts";
-import { generatePublishMd, getPublishUrl } from "./publish.ts";
+import { generatePublishMd } from "./publish.ts";
 import type { FinalItem } from "./type/types.ts";
 
 const PROJECT_ROOT = path.resolve(import.meta.dirname, "..");
