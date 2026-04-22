@@ -1,0 +1,193 @@
+# 关键实体词列表 - 用于标题相似度判断
+# 当两标题共享 >= 2 个实体时，判定为高相似度
+
+# 实体别名归一化（缩写/中文名映射到标准英文名）
+aliases:
+  cod: call of duty
+  使命召唤: call of duty
+  xgp: xbox game pass
+  game pass: xbox game pass
+  ps plus: playstation plus
+  wow: world of warcraft
+  魔兽世界: world of warcraft
+  地狱潜者: helldivers
+  地狱潜者2: helldivers 2
+  阿尔比恩: albion online
+  帝国时代神话: age of mythology
+  尼尔: nier
+  光环: halo
+  战神: god of war
+  马里奥: mario
+  塞尔达: zelda
+  宝可梦: pokemon
+  最终幻想: final fantasy
+
+# 产品/服务
+products:
+  - xgp
+  - xbox game pass
+  - game pass
+  - ps plus
+  - playstation plus
+  - steam
+  - epic
+  - nintendo switch
+  - switch
+
+# 公司
+companies:
+  - xbox
+  - microsoft
+  - 微软
+  - 索尼
+  - sony
+  - nintendo
+  - 任天堂
+  - valve
+  - epic games
+  - ea
+  - activision
+  - blizzard
+  - 动视暴雪
+  - ubisoft
+  - capcom
+  - sega
+  - square enix
+  - 史克威尔艾尼克斯
+  - bethesda
+  - cd projekt
+  - bandai
+  - 腾讯
+  - 网易
+  - arrowhead
+
+# 系列游戏名
+game_series:
+  # FPS/射击
+  - call of duty
+  - cod
+  - 使命召唤
+  - halo
+  - 光环
+  - overwatch
+  - 守望先锋
+  - counter strike
+  - cs
+  - valorant
+  - apex
+  - apex legends
+  - pubg
+  - 绝地求生
+  - fortnite
+  - 堡垒之夜
+  - rainbow six
+  - 彩虹六号
+  - destiny
+  - 命运
+
+  # RPG
+  - final fantasy
+  - 最终幻想
+  - persona
+  - 女神异闻录
+  - elden ring
+  - dark souls
+  - 黑暗之魂
+  - sekiro
+  - 只狼
+  - nier
+  - 尼尔
+  - dragon age
+  - 龙腾世纪
+  - mass effect
+  - 质量效应
+  - cyberpunk
+  - 赛博朋克
+  - witcher
+  - 巫师
+  - diablo
+  - 暗黑破坏神
+
+  # 动作冒险
+  - assassin creed
+  - 刺客信条
+  - god of war
+  - 战神
+  - spider man
+  - 蜘蛛侠
+  - batman
+  - 蝙蝠侠
+  - gta
+  - grand theft auto
+  - forza
+  - far cry
+  - 孤岛惊魂
+
+  # 任天堂
+  - mario
+  - 马里奥
+  - zelda
+  - 塞尔达
+  - pokemon
+  - 宝可梦
+  - pikmin
+  - 皮克敏
+
+  # 体育
+  - fifa
+  - ea sports fc
+  - madden
+  - nba
+  - wwe
+
+  # 沙盒/生存
+  - minecraft
+  - 我的世界
+  - roblox
+  - 矢量
+
+  # MMO
+  - world of warcraft
+  - 魔兽世界
+  - wow
+  - albion online
+  - 阿尔比恩
+
+  # RTS
+  - age of empires
+  - 帝国时代
+  - age of mythology
+  - 帝国时代神话
+
+  # 其他
+  - helldivers
+  - helldivers 2
+  - 地狱潜者
+  - 地狱潜者2
+  - star wars
+  - 星球大战
+  - harry potter
+  - 哈利波特
+  - lord of the rings
+  - 指环王
+
+# 主机/硬件
+hardware:
+  - ps5
+  - playstation 5
+  - ps4
+  - playstation 4
+  - xbox series
+  - xbox one
+  - series x
+  - series s
+  - xss
+  - xsx
+  - project helix
+  - helix
+
+# 动作词同义词组（用于单实体场景辅助判断，组内词视为相同动作）
+action_groups:
+  price_change: [降价, 涨价, 下调, 上调, cut, drop, price]
+  release: [发布, 公布, 宣布, 上线, 推出, 登陆, launch, release]
+  update: [更新, patch, dlc, update]

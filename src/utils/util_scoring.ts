@@ -7,7 +7,7 @@
 import { loadConfig } from "./util_config.ts";
 import { hoursAgo } from "./util_timezone.ts";
 import type { CandidateItem, NewsItem, ScoreBreakdown, HistorySummary } from "../type/types.ts";
-import { titleSimilarity } from "../rss.ts";
+import { titleSimilarity } from "../utils/util_similarity.ts";
 
 /** 计算来源权威加成 */
 export function calcTierBonus(tier: number): number {

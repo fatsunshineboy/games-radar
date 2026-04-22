@@ -7,7 +7,7 @@ import { loadConfig, loadPrompts } from "../utils/util_config.ts";
 import { calcFinalScore, enforceDiversity } from "../utils/util_scoring.ts";
 import { formatHistoryForPrompt } from "../utils/util_history.ts";
 import { parallelWithRetry } from "../utils/util_concurrency.ts";
-import { titleSimilarity } from "../rss.ts";
+import { titleSimilarity } from "../utils/util_similarity.ts";
 import type { NewsItem, CandidateItem, ScoreBreakdown, HistorySummary } from "../type/types.ts";
 
 interface EditorOutput {

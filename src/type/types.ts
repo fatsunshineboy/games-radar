@@ -153,3 +153,13 @@ export interface PromptConfig {
   writer: { system: string; user: string };
   reviewer: { system: string; user: string };
 }
+
+/** 实体配置（用于标题相似度判断） */
+export interface EntityConfig {
+  aliases: Record<string, string>;  // 别名归一化映射
+  products: string[];
+  companies: string[];
+  game_series: string[];
+  hardware: string[];
+  action_groups: Record<string, string[]>;  // 动作词同义词组
+}

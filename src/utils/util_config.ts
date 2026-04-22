@@ -1,5 +1,5 @@
 import yaml from "js-yaml";
-import type { AppConfig, PromptConfig, Source } from "../type/types.ts";
+import type { AppConfig, PromptConfig, Source, EntityConfig } from "../type/types.ts";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -15,6 +15,7 @@ const PROJECT_ROOT = path.resolve(
 let _config: AppConfig | null = null;
 let _prompts: PromptConfig | null = null;
 let _sources: Source[] | null = null;
+let _entities: EntityConfig | null = null;
 let _callCount = 0;
 
 /** 解析环境变量占位符 ${VAR_NAME} */
@@ -102,4 +103,33 @@ export function loadSources(): Source[] {
     }
   }
   return _sources;
+}
+
+/** 加载实体配置（用于标题相似度判断） */
+export function loadEntities(): EntityConfig {
+  if (!_entities) {
+    const entitiesPath = path.resolve(PROJECT_ROOT, "config/entities.yaml");
+    try {
+      const raw = yaml.load(fs.readFileSync(entitiesPath, "utf-8")) as Record<string, unknown>;
+      _entities = {
+        aliases: (raw["aliases"] as Record<string, string>) || {},
+        products: (raw["products"] as string[]) || [],
+        companies: (raw["companies"] as string[]) || [],
+        game_series: (raw["game_series"] as string[]) || [],
+        hardware: (raw["hardware"] as string[]) || [],
+        action_groups: (raw["action_groups"] as Record<string, string[]>) || {},
+      };
+    } catch {
+      // 如果文件不存在，返回空配置
+      _entities = {
+        aliases: {},
+        products: [],
+        companies: [],
+        game_series: [],
+        hardware: [],
+        action_groups: {},
+      };
+    }
+  }
+  return _entities;
 }
