@@ -135,7 +135,7 @@ async function generateImage(prompt: string, outputPath: string): Promise<boolea
   const baseUrl = process.env.AIHUBMIX_BASE_URL || "https://aihubmix.com";
 
   try {
-    const res = await fetch(`${baseUrl}/v1/models/openai/gpt-image-1.5/predictions`, {
+    const res = await fetch(`${baseUrl}/v1/models/openai/gpt-image-2/predictions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
