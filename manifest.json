@@ -1,11 +1,39 @@
 {
-  "generated": "2026-04-23T02:19:31.533Z",
+  "generated": "2026-04-24T02:13:10.652Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-04-24",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "🎮",
+          "title": "《COD》第7赛季中期更新4月30日上线",
+          "score": 146,
+          "article": "动视于4月23日通过Xbox Wire官方博客宣布，《使命召唤：黑色行动7》与《战区》第3赛季中期更新“Reloaded Recon”将于4月30日全平台上线。本次更新包含多人模式新地图“Onsen”、回归地图“Summit”和“Hacienda”，以及全新跑酷模式“Freerun”；僵尸模式新增回合制地图“Totenreich”和名为“Necropincer”的新敌人；战区模式加入“Hot Pursuit”和“Prop Hunt Royale”等限时模式。此外，PvE模式“Endgame”将在限时内保持免费游玩，并推出第二章行动“Operation Broken Mirror”，玩家可完成挑"
+        },
+        {
+          "number": "02",
+          "emoji": "🎨",
+          "title": "ID@Xbox春季发布会公布海量独立游戏",
+          "score": 136,
+          "article": "微软于4月23日通过Xbox Wire官方博客发布了ID@Xbox春季发布会回顾，公布了超过15款独立游戏的最新消息。其中，《Echo Generation 2》将于5月27日发售，《Crashout Crew》定档5月28日，而《Inkonbini: One Store. Many Stories.》则于4月30日上线。多款游戏如《Deep Dish Dungeon》、《Screenbound》等均确认首发加入Xbox Game Pass，并支持Xbox Play Anywhere跨平台购买。此外，《Albion Online》已正式登陆Xbox Series X|S和PC平台，并同步加入G"
+        },
+        {
+          "number": "03",
+          "emoji": "💻",
+          "title": "AMD前高管暗示FSR 4旧卡支持受阻",
+          "score": 136,
+          "article": "据PC Gamer报道，AMD前FSR开发负责人Colin Riley在回应为何不为RDNA 2/3显卡发布FSR 4的INT8版本时，使用了“我最好别说话，否则麻烦大了”的穆里尼奥表情包。此前，AMD意外在GitHub上发布了FSR 4的INT8源代码，该版本通过机器学习实现画质提升，但仅官方支持PS5 Pro，而社区工具Optiscaler已能使其在旧显卡上运行。AMD官方曾表示可能以测试版形式发布，但至今未行动。Riley本人还批评公司领导层“不理解软件、生态系统和游戏技术”。"
+        }
+      ]
+    },
     {
       "date": "2026-04-23",
       "totalCount": 10,
