@@ -107,7 +107,7 @@ function generateMarkdownDigest(
       if (item.sourceCount > 1) md += ` · ${item.sourceCount}源报道`;
       md += ` · ⭐ ${item.finalScore.toFixed(1)}\n\n`;
 
-      if (item.tags.length > 0) {
+      if (item.tags?.length > 0) {
         md += `标签：${item.tags.map(t => `\`${t}\``).join(" ")}\n\n`;
       }
       md += `---\n\n`;
