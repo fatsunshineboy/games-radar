@@ -1,11 +1,39 @@
 {
-  "generated": "2026-04-25T10:46:36.235Z",
+  "generated": "2026-04-26T02:18:08.522Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-04-26",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "💻",
+          "title": "《地狱潜者2》新战债“机甲专家”4月28日上线",
+          "score": 134,
+          "article": "Arrowhead Games宣布，《地狱潜者2》新战债“Exo Experts”（机甲专家）将于4月28日上线。该战债将新增两款外骨骼机甲：EXO-51 Lumberer配备反坦克炮和火焰喷射器，实现反装甲与清杂兼顾；EXO-55 Breakthrough则搭载防空炮和防弹盾牌，提供新的防御性玩法。此外，战债还包含MGX-42子弹风暴机枪（一次性高射速武器）、SMG-203 Gallant冲锋枪（高穿甲）及P-33导弹手枪等新武器，以及加速移动的装甲套件。阵容相当于将游戏当前可用的机甲种类翻倍。"
+        },
+        {
+          "number": "02",
+          "emoji": "💼",
+          "title": "Xbox Game Pass将推入门版捆绑Discord",
+          "score": 129,
+          "article": "据Eurogamer报道，微软在4月21日永久下调Xbox Game Pass Ultimate价格后，又传出将推出名为“Starter Edition”的新订阅等级。该等级由数据挖掘者在Discord更新文件中发现，其内容目录与现有的Game Pass Essential类似，但将包含一个月的Discord Nitro订阅以及10小时的Xbox云游戏串流时长，而非无限串流。目前微软官方尚未确认此消息，但近期的折扣与perks调整表明公司正在重新评估订阅体系。"
+        },
+        {
+          "number": "03",
+          "emoji": "🎭",
+          "title": "《蜘蛛侠：暗影》预告发布定档5月",
+          "score": 107,
+          "article": "亚马逊Prime Video于4月26日在CCXP 2026展会上发布了《蜘蛛侠：暗影》正式预告片。该剧由尼古拉斯·凯奇饰演本·莱利，故事设定在1930年代纽约，聚焦一名落魄私家侦探在调查失踪案时遭遇沙人、兆瓦等超能力反派。剧集将于5月25日在MGM+线性频道首播，5月27日上线Prime Video，并支持“经典黑白”与“全真彩色”两种观看模式。制片阵容包括《蜘蛛侠：平行宇宙》团队菲尔·罗德、克里斯托弗·米勒以及艾米·帕斯卡尔。"
+        }
+      ]
+    },
     {
       "date": "2026-04-25",
       "totalCount": 10,
