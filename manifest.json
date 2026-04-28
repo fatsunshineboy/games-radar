@@ -1,11 +1,39 @@
 {
-  "generated": "2026-04-26T02:18:08.522Z",
+  "generated": "2026-04-28T02:36:42.810Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-04-28",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "🎮",
+          "title": "COD黑色行动7&战区第三赛季中期更新",
+          "score": 128,
+          "article": "动视于4月23日通过Xbox Wire公布了《使命召唤：黑色行动7》与《战区》第三赛季中期更新“Reloaded Recon”的完整内容。该更新将于4月30日上线，新增多人在线地图日本温泉主题的Onsen（支持6v6/2v2）、重置版Summit和回归地图Hacienda；引入全新Freerun跑酷模式以及“Heat Wave Havoc”和“Freeze Tag”玩法；僵尸模式推出新回合制地图Totenreich，增加新敌人Necropincer和奇迹武器Jotunn Star；战区模式新增Hot Pursuit和Prop Hunt Royale模式，并加入新的破片手榴弹和Spikes装备。"
+        },
+        {
+          "number": "02",
+          "emoji": "🎮",
+          "title": "《黑旗重制版7月9日登陆PS5》",
+          "score": 123,
+          "article": "育碧于4月23日通过PlayStation Blog正式公布了《刺客信条：黑旗 重制版》（Assassin's Creed Black Flag Resynced），该作将于2026年7月9日登陆PS5平台。这部距原版发售已逾13年的重制作品并非简单的高清移植：它采用了最新版Anvil引擎，针对PS5 Pro进行了PSSR超分辨率与光线追踪优化，并加入了由原编剧Darby McDevitt撰写的新剧情章节、新船员角色以及全新的战斗、潜行与攀爬系统。爱德华·肯威的原始配音演员Matt Ryan回归献声，法国音乐人Woodkid也为游戏扩充了原声音轨。"
+        },
+        {
+          "number": "03",
+          "emoji": "💼",
+          "title": "Xbox公布2026夏季游戏节参展阵容",
+          "score": 122,
+          "article": "微软于4月27日通过Xbox Wire官宣了2026年夏季游戏节Play Days的参展阵容。此次共有9款游戏提供试玩，涵盖《Grounded 2》《Aniimo》《Grave Seasons》《Gungrave Gore: Blood Heat》《Valor Mortis》《Erosion》《Don't Fret》《Way to the Woods》《My Arms Are Longer Now》等作品，开发者来自美国、加拿大、中国、韩国、波兰、澳大利亚等多个国家。每款游戏均设定了15-60分钟的试玩时长，部分作品如《Grounded 2》将展示春季大型更新内容，而《Aniimo》则是一款来"
+        }
+      ]
+    },
     {
       "date": "2026-04-26",
       "totalCount": 10,
