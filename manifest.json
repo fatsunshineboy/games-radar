@@ -1,11 +1,39 @@
 {
-  "generated": "2026-04-28T02:36:42.810Z",
+  "generated": "2026-04-29T02:36:30.989Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-04-29",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "🇯🇵",
+          "title": "FF7重生今登Xbox/Switch2试玩",
+          "score": 141,
+          "article": "Square Enix于2026年4月发布了《最终幻想7重生》在Xbox Series、Switch 2和微软商店的试玩版。根据Eurogamer的30分钟试玩报告，Switch 2掌机模式下画面接近PS5原版，依靠DLSS实现低分辨率渲染后再升采样，仅在毛发边缘和背景纹理上有轻微模糊，中过场动画偶尔出现物体加载延迟——但帧率稳定在30fps，粒子效果和战斗特效与PS5版本几乎无异。这款游戏于2024年首发PS5，如今在更弱的硬件上以基本同等的视觉品质运行，展示了Square Enix在移植工程上的技术水平。"
+        },
+        {
+          "number": "02",
+          "emoji": "💻",
+          "title": "《血之黎明行者》9月3日全平台发售",
+          "score": 132,
+          "article": "Rebel Wolves工作室开发的开放世界暗黑奇幻动作RPG《血之黎明行者》将于9月3日登陆PS5、Xbox Series及PC（Steam/微软商店），发行商万代南梦宫同步开启预购。标准版售价69.99美元，Eclipse版79.99美元，内含数字设定集、原声带及数字漫画。游戏设定在14世纪欧洲，玩家扮演被转化为“黎明行者”的年轻人科恩，在昼夜交替中抉择：坚守人性或拥抱诅咒力量拯救家人。核心特色包括时间紧迫的剧情推进（每位角色剩余天数有限）、昼夜双形态战斗系统，以及基于Unreal Engine 5构建的开放世界。"
+        },
+        {
+          "number": "03",
+          "emoji": "💼",
+          "title": "Take-Two回应GTA6定价及续作可能",
+          "score": 127,
+          "article": "Take-Two CEO Strauss Zelnick在iicon会议上回应了GTA6定价与L.A. Noire续作问题。他拒绝确认具体售价，但暗示不会采用此前流传的超高定价策略，称“消费者支付的价值远低于他们获得的价值”，并指出游戏定价相对通胀已变得更便宜。同时，他对L.A. Noire的未来持开放态度：“我们正考虑在未来利用所有IP进行创作”，但强调目前没有具体宣布，最终取决于Rockstar是否有团队对其充满热情。GTA6定于2026年11月19日登陆PS5和Xbox Series X|S。\nZelnick的定价表态平息了GTA6可能高达100美元以上的市场焦虑，目前3A大作普遍维持7"
+        }
+      ]
+    },
     {
       "date": "2026-04-28",
       "totalCount": 10,
