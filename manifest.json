@@ -1,11 +1,39 @@
 {
-  "generated": "2026-04-29T02:36:30.989Z",
+  "generated": "2026-04-30T02:43:52.478Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-04-30",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "🎮",
+          "title": "PS Plus五月会免：FC 26、明末等三作",
+          "score": 127,
+          "article": "PlayStation Plus五月月度游戏阵容公布，所有会员可于5月5日起领取三款作品：《EA Sports FC 26》（PS5/PS4）、《Wuchang: Fallen Feathers》（PS5）与《Nine Sols》（PS5/PS4）。其中《EA Sports FC 26》还将额外提供专享Icons卡包，领取截止至下架前。四月会免《Lords of the Fallen》等则需在5月4日前入库。"
+        },
+        {
+          "number": "02",
+          "emoji": "💼",
+          "title": "Xbox或将推出含Discord的Game Pass入门版",
+          "score": 115,
+          "article": "在近期下调Game Pass价格后，有报道称Xbox正在筹备一个名为“Starter Edition”的新订阅层级，该版本将捆绑Discord订阅服务。此消息出自Eurogamer的行业简报，与微软内部备忘录中“每日活跃用户数将成为新北极星”的战略转向几乎同时浮出水面。不久前，微软刚将Xbox Game Pass Ultimate和PC Game Pass的价格下调，距离上一次涨价仅间隔不到六个月。"
+        },
+        {
+          "number": "03",
+          "emoji": "💼",
+          "title": "GreedFall开发者Spiders即刻清算",
+          "score": 109,
+          "article": "法国中型工作室Spiders于4月29日通过官方声明确认，公司将被立即清算，不再以实体形式存在。Spiders成立于2008年，以AA级RPG系列《GreedFall》闻名，初代作品在发售后三年内销量突破200万套。其续作《GreedFall: The Dying World》上月刚结束抢先体验正式发售，而母公司法商Nacon在数周前便已申请破产保护，并试图为Spiders寻找买家但未果。工作室声明表示，已规划的DLC仍会由Nacon负责发行，但工作室自身即日起停止所有运营与玩家支持工作。"
+        }
+      ]
+    },
     {
       "date": "2026-04-29",
       "totalCount": 10,
