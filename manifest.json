@@ -1,11 +1,39 @@
 {
-  "generated": "2026-05-04T02:40:26.845Z",
+  "generated": "2026-05-05T02:38:16.784Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-05-05",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "🎮",
+          "title": "《极限竞速：地平线6》正式送厂压盘",
+          "score": 110,
+          "article": "由Playground Games开发的开放世界赛车游戏《极限竞速：地平线6》已正式送厂压盘。微软通过Forza官网宣布这一里程碑，并确认本作的电台阵容将迎来系列史上最大规模，以“Turn up Your Airwaves”为主题，预计年内登陆Xbox与PC平台。"
+        },
+        {
+          "number": "02",
+          "emoji": "💼",
+          "title": "Take-Two CEO坦言GTA6期望值令人畏惧",
+          "score": 102,
+          "article": "据彭博社报道，Take-Two Interactive首席执行官斯特劳斯·泽尔尼克在近期采访中表示，市场对《侠盗猎车手VI》的期望之高已经达到“令人畏惧”（terrifying）的程度。这一表述直接反映了这部超级大作的开发与发行压力——上一代作品《GTA V》全球销量已突破2.1亿份，且在线模式《GTA Online》持续贡献巨额收入，任何续作都必须在内容体量、技术表现和商业回报上超越前作的天花板，同时还需应对玩家社群长达十年的等待所沉淀的极致期待。"
+        },
+        {
+          "number": "03",
+          "emoji": "💼",
+          "title": "GameStop出价555亿美元求购eBay",
+          "score": 100,
+          "article": "美国游戏零售商GameStop CEO Ryan Cohen亲自证实，已向电商平台eBay提交非应邀收购提案，报价为每股125美元，总价约555亿美元。该价格较eBay在2026年2月4日的收盘价溢价46%，当天GameStop首次购入eBay股票。eBay已确认收到这份不具约束力的提案，并表示董事会将进行评估。"
+        }
+      ]
+    },
     {
       "date": "2026-05-04",
       "totalCount": 10,
