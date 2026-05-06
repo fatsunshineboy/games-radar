@@ -1,11 +1,39 @@
 {
-  "generated": "2026-05-05T02:38:16.784Z",
+  "generated": "2026-05-06T02:34:33.965Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-05-06",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "🎮",
+          "title": "《神秘岛》与《时空裂隙》重制版5月19日登陆PS5/VR2",
+          "score": 121,
+          "article": "开发商Cyan Worlds于PlayStation博客宣布，经典解谜冒险游戏《Myst》（神秘岛）与续作《Riven》（时空裂隙）的完全重制版将于5月19日登陆PS5和PS VR2，售价均为34.99美元。两款作品自5月5日起开启愿望单，支持平面模式与PS VR2模式双模式游玩，并完整利用PS5与PS5 Pro的硬件特性，包括光线追踪反射（仅限平面模式30帧）、60帧性能模式、PS5 Pro增强（更高视距、纹理、植被及VR基础渲染分辨率），以及PS5电源节能模式。Cyan表示，从先前《Firmament》的VR开发中汲取经验，并将新作的技术优化反向回馈至《Firmament》。"
+        },
+        {
+          "number": "02",
+          "emoji": "📝",
+          "title": "乐高蝙蝠侠新作试玩：致敬阿卡姆",
+          "score": 116,
+          "article": "PC Gamer在洛杉矶试玩了《乐高蝙蝠侠：黑暗骑士遗产》两小时，并发布了详细报告。该作由TT Games开发，放弃了旧有的固定视角和海量角色解锁，改为全3D沙盒、包含闪避与反击的新战斗系统，并引入技能树。开发者明确表示本作旨在打造“终极蝙蝠侠游戏”，大量借鉴Rocksteady的阿卡姆系列——包括标志性战斗、开放世界哥谭、谜语人谜题等元素。试玩demo中有一章节以马特·里夫斯版《新蝙蝠侠》电影风格呈现。"
+        },
+        {
+          "number": "03",
+          "emoji": "🎮",
+          "title": "《GTA6》与PS5达成营销协议",
+          "score": 110,
+          "article": "据Eurogamer报道，Take-Two总裁Strauss Zelnick在近期采访中透露，Rockstar Games即将推出的《Grand Theft Auto VI》已与PlayStation签署营销合作协议。这意味着该作将会像前作一样，在主机首发阶段优先登陆PS5平台。Zelnick同时强调，PC并非Rockstar的“核心”受众群体，这一表述直接回应了外界对《GTA6》PC版何时发布的猜测。此前，Rockstar通常会在主机版本发售一年后推出PC版，但该言论暗示PC版的间隔期可能比预期更长。"
+        }
+      ]
+    },
     {
       "date": "2026-05-05",
       "totalCount": 10,
