@@ -1,11 +1,39 @@
 {
-  "generated": "2026-05-10T02:41:05.911Z",
+  "generated": "2026-05-11T02:50:02.018Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-05-11",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "💻",
+          "title": "《黄昏公主》获非官方PC移植",
+          "score": 111,
+          "article": "PC Gamer报道，名为“Dusk”的《塞尔达传说：黄昏公主》非官方原生PC移植版已正式发布。玩家需自备GameCube版的NTSC或PAL游戏ROM，移植版支持Windows、macOS、Linux、iOS及Android平台，提供高帧率、鼠标/陀螺仪瞄准、自定义模型纹理包以及WiiU版镜像模式等特性。Dusk团队透露，该项目始于2020年8月的反编译工程，被其称为“迄今为止规模最大的反编译项目”。"
+        },
+        {
+          "number": "02",
+          "emoji": "🇯🇵",
+          "title": "如龙工作室新作《Stranger Than Heaven》情报汇总",
+          "score": 103,
+          "article": "Xbox Wire官方报道，RGG Studio（如龙工作室）在“Xbox Presents”专场活动中公布了新作《Stranger Than Heaven》的30分钟深度演示。游戏时间跨度50年（1915-1965），主角Makoto Daito为美日混血，幼年丧亲后偷渡至日本，在船上遇见由Snoop Dogg饰演的走私者Orpheus。剧情横跨五座日本城市：1915年福冈小仓、1929年广岛吴市、1943年大阪南区、1951年静冈热海、1965年东京新宿，每段代表不同时代背景。战斗系统为专门打造的新体系，此外还有音乐采集与演出管理玩法——玩家可收集环境音效用作音乐创作，并组织乐队演出。游戏"
+        },
+        {
+          "number": "03",
+          "emoji": "💼",
+          "title": "索尼邮件暗示GTA 6如期发售",
+          "score": 98,
+          "article": "据IGN报道，部分PS4玩家近日收到索尼官方营销邮件，邮件中明确提及“GTA 6已加入你的心愿单，请立即购买PS5以迎接2026年11月19日的发售”。该邮件针对已心愿单但未升级PS5的用户，由索尼直接发送。此前Take-Two CEO Strauss Zelnick在彭博采访中确认，索尼与Rockstar仍保持营销合作。此外，Take-Two在今年2月宣布计划今夏加大GTA 6营销力度，并将在未来数月内推出《GTA Online》的“令人兴奋”更新。"
+        }
+      ]
+    },
     {
       "date": "2026-05-10",
       "totalCount": 10,
