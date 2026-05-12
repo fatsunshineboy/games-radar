@@ -1,11 +1,39 @@
 {
-  "generated": "2026-05-11T02:50:02.018Z",
+  "generated": "2026-05-12T02:41:06.258Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-05-12",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "💼",
+          "title": "XGP与Discord合作推订阅福利",
+          "score": 154,
+          "article": "2026年5月11日，微软与Discord正式宣布深化合作。从即日起，Discord Nitro订阅用户（月费9.99美元）可免费获得Xbox Game Pass Starter Edition，畅玩包括《辐射4》《星露谷物语》《深岩银河》在内的50余款游戏，并每月获得10小时Xbox云游戏时长，以及Logitech G和SteelSeries的折扣码。Xbox Game Pass用户则将陆续获得Discord Nitro的部分权益：每月250个Discord Orbs虚拟币、Quest获得的Orbs乘以1.2倍、以及Discord商店自动折扣。该福利覆盖美国、加拿大、英国、新西兰和澳大利亚等"
+        },
+        {
+          "number": "02",
+          "emoji": "💻",
+          "title": "地平线6预购破50万，赛车游戏逆势领跑",
+          "score": 134,
+          "article": "据PC Gamer报道，《极限竞速：地平线6》自4月初开启预购以来持续占据Steam周畅销榜前列，截至4月15日，游戏预购量已超过50万份，随后数周内这一数字预计接近翻倍。与之对比，《战地6》在发行前一周的预购量约为170万份，显示出地平线6在赛车品类中的绝对统治力。数据来自Steam官方商店排行榜及PC Gamer统计。"
+        },
+        {
+          "number": "03",
+          "emoji": "🎭",
+          "title": "《力量之戒》第三季2026年11月播出",
+          "score": 108,
+          "article": "亚马逊在年度Upfront大会上宣布，《指环王：力量之戒》第三季将于2026年11月11日在Prime Video首播，并发布了一张新剧照。第三季剧情将进行数年时间跳跃，围绕精灵与索伦的战争展开，索伦此时正在锻造至尊戒以取得胜利。该剧改编自托尔金第二纪元的故事，是目前电视史上制作成本最高的项目之一，前两季收视表现起伏不定，但亚马逊CEO杰夫·贝佐斯对《指环王》IP的偏爱确保了续订。"
+        }
+      ]
+    },
     {
       "date": "2026-05-11",
       "totalCount": 10,
