@@ -1,11 +1,39 @@
 {
-  "generated": "2026-05-12T02:41:06.258Z",
+  "generated": "2026-05-13T02:48:13.328Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-05-13",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "💻",
+          "title": "Valve或推512GB/2TB新Steam Machine",
+          "score": 123,
+          "article": "据Eurogamer报道，Valve可能正在筹备四款新版Steam Machine，其中包括512GB和2TB两种存储容量。这一信息源自Steam Controller预订系统的软件更新泄露，数据标签暗示了明确的硬件分层策略。尽管Valve尚未官方确认，但传闻在AI驱动的内存短缺导致存储芯片成本上涨的背景下，Valve规划多容量版本显示出其对PC客厅硬件市场的长期布局意图。"
+        },
+        {
+          "number": "02",
+          "emoji": "🎮",
+          "title": "Scuf Omega官方授权PS5手柄售价220美元",
+          "score": 116,
+          "article": "索尼PlayStation官方博客宣布，游戏外设品牌Scuf Gaming最新款手柄Scuf Omega于5月12日全球发售，售价219.99美元（欧洲239.99欧元）。该手柄是索尼官方授权的PS5性能控制器，兼容PC、Mac、iOS和Android。它基于Scuf 15年职业玩家设计经验打造，提供28个输入接口，包括4个背键、2个侧键和5个G-Keys共11个自定义输入，并采用Omron机械开关和TMR无接触磁感应摇杆，支持通过移动App进行0%死区校准、扳机键程调节和SOCD设置等功能。"
+        },
+        {
+          "number": "03",
+          "emoji": "🎮",
+          "title": "Switch 2限时捆绑包499美元三选一",
+          "score": 113,
+          "article": "任天堂于5月14日通过官方渠道宣布推出Switch 2“Choose Your Game”限时捆绑包，包含一台Switch 2主机和一张可兑换数字版游戏的下载码，玩家可在《马力欧赛车世界》《大金刚Bananza》或《宝可梦：宝可乐园》中任选其一。该捆绑包定价499美元，预计6月初开始发售，售完即止。值得注意的是，Switch 2标准版主机此前公布售价为449美元，而三款首发游戏均为70美元级别，捆绑包实际以499美元打包主机+游戏，相当于为玩家节省了20至50美元的购机成本。"
+        }
+      ]
+    },
     {
       "date": "2026-05-12",
       "totalCount": 10,
