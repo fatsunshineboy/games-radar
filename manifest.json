@@ -1,11 +1,39 @@
 {
-  "generated": "2026-05-15T02:48:13.397Z",
+  "generated": "2026-05-16T02:36:46.760Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-05-16",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "🎮",
+          "title": "索尼测试PS5玩家数公开功能",
+          "score": 136,
+          "article": "索尼在PS5主屏幕测试了一项新功能：显示当地每周玩家数最多的八款游戏及具体数字。据IGN报道，YouTube主播Mystic发现，该功能以浮窗形式展示排名列表，例如美国本周《堡垒之夜》以1460万玩家居首，《GTA5》（513万）、《Minecraft》（497万）紧随其后，此外还包含一个基于玩家活跃度周环比增幅的“趋势榜”。这是索尼首次在主机端公开这类数据，目前处于Beta测试阶段。"
+        },
+        {
+          "number": "02",
+          "emoji": "🎮",
+          "title": "《黄昏血》《艾尔登法环》确认2026年登陆Switch 2",
+          "score": 134,
+          "article": "据Eurogamer援引角川集团财报显示，FromSoftware的Switch 2独占作品《黄昏血》（The Duskbloods）以及《艾尔登法环：黄金树之影》版本仍计划于2026年内发售。角川在财报中明确将这两款游戏列为“2026年Switch 2发售计划”，此前数月官方未放出任何新消息，令外界一度担忧其进度。这是继2023年《装甲核心6》后，FromSoftware再度公开跨平台时间表。"
+        },
+        {
+          "number": "03",
+          "emoji": "💻",
+          "title": "《深海迷航2》EA版12小时销量破200万",
+          "score": 130,
+          "article": "据Unknown Worlds工作室新闻稿，5月15日登陆Steam、Xbox Series X|S及Epic Games Store的《深海迷航2》抢先体验版，在发售12小时内全球销量突破200万份。全平台同时在线玩家数超过65.1万，其中Steam峰值达46.7万。该成绩是开发商与发行商Krafton长达一年的法律纠纷尘埃落定后的首批成果。此前Krafton被指控为逃避2.5亿美元收益分成而故意推迟游戏发售，法院最终裁定Krafton阴谋驱逐三位创始人，原CEO Ted Gill得以回归并全权指挥开发与发行。"
+        }
+      ]
+    },
     {
       "date": "2026-05-15",
       "totalCount": 10,
