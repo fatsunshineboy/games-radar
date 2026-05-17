@@ -1,11 +1,39 @@
 {
-  "generated": "2026-05-16T02:36:46.760Z",
+  "generated": "2026-05-17T02:43:52.116Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-05-17",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "🎮",
+          "title": "PS Plus五月新增星战亡命徒、RDR2",
+          "score": 129,
+          "article": "索尼官方PlayStation Blog于5月13日公布，PlayStation Plus Extra/Premium用户将在5月19日迎来新一批游戏入库。本次阵容包括育碧开放世界新作《星球大战：亡命之徒》、R星经典作品《荒野大镖客：救赎2》（含线上模式）、北欧恐怖冒险《荆棘：山王》、回合制RPG《魔法师》以及类魂作品《燧石枪：黎明之围》等。此外，Premium层级还额外追加了经典街机光枪射击游戏《时间危机》的重制版。作为对比，《荒野大镖客：救赎2》首次加入PS Plus已是2024年，此次为重新上架；《星球大战：亡命之徒》于2024年8月发售，距今不足一年即入库。"
+        },
+        {
+          "number": "02",
+          "emoji": "🛠️",
+          "title": "工程师用Switch加速3D打印1000%",
+          "score": 104,
+          "article": "据PC Gamer报道，YouTuber Cocoanix在Nintendo Switch上运行Linux系统并安装开源固件Klipper，成功将一款Prusa MK3S 3D打印机的速度提升了1000%。原本需要90分钟打印的模型，在改造后仅用8分钟完成。Cocoanix将Switch作为独立计算设备处理G-code指令，使打印机实现400mm/s的打印速度和17000mm/s²的加速度，同时减少“振纹”和“拖影”现象，打印质量也得到提升。不过，Cocoanix指出，对大多数用户而言，树莓派是更合适的选择。"
+        },
+        {
+          "number": "03",
+          "emoji": "💼",
+          "title": "Xbox官方更名为全大写XBOX",
+          "score": 100,
+          "article": "微软旗下游戏品牌Xbox近日悄然完成了视觉重塑，将标准名称更换为全大写的“XBOX”。据IGN报道，新任CEO Asha Sharma在X/Twitter上发起投票，询问用户偏好标准“Xbox”还是全大写版本，在64.8%的压倒性支持率结果出炉后，官方正式采纳了这一变更。目前Xbox的官方X账号以及Sharma的LinkedIn个人资料已率先更新，但Instagram、Facebook等平台尚未同步，令这次“更名”的范围和决心显得模糊。Sharma自今年2月接替Phil Spencer出任CEO以来，已主导了包括领导层调整、终止“This is an Xbox”营销活动以及下调Game Pas"
+        }
+      ]
+    },
     {
       "date": "2026-05-16",
       "totalCount": 10,
