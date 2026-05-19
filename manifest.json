@@ -1,11 +1,39 @@
 {
-  "generated": "2026-05-18T02:55:31.494Z",
+  "generated": "2026-05-19T02:51:57.745Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-05-19",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "🛠️",
+          "title": "CDPR挖角《命运2》叙事主笔",
+          "score": 117,
+          "article": "CD Projekt Red近日宣布，已聘请《命运2：终焉之形》叙事主笔Kwan Perng担任旗下《巫师》多人衍生游戏《Project Sirius》的首席编剧。Perng此前还参与过《激战2：巨龙绝境》的叙事创作，在大型在线RPG叙事领域经验丰富。该消息由Eurogamer报道，具体任命已获CDPR确认。"
+        },
+        {
+          "number": "02",
+          "emoji": "💼",
+          "title": "《红色沙漠》营收增419% 官方考虑DLC",
+          "score": 116,
+          "article": "韩国游戏厂商Pearl Abyss旗下的《红色沙漠》自3月中旬发售以来表现强劲，官方最新财报显示，该作带动公司运营收入同比暴涨419%，全球累计销量已突破500万份。韩国总统公开称赞该作为韩国游戏产业的“转折点”。与此同时，1.06版本补丁上线，新增多种特殊坐骑（如熊、虎、狮、蜥蜴等）以及宠物战斗、装备回收等系统，进一步丰富了后期内容。Pearl Abyss在财报电话会上明确表示，基于游戏的成功表现，已开始研究DLC开发计划。"
+        },
+        {
+          "number": "03",
+          "emoji": "💼",
+          "title": "索尼确认第一方叙事游戏独占",
+          "score": 114,
+          "article": "据Bloomberg记者Jason Schreier报道，PlayStation工作室业务CEO Hermen Hulst在本周一早上的全体员工大会上确认，公司旗下的叙事性单人游戏将不再登陆其他平台，仅限PlayStation独占。这一表态证实了Bloomberg今年早些时候的报道。此前，索尼曾将《地平线：零之曙光》《战神》等作品移植至PC，引发业界对其独占策略松动的猜测。"
+        }
+      ]
+    },
     {
       "date": "2026-05-18",
       "totalCount": 10,
