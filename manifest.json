@@ -1,11 +1,39 @@
 {
-  "generated": "2026-05-19T02:51:57.745Z",
+  "generated": "2026-05-20T02:52:52.641Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-05-20",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "💼",
+          "title": "《极限竞速：地平线6》正式发售",
+          "score": 155,
+          "article": "《极限竞速：地平线6》于5月19日在Xbox Series X|S、PC及云游戏平台正式发售，并同步加入Xbox Game Pass订阅库。本作由Playground Games开发，首次将舞台设定于日本，收录超过550辆真实授权车辆，被官方称为“地平线系列迄今最大的开放世界驾驶冒险”。该消息源自Xbox Wire官方发布。\n作为微软第一方赛车旗舰，本作选择首发加入Game Pass的策略，延续了系列传统，旨在通过订阅制最大化用户触达。日本取景不仅回应了社区长期呼声，更可能为开放世界赛车游戏设定新的文化标杆。相比索尼《GT赛车》强调拟真赛道，地平线系列以自由探索和趣味活动见长，此次登陆Game"
+        },
+        {
+          "number": "02",
+          "emoji": "🎮",
+          "title": "Game Pass五月末新增《极限竞速地平线6》等",
+          "score": 115,
+          "article": "微软近日公布Game Pass在5月下旬至6月初的新增阵容，涵盖《极限竞速地平线6》（Forza Horizon 6）、《逃生模拟器》、《侏罗纪世界进化3》等多款作品。具体上线日程包括：5月20日《Dead Static Drive》《My Friend Peppa Pig》《Pigeon Simulator》《Remnant II》《Winter Burrow》；5月21日《Luna Abyss》；5月26日《Escape Simulator》；5月27日《Echo Generation 2》《The Outer Worlds: Spacer’s Choice Edition》；5月28日《"
+        },
+        {
+          "number": "03",
+          "emoji": "📱",
+          "title": "Fortnite全球重返App Store Epic称苹果税终结开始",
+          "score": 110,
+          "article": "Fortnite现已全球范围内（除澳大利亚）重返苹果App Store。这一里程碑源于2020年Epic在游戏内引入自有支付系统以规避苹果30%抽成，导致游戏被下架。去年美国法院部分判決支持Epic后，Fortnite已在美国和欧洲重新上架，如今终于在全球回归。Epic CEO Tim Sweeney表示：“我们认为这是全球苹果税终结的开始。”并宣布即将展开“最终法庭之战”，针对苹果在澳大利亚仍拒绝遵守裁定条款的情况继续诉讼。"
+        }
+      ]
+    },
     {
       "date": "2026-05-19",
       "totalCount": 10,
