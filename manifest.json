@@ -1,11 +1,39 @@
 {
-  "generated": "2026-05-20T02:52:52.641Z",
+  "generated": "2026-05-21T02:54:49.698Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-05-21",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "💼",
+          "title": "PS Plus五月新增星战亡命之徒与大镖客2",
+          "score": 146,
+          "article": "索尼官方博客PlayStation Blog于5月13日公布五月PlayStation Plus游戏目录阵容。新增游戏包括育碧旗下《星球大战：亡命之徒》、R星经典《荒野大镖客2》、北欧恐怖题材《Bramble: The Mountain King》以及历史题材RPG《The Thaumaturge》等。此外，PlayStation Plus Premium会员还将获得经典街机光枪射击游戏《Time Crisis》。所有游戏自本月起向对应订阅等级会员开放。"
+        },
+        {
+          "number": "02",
+          "emoji": "💼",
+          "title": "Warhorse开发中土开放世界RPG与《天国》新作",
+          "score": 117,
+          "article": "Warhorse Studios（《天国：拯救》系列开发商）于近日正式宣布，正在开发两款新项目：一款基于托尔金中土世界设定的开放世界RPG，以及一款全新的《王国降临》冒险游戏。目前工作室仅透露了项目存在，未公布具体细节、平台或发售时间，并表示“会在合适的时机公布更多信息”。"
+        },
+        {
+          "number": "03",
+          "emoji": "🎮",
+          "title": "索尼State of Play定档6月2日 将展示金刚狼",
+          "score": 115,
+          "article": "索尼官方宣布，新一期State of Play直播活动将于北京时间6月3日（太平洋时间6月2日）举行，时长超过60分钟，带来来自全球顶尖工作室的最新动态、公告和实机演示。开场环节将由Insomniac Games首次公开《漫威金刚狼》的详细实机战斗画面，展示金刚狼残暴而流畅的格斗风格，并公布新细节。该游戏已确定于2026年9月15日登陆PS5。"
+        }
+      ]
+    },
     {
       "date": "2026-05-20",
       "totalCount": 10,
