@@ -1,11 +1,39 @@
 {
-  "generated": "2026-05-21T02:54:49.698Z",
+  "generated": "2026-05-22T02:54:36.823Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-05-22",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "💼",
+          "title": "Xbox新战略官曾指游戏不敌赌博",
+          "score": 126,
+          "article": "微软旗下Xbox部门近期进行了新一轮领导层调整，由新任游戏业务负责人Asha Sharma主导，聘请了知名行业分析师Matthew Ball担任首席战略官。Ball此前在2024年的分析中曾指出，游戏在与赌博、加密货币和色情内容争夺用户注意力的战斗中处于劣势，并认为PlayStation和Xbox在硬件销售上的疲软正是这一趋势的体现。然而，Ball在加入Xbox后对Bloomberg表示，主机游戏仍“重要、持久且持续增长”，并将专注于重振Xbox经典IP和强化主机业务。该任命于2026年5月得到确认，引发业界关注。"
+        },
+        {
+          "number": "02",
+          "emoji": "💼",
+          "title": "Take-Two确认GTA 6夏季开启营销",
+          "score": 120,
+          "article": "Take-Two Interactive CEO Strauss Zelnick近日在财报电话会议上表示，Rockstar Games将于今年夏季（6月21日至9月22日）全面启动《Grand Theft Auto 6》的市场营销工作。这几乎确认了备受期待的第三部预告片将在夏季发布，而非此前粉丝猜测的5月财报窗口。截至目前，Rockstar已在2023年12月发布首支预告片，2025年5月发布第二支，期间因长达一年的信息真空引发社区大量猜疑。Zelnick同时否认了近期开启预购的说法，并拒绝透露定价及《GTA Online》细节，但强调游戏最终定价将“非常合理”。"
+        },
+        {
+          "number": "03",
+          "emoji": "💼",
+          "title": "Bungie停更《命运2》6月推最终内容",
+          "score": 119,
+          "article": "Bungie于今日正式宣布，旗下大型多人在线射击游戏《命运2》的“实时服务内容更新”将在6月9日画上句号。据官方声明，这款自2016年（注：原文为nearly nine years after launch，但《命运2》2017年发售，实际约8年）上线以来的服务型游戏，其持续更新将就此终结。值得注意的是，索尼在2022年以36亿美元收购Bungie后，后者在索尼旗下运营并不顺畅，曾出现多次裁员和项目方向调整。最终更新将整合一系列针对各类活动类型的改动，但游戏本体仍可继续游玩，游戏内商城Eververse和付费货币Silver也将保持运营。"
+        }
+      ]
+    },
     {
       "date": "2026-05-21",
       "totalCount": 10,
