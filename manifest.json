@@ -1,11 +1,39 @@
 {
-  "generated": "2026-05-29T02:50:36.216Z",
+  "generated": "2026-05-30T02:43:46.004Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-05-30",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "💼",
+          "title": "《神鬼寓言》延期至2027年2月",
+          "score": 128,
+          "article": "微软旗下Xbox游戏工作室与开发商Playground Games宣布，《神鬼寓言》将从原计划的2026年秋季发售窗口推迟至2027年2月。Xbox首席内容官Matt Booty在官方播客中表示，游戏开发状态良好，团队信心充足，延期是为了让作品拥有专属的发行档期，避免与其他大作竞争。此外，该作确认将登陆PS5、Xbox Series、PC（Steam与Microsoft Store）及Game Pass，并计划在2026年Xbox游戏展示会上放出更多实机内容。"
+        },
+        {
+          "number": "02",
+          "emoji": "🛠️",
+          "title": "Playstack以1.69亿美元被收购",
+          "score": 112,
+          "article": "5月21日，《Balatro》与《Abiotic Factor》发行商Playstack的母公司TruFin宣布，已同意将其持有的84.5%股份出售给VantageCo，后者是娱乐品牌Fandom、GameSpot、Fanatical母公司Integrated Media Company（IMC）的间接全资子公司。交易金额约为1.51亿英镑（约1.51亿美元），对Playstack的整体估值约为1.25亿英镑（约1.69亿美元）。该交易尚需股东批准，TruFin董事会已建议股东投赞成票。Playstack此前透露，其发行游戏命中率超过85%，在Steam平台累计营收超1亿美元，上一财年下载量突"
+        },
+        {
+          "number": "03",
+          "emoji": "💼",
+          "title": "R星员工成立工会，为31名被解雇者维权",
+          "score": 111,
+          "article": "据Eurogamer报道，Rockstar Games员工公开成立“Rockstar Game Workers Union”（RGWU）工会，隶属于英国独立工人联合会（IWGB）。此前IWGB正准备就2024年10月31名员工被解雇一事起诉Take-Two，外界普遍认为此次裁员属于“打击工会”行为，已引发抗议和法律行动。RGWU在声明中表示“决心为被解雇的31名员工争取正义”，并公开征集行业支持。"
+        }
+      ]
+    },
     {
       "date": "2026-05-29",
       "totalCount": 10,
