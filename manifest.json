@@ -1,11 +1,39 @@
 {
-  "generated": "2026-05-30T02:43:46.004Z",
+  "generated": "2026-05-31T02:59:50.544Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-05-31",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "📱",
+          "title": "鸣潮3.4版本6月8日上线",
+          "score": 128,
+          "article": "Kuro Games宣布，免费开放世界动作RPG《鸣潮》的3.4版本更新“The Dream Not Dreamed”将于2026年6月8日正式上线。根据Gematsu的报道，这是游戏自2024年5月公测以来的第21个月更新，版本号3.4意味着Kuro Games维持着约每6周一次的大版本节奏，在二次元开放世界品类中属于较高频率。官方尚未公布具体内容，但此前版本更新通常包含新角色、区域、剧情及活动。"
+        },
+        {
+          "number": "02",
+          "emoji": "💻",
+          "title": "Steam Deck OLED英国最高涨37%",
+          "score": 121,
+          "article": "Valve本周宣布Steam Deck OLED在英国市场大幅提价。512GB OLED版从479英镑涨至649英镑，涨幅约35%；1TB OLED版从569英镑涨至779英镑，涨幅约37%。Eurogamer援引分析师评论称：“这个市场并不正常”，如此幅度的调价在手持游戏设备领域极为罕见，打破了传统的定价逻辑。"
+        },
+        {
+          "number": "03",
+          "emoji": "📱",
+          "title": "任天堂携Pictonico重返手游市场",
+          "score": 120,
+          "article": "任天堂于近期在智能手机平台推出WarioWare式微游戏合集《Pictonico!》，该游戏利用用户照片库生成角色，由长期合作开发商Intelligent Systems打造。事实上，这已是任天堂九个月内发布的第三款手游，此前还包括面向学龄前儿童的《Hello, Mario!》和社交推理游戏《Fire Emblem Shadows》。这一动向标志着任天堂在沉寂五年后重返手游市场，据Polygon报道，总裁古川俊太郎在去年投资者电话中重申了对智能设备的兴趣。"
+        }
+      ]
+    },
     {
       "date": "2026-05-30",
       "totalCount": 10,
