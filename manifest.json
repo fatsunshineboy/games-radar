@@ -1,11 +1,39 @@
 {
-  "generated": "2026-06-01T03:37:08.355Z",
+  "generated": "2026-06-02T03:34:01.186Z",
   "site": {
     "name": "Game Radar",
     "name_zh": "🎮 游戏速报",
     "description_zh": "游戏资讯每日简报"
   },
   "dates": [
+    {
+      "date": "2026-06-02",
+      "totalCount": 10,
+      "topCount": 5,
+      "topThree": [
+        {
+          "number": "01",
+          "emoji": "💼",
+          "title": "巫师3销量达6500万，印证第三DLC开发逻辑",
+          "score": 122,
+          "article": "CD Projekt Red官方宣布，《巫师3：狂猎》全球累计销量已突破6500万份。这一数据由公司通过官方渠道公布，并被Eurogamer等媒体引用。正是基于如此庞大的用户基数，CDPR选择在游戏发售11年后的今天，开发第三款资料片“Songs of the Past”，该DLC预计明年上线。此前官方已通过“Belleteyn”节日艺术图埋下线索，图中剑柄设计与此前DLC宣传图高度一致，暗示新内容或将围绕精灵主题和辛达里斯地区展开。"
+        },
+        {
+          "number": "02",
+          "emoji": "🎮",
+          "title": "驾驶模拟器《BeamNG.drive》今年登陆PS5",
+          "score": 121,
+          "article": "BeamNG GmbH 首席执行官 Thomas Fischer 在 PlayStation Blog 上宣布，以其软体物理引擎著称的驾驶模拟游戏《BeamNG.drive》将于今年登陆 PS5，结束了玩家近十年的“何时上主机”的追问。游戏核心是实时软体物理系统，每个车辆部件由节点与横梁组成独立模拟，物理引擎更新频率高达 2kHz，可实现真实变形与断裂效果。游戏包含超过 1000 种车辆配置、12 张开放世界地图以及任务模式与自由漫游模式，并针对 PS5 进行了性能、操控和界面等深度优化。"
+        },
+        {
+          "number": "03",
+          "emoji": "💼",
+          "title": "博德之门2重制版开发中，原主创回归",
+          "score": 113,
+          "article": "据PC Gamer报道，威世智正在开发《博德之门2》重制版，原联合主设计师Kevin Martens已确认回归。Martens曾是BioWare资深开发者，参与过《博德之门2》《翡翠帝国》《质量效应》等项目，后加入暴雪参与《暗黑破坏神3》。报道称，重制版可能同步涵盖《博德之门1》与2，由Martens主导开发，目前项目处于早期阶段，尚未公布发售时间。"
+        }
+      ]
+    },
     {
       "date": "2026-06-01",
       "totalCount": 10,
